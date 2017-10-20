@@ -12,7 +12,7 @@ let testTower
 const playerTowers = []
 const enemies = []
 let id = 0
-let lastMouseState = 'up'
+let mouseWasDown = false
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
