@@ -1,0 +1,20 @@
+{
+  "name": "squaddefense",
+  "main": "index.js",
+  "authors": [
+    "team"
+  ],
+  "description": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "slick-ui": "^0.5.0"
+  }
+}
