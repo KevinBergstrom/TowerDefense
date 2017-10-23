@@ -13,7 +13,7 @@ class Tower {
   targetIn (enemies) {
     // target logic
   }
-  // Pass in game and enemy to aim the turret at
+  // Pass in game and rotate tower towards enemy
   aimAt (game, enemy) {
     // this.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, game.input.mousePointer) + 90
   }

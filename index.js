@@ -1,12 +1,15 @@
 
+const CANVAS_WIDTH = 800
+const CANVAS_HEIGHT = 650
+
 const game = new Phaser.Game(
-  800,
-  600,
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
   Phaser.AUTO,
-  'Tower Defense',
+  'TowerDefense',
   { preload, create, update }
 )
-
+ 
 let spriteSheet
 let testTower
 const playerTowers = []
@@ -14,6 +17,8 @@ const enemies = []
 let id = 0
 let mouseWasDown = false
 let panel
+let grid
+let background
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -21,12 +26,15 @@ function preload() {
   slickUI.load('assets/ui/kenney-theme/kenney.json'); // Use the path to your kenney.json. This is the file that defines your theme.
 
   game.load.image('testTower', 'assets/images/tiles/towerDefense_tile226.png')
+  game.load.image('background', 'assets/images/background.png')
 }
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE)
-  slickUI.add(panel = new SlickUI.Element.Panel(8, game.height - 158, game.width - 16, 150));
 
+  background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
+
+  slickUI.add(panel = new SlickUI.Element.Panel(8, game.height - 158, game.width - 16, 150));
 }
 
 function update() {
