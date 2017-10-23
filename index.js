@@ -13,6 +13,7 @@ const playerTowers = []
 const enemies = []
 let id = 0
 let mouseWasDown = false
+let panel
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -24,7 +25,6 @@ function preload() {
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE)
-  var panel;
   slickUI.add(panel = new SlickUI.Element.Panel(8, game.height - 158, game.width - 16, 150));
 
 }
@@ -38,7 +38,7 @@ function update() {
   // })
 
   // Drop tower on mouse click
-  if (game.input.activePointer.isDown && !mouseWasDown) {
+  if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel()) {
     dropNewTower('testTower', game.input.mousePointer.x, game.input.mousePointer.y)
   }
 
@@ -50,6 +50,10 @@ function dropNewTower(towerType, x, y) {
   const newTower = game.add.sprite(x, y, towerType)
   newTower.pivot.x = 64
   newTower.pivot.y = 64
-
+  newTower.scale.setTo(0.3, 0.3)
   playerTowers.push(new Tower(game, newTower, { x, y }))
+}
+
+function isAbovePanel() {
+  return game.input.mousePointer.y < panel.y
 }
