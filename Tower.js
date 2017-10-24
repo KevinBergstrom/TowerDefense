@@ -18,5 +18,3 @@ class Tower {
     // this.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, game.input.mousePointer) + 90
   }
 }
-
-module.exports = Tower

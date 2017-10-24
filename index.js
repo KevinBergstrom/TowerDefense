@@ -2,6 +2,7 @@
 const CANVAS_WIDTH = 800
 const CANVAS_HEIGHT = 650
 const TOWER_SCALE = 0.3
+const PURCHASE_BUTTON_SIZE = 140
 
 const game = new Phaser.Game(
   CANVAS_WIDTH,
@@ -12,7 +13,6 @@ const game = new Phaser.Game(
 )
  
 let spriteSheet
-let defaultTower
 const playerTowers = []
 const enemies = []
 let id = 0
@@ -31,6 +31,7 @@ function preload() {
   slickUI.load('assets/ui/kenney-theme/kenney.json') // Use the path to your kenney.json. This is the file that defines your theme.
 
   game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile226.png')
+  game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile204.png')
   game.load.image('background', 'assets/images/background.png')
 }
 
@@ -46,6 +47,7 @@ function create() {
   slickUI.add(panel)
 
   addTowerBuyOption(panel, 'defaultTower')
+  addTowerBuyOption(panel, 'missileTower')
 }
 
 function update() {
@@ -80,6 +82,7 @@ function dropTowerUpdate() {
 }
 
 function enterDropTowerState(towerType) {
+  exitDropTowerState()
   // Let the game know the player is in the process of placing a tower
   dropTowerState = true
   // Attach tower sprite to cursor until placed or canceled
@@ -92,7 +95,9 @@ function enterDropTowerState(towerType) {
 
 function exitDropTowerState() {
   // Remove tower sprite from cursor and game process
-  hoveringTower.kill()
+  if (hoveringTower) {
+    hoveringTower.kill()
+  }
   dropTowerState = false
   hoveringTower = null
 }
@@ -117,9 +122,15 @@ function isAbovePanel() {
 
 // Add a tower button to the player panel
 function addTowerBuyOption(panel, towerName, price) {
-  const towerButton = new SlickUI.Element.Button(4, 4, 140, 140)
+  const towerButton = new SlickUI.Element.Button(
+      (towerPurchaseOptions.length * PURCHASE_BUTTON_SIZE) + 4, 
+      4, 
+      PURCHASE_BUTTON_SIZE,
+      PURCHASE_BUTTON_SIZE)
+
   panel.add(towerButton)
 
   towerButton.events.onInputUp.add(() => enterDropTowerState(towerName))
   towerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, towerName)))
+  towerPurchaseOptions.push(towerButton)
 }
