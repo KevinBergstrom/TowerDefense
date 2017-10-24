@@ -17,11 +17,13 @@ const playerTowers = []
 const enemies = []
 let id = 0
 let mouseWasDown = false
-let panel
-let grid
+let panel    // Player UI panel
+let grid  // Map grid
 let background
-let dropTowerState = false
-let hoveringTower
+let dropTowerState = false  // Determines if player is in the process of dropping a new tower
+let hoveringTower           // Temporary tower attached to cursor while purchasing new tower
+let towerPurchaseOptions = [] // Tower purchase buttons on player panel
+
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -41,14 +43,9 @@ function create() {
   const panelY = game.height - 158
 
   panel = new SlickUI.Element.Panel(panelX, panelY, game.width - 16, 150)
-
-  const defaultTowerButton = new SlickUI.Element.Button(panelX + 4, panelY + 4, 140, 140)
   slickUI.add(panel)
-  slickUI.add(defaultTowerButton)
 
-  defaultTowerButton.events.onInputUp.add(() => enterDropTowerState('defaultTower'))
-  defaultTowerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, 'defaultTower')))
-
+  addTowerBuyOption(panel, 'defaultTower')
 }
 
 function update() {
@@ -67,39 +64,62 @@ function update() {
   mouseWasDown = game.input.activePointer.isDown
 }
 
+// Function ran during dropTowerState
 function dropTowerUpdate() {
+  // Get mouse x and y values
   const mouseX = game.input.mousePointer.x
   const mouseY = game.input.mousePointer.y
+  // Set hovering tower sprite to mouse position
   hoveringTower.x = mouseX
   hoveringTower.y = mouseY
+
+  // If the player clicks a valid point, then drop the tower
   if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel()) {
     dropNewTower(hoveringTower.key, mouseX, mouseY)
   }
 }
 
 function enterDropTowerState(towerType) {
+  // Let the game know the player is in the process of placing a tower
   dropTowerState = true
+  // Attach tower sprite to cursor until placed or canceled
   hoveringTower = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y, towerType)
+  // Scale down tower size and pivot to center
   hoveringTower.scale.setTo(TOWER_SCALE, TOWER_SCALE)
   hoveringTower.pivot.x = 64
   hoveringTower.pivot.y = 64
 }
 
 function exitDropTowerState() {
+  // Remove tower sprite from cursor and game process
   hoveringTower.kill()
   dropTowerState = false
   hoveringTower = null
 }
 
 function dropNewTower(towerType, x, y) {
+  // Add a new tower sprite to the game
   const newTower = game.add.sprite(x, y, towerType)
+  // Offset the sprite to center it
   newTower.pivot.x = 64
   newTower.pivot.y = 64
+  // Scale the sprite to proper size
   newTower.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+  // Add the sprite to player's towers
   playerTowers.push(new Tower(game, newTower, { x, y }))
   exitDropTowerState()
 }
 
+// Check if mouse is above player panel
 function isAbovePanel() {
   return game.input.mousePointer.y < panel.y - 8
+}
+
+// Add a tower button to the player panel
+function addTowerBuyOption(panel, towerName, price) {
+  const towerButton = new SlickUI.Element.Button(4, 4, 140, 140)
+  panel.add(towerButton)
+
+  towerButton.events.onInputUp.add(() => enterDropTowerState(towerName))
+  towerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, towerName)))
 }
