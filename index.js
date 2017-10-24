@@ -3,6 +3,7 @@ const CANVAS_WIDTH = 800
 const CANVAS_HEIGHT = 650
 const TOWER_SCALE = 0.3
 const PURCHASE_BUTTON_SIZE = 140
+const GRID_SIZE = 16
 
 const game = new Phaser.Game(
   CANVAS_WIDTH,
@@ -17,8 +18,8 @@ const playerTowers = []
 const enemies = []
 let id = 0
 let mouseWasDown = false
-let panel    // Player UI panel
-let grid  // Map grid
+let panel     // Player UI panel
+let grid      // Map grid
 let background
 let dropTowerState = false  // Determines if player is in the process of dropping a new tower
 let hoveringTower           // Temporary tower attached to cursor while purchasing new tower
@@ -30,14 +31,17 @@ function preload() {
   slickUI = game.plugins.add(Phaser.Plugin.SlickUI)
   slickUI.load('assets/ui/kenney-theme/kenney.json') // Use the path to your kenney.json. This is the file that defines your theme.
 
+  // Load images into cache
   game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile226.png')
   game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile204.png')
   game.load.image('background', 'assets/images/background.png')
 }
 
 function create() {
+  // Start phaser arcade physics engine
   game.physics.startSystem(Phaser.Physics.ARCADE)
 
+  // Add background to canvas
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
 
   const panelX = 8
@@ -48,6 +52,9 @@ function create() {
 
   addTowerBuyOption(panel, 'defaultTower')
   addTowerBuyOption(panel, 'missileTower')
+
+  // Instantiate grid
+  grid = new Grid(game, Grid.createGrid(GRID_SIZE, panel))
 }
 
 function update() {
@@ -71,13 +78,17 @@ function dropTowerUpdate() {
   // Get mouse x and y values
   const mouseX = game.input.mousePointer.x
   const mouseY = game.input.mousePointer.y
-  // Set hovering tower sprite to mouse position
-  hoveringTower.x = mouseX
-  hoveringTower.y = mouseY
+
+  // Find closest grid point
+  const closestPoint = grid.getClosestPoint(mouseX, mouseY)
+
+  // Snap hovering tower sprite to mouse position
+  hoveringTower.x = closestPoint.getX()
+  hoveringTower.y = closestPoint.getY()
 
   // If the player clicks a valid point, then drop the tower
   if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel()) {
-    dropNewTower(hoveringTower.key, mouseX, mouseY)
+    dropNewTower(hoveringTower.key, closestPoint.getX(), closestPoint.getY())
   }
 }
 
