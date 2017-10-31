@@ -2,7 +2,7 @@
 // Grid to be used for dijkstras algorithm and board state
 class Grid {
   // Initialize class with passed in grid
-  constructor(game, grid) {
+  constructor (game, grid) {
     this.game = game
     this.grid = grid
   }
@@ -50,15 +50,15 @@ class Grid {
   }
 
   // Returns the object at the point or returns null
-  getPoint(x, y) {
+  getPoint (x, y) {
     return this.grid[x][y]
   }
   // Sets the point on the grid to the object
-  setPoint(value, x, y) {
+  setPoint (value, x, y) {
     this.grid[x][y] = value
   }
   // Set point to null
-  clearPoint(x, y) {
+  clearPoint (x, y) {
     this.grid[x][y] = null
   }
 }

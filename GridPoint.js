@@ -1,21 +1,21 @@
 class GridPoint {
-  constructor(x, y) {
+  constructor (x, y) {
     this.x = x
     this.y = y
   }
-  set(occupant) {
+  set (occupant) {
     this.occupant = occupant
   }
-  getOccupant() {
+  getOccupant () {
     return this.occupant
   }
-  getX() {
+  getX () {
     return this.x
   }
-  getY() {
+  getY () {
     return this.y
   }
-  isOccupied() {
+  isOccupied () {
     return this.occupant ? true : false
   }
 }

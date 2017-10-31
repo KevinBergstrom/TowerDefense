@@ -115,14 +115,18 @@ function exitDropTowerState() {
 
 function dropNewTower(towerType, x, y) {
   // Add a new tower sprite to the game
-  const newTower = game.add.sprite(x, y, towerType)
+  const towerSprite = game.add.sprite(x, y, towerType)
+  // towerSprite.anchor.x = 0.5
+  // towerSprite.anchor.y = 0.5
   // Offset the sprite to center it
-  newTower.pivot.x = 64
-  newTower.pivot.y = 64
+  towerSprite.pivot.x = 64
+  towerSprite.pivot.y = 64
   // Scale the sprite to proper size
-  newTower.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  // Add the sprite to player's towers
-  playerTowers.push(new Tower(game, newTower, { x, y }))
+  towerSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+  // Create new tower
+  const tower = new Tower(game, towerSprite, { x, y })
+  // Add to player's towers
+  playerTowers.push(tower)
   exitDropTowerState()
 }
 
