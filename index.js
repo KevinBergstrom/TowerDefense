@@ -87,8 +87,8 @@ function dropTowerUpdate() {
   hoveringTower.y = closestPoint.getY()
 
   // If the player clicks a valid point, then drop the tower
-  if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel()) {
-    dropNewTower(hoveringTower.key, closestPoint.getX(), closestPoint.getY())
+  if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel() && !closestPoint.isOccupied()) {
+    dropNewTower(hoveringTower.key, closestPoint)
   }
 }
 
@@ -113,7 +113,9 @@ function exitDropTowerState() {
   hoveringTower = null
 }
 
-function dropNewTower(towerType, x, y) {
+function dropNewTower(towerType, gridPoint) {
+  const x = gridPoint.getX()
+  const y = gridPoint.getY()
   // Add a new tower sprite to the game
   const towerSprite = game.add.sprite(x, y, towerType)
   // towerSprite.anchor.x = 0.5
@@ -126,7 +128,9 @@ function dropNewTower(towerType, x, y) {
   // Create new tower
   const tower = new Tower(game, towerSprite, { x, y })
   // Add to player's towers
+  // Occupy gridPoint
   playerTowers.push(tower)
+  gridPoint.set(tower)
   exitDropTowerState()
 }
 
