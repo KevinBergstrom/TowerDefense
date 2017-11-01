@@ -44,10 +44,10 @@ function create() {
   // Add background to canvas
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
 
-  const panelX = 8
-  const panelY = game.height - 158
+  const panelX = 0
+  const panelY = game.height - 150
 
-  panel = new SlickUI.Element.Panel(panelX, panelY, game.width - 16, 150)
+  panel = new SlickUI.Element.Panel(panelX, panelY, game.width, 150)
   slickUI.add(panel)
 
   addTowerBuyOption(panel, 'defaultTower')

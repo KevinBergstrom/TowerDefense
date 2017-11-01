@@ -18,10 +18,10 @@ class Grid {
     const yGap = height / size
 
     for (var i = 0; i < size; i++) {
-      let x = i * xGap
+      let x = i * xGap + 24
       grid.push([])
       for (var j = 0; j < size; j++) {
-        grid[i].push(new GridPoint(x, j * yGap))
+        grid[i].push(new GridPoint(x, j * yGap + 8))
       }
     }
     return grid

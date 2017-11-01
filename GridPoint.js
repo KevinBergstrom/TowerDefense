@@ -15,6 +15,7 @@ class GridPoint {
   getY () {
     return this.y
   }
+  // Checks if occupant exists or not, returns true || false
   isOccupied () {
     return this.occupant ? true : false
   }
