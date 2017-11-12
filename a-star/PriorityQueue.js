@@ -6,7 +6,7 @@ class PriorityQueue{
   }
   
   push(object){
-    for(i = 0;i<this.size;i++){
+    for(var i = 0;i<this.size;i++){
       
       let currentObject = this.Queue[i]
       if(object.compareTo(currentObject)<0){
