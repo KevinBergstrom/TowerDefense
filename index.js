@@ -46,12 +46,30 @@ function create() {
 
   const panelX = 0
   const panelY = game.height - 150
+  const wavePanelWidth = 150
+  const statsPanelWidth = 150
+
+  const statsPanel = new SlickUI.Element.Panel(0, 0, statsPanelWidth, 150)
+  const towerPanel = new SlickUI.Element.Panel(statsPanel._width, 0, game.width - statsPanelWidth - wavePanelWidth, 150)
+  const wavePanel = new SlickUI.Element.Panel(statsPanelWidth + towerPanel._width, 0, wavePanelWidth, 150) 
 
   panel = new SlickUI.Element.Panel(panelX, panelY, game.width, 150)
   slickUI.add(panel)
+  panel.add(statsPanel)
+  panel.add(towerPanel)
+  panel.add(wavePanel)
 
-  addTowerBuyOption(panel, 'defaultTower')
-  addTowerBuyOption(panel, 'missileTower')
+  statsPanel.add(new SlickUI.Element.Text(4, 0, "Health: "))
+  statsPanel.add(new SlickUI.Element.Text(4, 32, "Money: "))
+
+  wavePanel.add(new SlickUI.Element.Text(4, 0, "Level: "))
+  wavePanel.add(new SlickUI.Element.Text(4, 32, "Enemies: "))
+  const waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
+  wavePanel.add(waveButton)
+  waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
+
+  addTowerBuyOption(towerPanel, 'defaultTower')
+  addTowerBuyOption(towerPanel, 'missileTower')
 
   // Instantiate grid
   grid = new Grid(game, Grid.createGrid(GRID_SIZE, panel))
