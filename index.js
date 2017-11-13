@@ -144,15 +144,13 @@ function dropNewTower(towerType, gridPoint) {
   const y = gridPoint.getY()
   // Add a new tower sprite to the game
   const towerSprite = game.add.sprite(x, y, towerType)
-  // towerSprite.anchor.x = 0.5
-  // towerSprite.anchor.y = 0.5
   // Offset the sprite to center it
   towerSprite.pivot.x = 64
   towerSprite.pivot.y = 64
   // Scale the sprite to proper size
   towerSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
   // Create new tower
-  const tower = new Tower(game, towerSprite, { x, y })
+  const tower = new Tower(game, towerSprite, { x, y })  
   // Add to player's towers
   // Occupy gridPoint
   playerTowers.push(tower)

@@ -3,6 +3,9 @@ class Tower {
     this.game = game
     this.phaserRef = phaserRef
     this.pos = pos
+    phaserRef.inputEnabled = true
+    phaserRef.events.onInputDown.add(this.infoPopup, this)
+
   }
   // Tower per frame logic
   update (game, enemies) {
