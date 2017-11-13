@@ -73,6 +73,9 @@ function create() {
 
   // Instantiate grid
   grid = new Grid(game, Grid.createGrid(GRID_SIZE, panel))
+  grid.generateTerrain()
+  //TODO add enemy spawn
+  //TODO add player base
 }
 
 function update() {
@@ -105,8 +108,12 @@ function dropTowerUpdate() {
   hoveringTower.y = closestPoint.getY()
 
   // If the player clicks a valid point, then drop the tower
-  if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel() && !closestPoint.isOccupied()) {
-    dropNewTower(hoveringTower.key, closestPoint)
+  if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel()) {
+    if(!closestPoint.isOccupied()){
+      dropNewTower(hoveringTower.key, closestPoint)
+    }else{
+      exitDropTowerState()
+    }
   }
 }
 
@@ -132,6 +139,7 @@ function exitDropTowerState() {
 }
 
 function dropNewTower(towerType, gridPoint) {
+  //add cost here player.money -= tower.cost
   const x = gridPoint.getX()
   const y = gridPoint.getY()
   // Add a new tower sprite to the game
