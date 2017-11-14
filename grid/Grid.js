@@ -5,6 +5,16 @@ class Grid {
   constructor (game, grid) {
     this.game = game
     this.grid = grid
+    const enemySpawns = undefined //one spawn for beta maybe an array later
+    const playerBases = undefined //one base for beta maybe an array later
+  }
+
+  update(enemyArray){
+    this.enemySpawns.update()
+  }
+
+  setPath(newPath){
+    this.enemySpawns.setPath(newPath)
   }
 
   // Create a grid
@@ -31,6 +41,16 @@ class Grid {
     //TODO places empty unselectable towers to be used as permanent walls
   }
 
+  addBase(base){//,gridX,gridY){
+    this.playerBases = base
+    //this.grid[gridX][gridY] = base
+  }
+
+  addSpawn(spawn){//,gridX,gridY){
+    this.enemySpawns = spawn
+    //this.grid[gridX][gridY] = spawn
+  }
+
   findShortestPath(startX, startY, endX, endY){
     //give it a start and an end point and it will return null or an array of tuples{x,y}
     let startNode = this.generateNodeGraph(startX, startY, endX, endY)
@@ -47,14 +67,19 @@ class Grid {
       for(var j = 0; j<this.grid[i].length;j++){
         let currentPoint = this.getPoint(i,j)
 
-        if(!currentPoint.isOccupied()){
-          let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
-          graphMold[i].push(newNode)
-          if(newNode.x == startX && newNode.y == startY){
+          if(currentPoint.x == startX && currentPoint.y == startY){
+            let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
+            graphMold[i][j] = newNode
             startNode = graphMold[i][j]
-          }else if(newNode.x == endX && newNode.y == endY){
+          }else if(currentPoint.x == endX && currentPoint.y == endY){
+            let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
+            graphMold[i][j] = newNode
             graphMold[i][j].setEnd()
           }
+
+        if(!currentPoint.isOccupied()){
+          let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
+          graphMold[i][j] = newNode
         }
       }
     }

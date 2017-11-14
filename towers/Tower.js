@@ -6,6 +6,9 @@ class Tower {
     phaserRef.inputEnabled = true
     phaserRef.events.onInputDown.add(this.infoPopup, this)
 
+    //TODO: x,y,radius,cooldown(shooting interval)
+    //what about cost?
+    //change pos to x,y?
   }
   // Tower per frame logic
   update (game, enemies) {

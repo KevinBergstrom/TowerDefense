@@ -1,12 +1,12 @@
-class Projectile(){
+class Projectile{
 
-	construsctor(x,y,vector,speed,damage){
+	constructor(x,y,vector,speed,damage){
 
 		this.x = x
 		this.y = y
 		this.damage = damage
 		this.vector = vector // movement vector = {x: xmove, y: ymove}
-		this.speed = speed
+		this.speed = speed// should be very small (pixels per frame)
 	}
 
 	move(){
