@@ -3,6 +3,7 @@ class Tower {
     this.game = game
     this.phaserRef = phaserRef
     this.pos = pos
+    this.popup = null
     phaserRef.inputEnabled = true
     phaserRef.events.onInputDown.add(this.infoPopup, this)
 
@@ -24,6 +25,16 @@ class Tower {
     this.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, game.input.mousePointer) + 90
   }
   infoPopup () {
-    console.log('popup')
+    const popup = new SlickUI.Element.Panel(this.phaserRef.x, this.phaserRef.y - 116, 150, 100)
+    this.popup = popup
+    slickUI.add(popup)
+    const cancelBtn = new SlickUI.Element.Button(77, 60, 64, 32)
+    popup.add(cancelBtn)
+    cancelBtn.add(new SlickUI.Element.Text(0, 0, "Close"))
+    cancelBtn.events.onInputUp.add(this.clearPopup, this)
+  }
+  clearPopup () {
+    this.popup.destroy()
+    this.popup = null
   }
  }

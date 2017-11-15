@@ -16,6 +16,7 @@ const game = new Phaser.Game(
 let spriteSheet
 const playerTowers = []
 const enemies = [] //should we put these in the grid class? is this the controller class?
+
 let id = 0
 let mouseWasDown = false
 let panel     // Player UI panel
@@ -28,7 +29,6 @@ let waveStarted = false //TODO integrate this
 let money = 1000
 let health = 100
 let wave = 0
-
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
