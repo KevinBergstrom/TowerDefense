@@ -42,6 +42,9 @@ function preload() {
   game.load.image('enemySpawn', 'assets/images/tiles/towerDefense_tile270.png')
   game.load.image('base', 'assets/images/tiles/towerDefense_tile181.png')
   game.load.image('enemy', 'assets/images/tiles/towerDefense_tile247.png')
+  game.load.image('rock', 'assets/images/tiles/towerDefense_tile136.png')
+  game.load.image('grass', 'assets/images/tiles/towerDefense_tile130.png')
+  game.load.image('smallRock', 'assets/images/tiles/towerDefense_tile137.png')
 }
 
 function create() {
@@ -80,13 +83,95 @@ function create() {
 
   // Instantiate grid
   grid = new Grid(game, Grid.createGrid(GRID_SIZE, panel))
-  grid.generateTerrain()
+  generateTerrain()
   dropNewBase('base', grid.getPoint(15,8))
   dropNewSpawn('enemySpawn', grid.getPoint(0,8))
-  //grid.addBase()
-  //grid.addEnemySpawn()
-  //spawn = new EnemySpawn()
-  //base = new Base()
+
+  //TEST
+  //wave = 20
+  //startNextWave()
+
+}
+
+function generateTerrain(){//should probably be in grid
+
+  dropNewWall('smallRock', grid.getPoint(1,2))
+  dropNewWall('smallRock', grid.getPoint(4,6))
+  dropNewWall('smallRock', grid.getPoint(2,11))
+  dropNewWall('smallRock', grid.getPoint(0,13))
+  dropNewWall('smallRock', grid.getPoint(3,4))
+  dropNewWall('smallRock', grid.getPoint(2,8))
+
+  dropNewWall('grass', grid.getPoint(9,5))
+  dropNewWall('grass', grid.getPoint(9,9))
+  dropNewWall('grass', grid.getPoint(10,5))
+  dropNewWall('grass', grid.getPoint(10,9))
+  dropNewWall('grass', grid.getPoint(8,6))
+  dropNewWall('grass', grid.getPoint(8,7))
+  dropNewWall('grass', grid.getPoint(8,8))
+  dropNewWall('grass', grid.getPoint(11,6))
+  dropNewWall('grass', grid.getPoint(11,7))
+  dropNewWall('grass', grid.getPoint(11,8))
+
+  dropNewWall('rock', grid.getPoint(4,0))
+  dropNewWall('rock', grid.getPoint(5,0))
+  dropNewWall('rock', grid.getPoint(6,0))
+  dropNewWall('rock', grid.getPoint(7,0))
+  dropNewWall('rock', grid.getPoint(8,0))
+  dropNewWall('rock', grid.getPoint(9,0))
+  dropNewWall('rock', grid.getPoint(5,1))
+  dropNewWall('rock', grid.getPoint(6,1))
+  dropNewWall('rock', grid.getPoint(7,1))
+  dropNewWall('rock', grid.getPoint(8,1))
+  dropNewWall('rock', grid.getPoint(6,2))
+  dropNewWall('rock', grid.getPoint(7,2))
+  dropNewWall('rock', grid.getPoint(6,3))
+
+  dropNewWall('rock', grid.getPoint(4,15))
+  dropNewWall('rock', grid.getPoint(5,15))
+  dropNewWall('rock', grid.getPoint(6,15))
+  dropNewWall('rock', grid.getPoint(7,15))
+  dropNewWall('rock', grid.getPoint(8,15))
+  dropNewWall('rock', grid.getPoint(9,15))
+  dropNewWall('rock', grid.getPoint(4,14))
+  dropNewWall('rock', grid.getPoint(5,14))
+  dropNewWall('rock', grid.getPoint(6,14))
+  dropNewWall('rock', grid.getPoint(7,14))
+  dropNewWall('rock', grid.getPoint(8,14))
+  dropNewWall('rock', grid.getPoint(5,13))
+  dropNewWall('rock', grid.getPoint(6,13))
+  dropNewWall('rock', grid.getPoint(7,13))
+  dropNewWall('rock', grid.getPoint(6,12))
+  dropNewWall('rock', grid.getPoint(7,12))
+  dropNewWall('rock', grid.getPoint(6,11))
+}
+
+function startNextWave(){
+  if(waveStarted == false){
+    exitDropTowerState()
+    wave = wave + 1
+    preWaveSetup()
+    waveStarted = true
+  }
+}
+
+function endWave(){
+  if(waveStarted == true){
+   //TODO award money for finishing wave maybe?
+   waveStarted = false
+ }
+}
+
+function isWaveComplete(){
+    if(enemies.length==0 && grid.enemySpawns.finished()==true){
+      endWave()
+    }
+}
+
+function preWaveSetup(){
+  let newPath = grid.findShortestPath(grid.enemySpawns.x,grid.enemySpawns.y,grid.playerBases.x,grid.playerBases.y)
+  grid.enemySpawns.setPath(newPath)
+  grid.enemySpawns.populateSpawnQueue(wave)
 }
 
 function update() {
@@ -99,6 +184,7 @@ function update() {
     }
   }else{
     grid.update(enemies)
+    isWaveComplete()
   }
   // enemies.forEach(enemy => {
   //   enemy.update(game)
@@ -143,15 +229,17 @@ function dropTowerUpdate() {
 }
 
 function enterDropTowerState(towerType) {
-  exitDropTowerState()
-  // Let the game know the player is in the process of placing a tower
-  dropTowerState = true
-  // Attach tower sprite to cursor until placed or canceled
-  hoveringTower = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y, towerType)
-  // Scale down tower size and pivot to center
-  hoveringTower.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  hoveringTower.pivot.x = 64
-  hoveringTower.pivot.y = 64
+  if(waveStarted == false){
+    exitDropTowerState()
+    // Let the game know the player is in the process of placing a tower
+    dropTowerState = true
+    // Attach tower sprite to cursor until placed or canceled
+    hoveringTower = game.add.sprite(game.input.mousePointer.x, game.input.mousePointer.y, towerType)
+    // Scale down tower size and pivot to center
+    hoveringTower.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+    hoveringTower.pivot.x = 64
+    hoveringTower.pivot.y = 64
+  }
 }
 
 function exitDropTowerState() {
@@ -218,15 +306,20 @@ function dropNewSpawn(spawnType, gridPoint) {
   gridPoint.set(spawn)
 }
 
-function getEnemySprite(x,y){
-  // Add a new spawn sprite to the game
-  const enemySprite = game.add.sprite(x, y, 'enemy')
+function dropNewWall(wallType, gridPoint) {
+  const x = gridPoint.getX()
+  const y = gridPoint.getY()
+  // Add a new wall sprite to the game
+  const wallSprite = game.add.sprite(x, y, wallType)
   // Offset the sprite to center it
-  enemySprite.pivot.x = 64
-  enemySprite.pivot.y = 64
+  wallSprite.pivot.x = 64
+  wallSprite.pivot.y = 64
   // Scale the sprite to proper size
-  enemySprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  return enemySprite
+  wallSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+  // Create new spawn
+  const wall = new Wall(game, wallSprite , x, y)  
+  // Occupy gridPoint
+  gridPoint.set(wall)
 }
 
 // Check if mouse is above player panel

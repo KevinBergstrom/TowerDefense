@@ -10,7 +10,26 @@ class Grid {
   }
 
   update(enemyArray){
-    this.enemySpawns.update()
+    this.enemySpawns.update(enemyArray)
+
+    var enemies = enemyArray.length
+    for(var i = 0;i<enemies;i++){
+      enemyArray[i].update()
+      if(enemyArray[i].destReached==true){
+        //TODO damage the base
+        enemyArray[i].phaserRef.kill()
+        enemyArray.splice(i,1)
+        i--
+        enemies--
+      }else if(enemyArray[i].health<=0){
+        //TODO award money from enemy death
+        enemyArray[i].phaserRef.kill()
+        enemyArray.splice(i,1)
+        i--
+        enemies--
+      }
+    }
+
   }
 
   setPath(newPath){
