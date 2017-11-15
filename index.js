@@ -77,6 +77,8 @@ function create() {
   const waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
   wavePanel.add(waveButton)
   waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
+  waveButton.events.onInputUp.add(startNextWave);
+
 
   addTowerBuyOption(towerPanel, 'defaultTower')
   addTowerBuyOption(towerPanel, 'missileTower')
