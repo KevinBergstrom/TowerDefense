@@ -177,16 +177,16 @@ function preWaveSetup(){
 }
 
 function update() {
-  playerTowers.forEach(tower => {
-    tower.update(game, enemies)
-  })
-  if(waveStarted == false){
+  if (!waveStarted) {
     if (dropTowerState) {
       dropTowerUpdate()
     }
-  }else{
+  } else {
     grid.update(enemies)
     isWaveComplete()
+    playerTowers.forEach(tower => {
+      tower.update(game, enemies)
+    })
   }
   // enemies.forEach(enemy => {
   //   enemy.update(game)
