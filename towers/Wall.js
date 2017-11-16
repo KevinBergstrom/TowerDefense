@@ -1,6 +1,6 @@
 class Wall{
 
-	constructor(game,phaserRef,x,y){
+	constructor(game, phaserRef, x, y){
 		this.game = game
 		this.phaserRef = phaserRef//sprite
 		this.x = x

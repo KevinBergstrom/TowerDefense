@@ -9,19 +9,19 @@ class Grid {
     const playerBases = undefined //one base for beta maybe an array later
   }
 
-  update(enemyArray,addMoney,addHealth){
+  update (enemyArray, addMoney, addHealth) {
     this.enemySpawns.update(enemyArray)
     var enemies = enemyArray.length
-    for(var i = 0;i<enemies;i++){
+    for(var i = 0;i < enemies; i++){
       enemyArray[i].update()
-      if(enemyArray[i].destReached==true){
+      if (enemyArray[i].destReached) {
         //TODO damage the base
         //health-= enemyArray[i].damage
         takeDamage(enemyArray[i].damage)
         enemyArray[i].removeThis(enemyArray)
         i--
         enemies--
-      }else if(enemyArray[i].health<=0){
+      } else if (enemyArray[i].health <= 0) {
         //TODO award money from enemy death
         //money += enemyArray[i].bounty()
         addMoney(enemyArray[i].bounty())
@@ -30,7 +30,6 @@ class Grid {
         enemies--
       }
     }
-
   }
 
   setPath(newPath){
@@ -57,76 +56,76 @@ class Grid {
     return grid
   }
 
-  generateTerrain(){
+  generateTerrain () {
     //TODO places empty unselectable towers to be used as permanent walls
   }
 
-  addBase(base){//,gridX,gridY){
+  addBase (base) {//,gridX,gridY){
     this.playerBases = base
     //this.grid[gridX][gridY] = base
   }
 
-  addSpawn(spawn){//,gridX,gridY){
+  addSpawn (spawn) {//,gridX,gridY){
     this.enemySpawns = spawn
     //this.grid[gridX][gridY] = spawn
   }
 
-  findShortestPath(startX, startY, endX, endY){
+  findShortestPath (startX, startY, endX, endY) {
     //give it a start and an end point and it will return null or an array of tuples{x,y}
     let startNode = this.generateNodeGraph(startX, startY, endX, endY)
     return aStarAlg.shortestPath(startNode)
   }
 
   //A* graph generator
-  generateNodeGraph(startX, startY, endX, endY){
-    let startNode = undefined
+  generateNodeGraph (startX, startY, endX, endY) {
+    let startNode = null
     let graphMold = []
     //create all nodes
-    for(var i = 0;i<this.grid.length;i++){
+    for(var i = 0; i < this.grid.length; i++){
       graphMold.push([])
-      for(var j = 0; j<this.grid[i].length;j++){
-        let currentPoint = this.getPoint(i,j)
+      for(var j = 0; j < this.grid[i].length; j++){
+        let currentPoint = this.getPoint(i, j)
 
-          if(currentPoint.x == startX && currentPoint.y == startY){
-            let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
+          if (currentPoint.x == startX && currentPoint.y == startY) {
+            let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
             graphMold[i][j] = newNode
             startNode = graphMold[i][j]
-          }else if(currentPoint.x == endX && currentPoint.y == endY){
-            let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
+          } else if (currentPoint.x == endX && currentPoint.y == endY) {
+            let newNode = new aStarNode(this.getPoint(i, j).x, this.getPoint(i, j).y)
             graphMold[i][j] = newNode
             graphMold[i][j].setEnd()
           }
 
-        if(!currentPoint.isOccupied()){
-          let newNode = new aStarNode(this.getPoint(i,j).x,this.getPoint(i,j).y)
+        if (!currentPoint.isOccupied()) {
+          let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
           graphMold[i][j] = newNode
         }
       }
     }
 
     //attach all nodes
-    for(var i = 0;i<this.grid.length;i++){
-      for(var j = 0; j<this.grid[i].length;j++){
+    for(var i = 0; i < this.grid.length; i++){
+      for(var j = 0; j < this.grid[i].length; j++){
         let currentNode = graphMold[i][j]
-        if(currentNode!==undefined){
-          if(i>0){
-            if(graphMold[i-1][j]!==undefined){
-              currentNode.addPath(new aStarPath(graphMold[i-1][j],1))
+        if (currentNode) {
+          if (i > 0) {
+            if (graphMold[i-1][j]) {
+              currentNode.addPath(new aStarPath(graphMold[i-1][j], 1))
             }
           }
-          if(i<this.grid.length-1){
-            if(graphMold[i+1][j]!==undefined){
-              currentNode.addPath(new aStarPath(graphMold[i+1][j],1))
+          if (i < this.grid.length - 1) {
+            if (graphMold[i+1][j]) {
+              currentNode.addPath(new aStarPath(graphMold[i+1][j], 1))
             }
           }
-          if(j>0){
-            if(graphMold[i][j-1]!==undefined){
-              currentNode.addPath(new aStarPath(graphMold[i][j-1],1))
+          if (j > 0) {
+            if (graphMold[i][j-1]) {
+              currentNode.addPath(new aStarPath(graphMold[i][j-1], 1))
             }
           }
-          if(j<this.grid[i].length-1){
-            if(graphMold[i][j+1]!==undefined){
-              currentNode.addPath(new aStarPath(graphMold[i][j+1],1))
+          if (j < this.grid[i].length - 1) {
+            if (graphMold[i][j+1]) {
+              currentNode.addPath(new aStarPath(graphMold[i][j+1], 1))
             }
           }
         }
@@ -137,7 +136,7 @@ class Grid {
 
 
   // Find closest grid point to cursor and return it
-  getClosestPoint(mouseX, mouseY) {
+  getClosestPoint (mouseX, mouseY) {
     let minDist
     let closestPoint
 

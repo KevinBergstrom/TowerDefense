@@ -15,7 +15,6 @@ class Tower {
   }
   // Tower per frame logic
   update (game, enemies, projectiles) {
-
     let currentTarget = this.target(this.getInRange(enemies))
     this.aimAt(game, currentTarget)
 
@@ -27,15 +26,13 @@ class Tower {
     } else {
       this.cooldown--
     }
-
   }
 
   getInRange (enemies) {
     const inRange = []
 
     enemies.forEach(enemy => {
-      let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
-      if (dist <= this.range) {
+      if (Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y) <= this.range) {
         inRange.push(enemy)
       }
     })
@@ -96,9 +93,8 @@ class Tower {
   }
 
   upgrade () {
-    
-    if(this.interval > 40 && moneyCheck(40)){
-    	this.interval -= 60
+    if (this.interval > 40 && moneyCheck(40)) {
+    	this.interval /= 2
     	changeMoney(-40)
     }
     this.clearPopup()

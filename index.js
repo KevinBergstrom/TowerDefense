@@ -324,7 +324,7 @@ function dropTowerUpdate() {
 }
 
 function enterDropTowerState(towerType) {
-  if(waveStarted == false && moneyCheck(100)){
+  if (!waveStarted && moneyCheck(100)) {
     exitDropTowerState()
     // Let the game know the player is in the process of placing a tower
     dropTowerState = true
@@ -445,16 +445,15 @@ function addTowerBuyOption(panel, towerName, price) {
 
 // These belong in the Player class, will move them there during refactor
 
-function changeMoney(amount){
+function changeMoney(amount) {
   money += amount
 }
 
-function moneyCheck(price){
-  if (money >= price) {return true}
-  else {return false}
+function moneyCheck(price) {
+  return money >= price
 }
 
-function takeDamage(amount){
+function takeDamage(amount) {
   health -= amount
   if(health < 0){health = 0}
 }

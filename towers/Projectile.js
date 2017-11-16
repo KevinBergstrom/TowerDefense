@@ -1,6 +1,6 @@
 class Projectile{
 
-	constructor(game,phaserRef,x,y,vector,speed,damage){
+	constructor (game, phaserRef, x, y, vector, speed, damage) {
 
 		this.game = game
 		this.phaserRef = phaserRef
@@ -12,23 +12,25 @@ class Projectile{
 		this.range = speed
 	}
 
-	move(){
+	move () {
 		this.x = this.x + this.speed*this.vector.x
 		this.y = this.y + this.speed*this.vector.y
 		this.phaserRef.x = this.x
 		this.phaserRef.y = this.y
 	}
 
-	hit(enemy,projectiles){
+	hit (enemy,projectiles) {
 		//default hit function
-		if(enemy.health>0){
+		if (enemy.health > 0) {
 			enemy.health -= this.damage
 			this.removeThis(projectiles)
-			if(enemy.health<0){enemy.health=0}
+			if (enemy.health < 0) {
+				enemy.health = 0
+			}
 		}
 	}
 
-	collisions(enemies,projectiles){
+	collisions (enemies,projectiles) {
 	    const inRange = []
 
 	    enemies.forEach(enemy => {
@@ -40,22 +42,22 @@ class Projectile{
 	    return inRange 
 	}
 
-	removeThis(array){
+	removeThis (array) {
 		this.phaserRef.kill()
-		array.splice((array.indexOf(this)),1)
+		array.splice(array.indexOf(this), 1)
 	}
 
-	update(enemies,projectiles){
+	update (enemies,projectiles) {
 		this.move()
 
-    let currentTarget = this.collisions(enemies,projectiles)
+    let currentTarget = this.collisions(enemies, projectiles)
 
-	      if(currentTarget.length>0){
+	      if(currentTarget.length > 0){
 	        this.hit(currentTarget[0],projectiles)
 		  }
 
-		if(this.x<0 || this.x>800 || 
-		   this.y<0 ||this.y>650-140-16){
+		if(this.x < 0 || this.x > 800 || 
+		   this.y < 0 ||this.y > 650 - 140 - 16){
 			this.removeThis(projectiles)
 		}
 		//TODO
