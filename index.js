@@ -198,13 +198,28 @@ function updateTextItems(){
   enemiesText.value = "Enemies: " + enemies.length
 }
 
+function setMoney(value){
+  money = money + value
+}
+
+function setHealth(value){
+  health = health - value
+}
+
+function checkIfLost(){
+  if(health<=0){
+    //YOU LOSE
+    //NOT BIG SUPRISE
+  }
+}
+
 function update() {
   if (!waveStarted) {
     if (dropTowerState) {
       dropTowerUpdate()
     }
   } else {
-    grid.update(enemies)
+    grid.update(enemies,setMoney,setHealth)
     isWaveComplete()
     playerTowers.forEach(tower => {
       tower.update(game, enemies,projectiles)
@@ -213,7 +228,10 @@ function update() {
 
   projectiles.forEach(proj => {
       proj.update(enemies,projectiles)
+
   })
+
+  //game.physics.arcade.overlap(projectiles,enemies,enemySpriteCollide, null, this);
 
   updateTextItems()
   // enemies.forEach(enemy => {
@@ -222,6 +240,8 @@ function update() {
 
   // Update mouse state
   mouseWasDown = game.input.activePointer.isDown
+
+  checkIfLost()
 }
 
 // Function ran during dropTowerState

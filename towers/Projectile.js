@@ -9,6 +9,7 @@ class Projectile{
 		this.vector = vector // movement vector = {x: xmove, y: ymove}
 		this.speed = speed// should be very small (pixels per frame)
 		this.damage = damage
+		this.range = speed
 	}
 
 	move(){
@@ -18,17 +19,41 @@ class Projectile{
 		this.phaserRef.y = this.y
 	}
 
-	hit(){
-		//TODO
+	hit(enemy,projectiles){
+		//default hit function
+		if(enemy.health>0){
+			enemy.health -= this.damage
+			this.removeThis(projectiles)
+			if(enemy.health<0){enemy.health=0}
+		}
 	}
 
-	removeThis(projectiles){
+	collisions(enemies,projectiles){
+	    const inRange = []
+
+	    enemies.forEach(enemy => {
+	      let dist = Phaser.Math.distance(enemy.x, enemy.y, this.x, this.y)
+	      if (dist <= this.range) {
+	        inRange.push(enemy)
+	      }
+	    })
+	    return inRange 
+	}
+
+	removeThis(array){
 		this.phaserRef.kill()
-		projectiles.splice((projectiles.indexOf(this)),1)
+		array.splice((array.indexOf(this)),1)
 	}
 
 	update(enemies,projectiles){
 		this.move()
+
+    let currentTarget = this.collisions(enemies,projectiles)
+
+	      if(currentTarget.length>0){
+	        this.hit(currentTarget[0],projectiles)
+		  }
+
 		if(this.x<0 || this.x>800 || 
 		   this.y<0 ||this.y>650-140-16){
 			this.removeThis(projectiles)

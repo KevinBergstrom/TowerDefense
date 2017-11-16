@@ -9,22 +9,23 @@ class Grid {
     const playerBases = undefined //one base for beta maybe an array later
   }
 
-  update(enemyArray){
+  update(enemyArray,addMoney,addHealth){
     this.enemySpawns.update(enemyArray)
-
     var enemies = enemyArray.length
     for(var i = 0;i<enemies;i++){
       enemyArray[i].update()
       if(enemyArray[i].destReached==true){
         //TODO damage the base
-        enemyArray[i].phaserRef.kill()
-        enemyArray.splice(i,1)
+        //health-= enemyArray[i].damage
+        addHealth(enemyArray[i].damage)
+        enemyArray[i].removeThis(enemyArray)
         i--
         enemies--
       }else if(enemyArray[i].health<=0){
         //TODO award money from enemy death
-        enemyArray[i].phaserRef.kill()
-        enemyArray.splice(i,1)
+        //money += enemyArray[i].bounty()
+        addMoney(enemyArray[i].bounty())
+        enemyArray[i].removeThis(enemyArray)
         i--
         enemies--
       }

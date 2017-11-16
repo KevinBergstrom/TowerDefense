@@ -15,8 +15,16 @@ class EnemySpawn{
 	}
 
 	populateSpawnQueue(waveNumber){
+
+		if(this.interval > 10){
+			this.interval--
+		}
+
 		for(var i = 0; i< waveNumber;i++){
-			this.spawnQueue.push(new Enemy(this.game,undefined,this.x,this.y,100,1,1,this.path))
+			let speed = 1
+			let damage = waveNumber
+			let health = 50 + waveNumber*waveNumber
+			this.spawnQueue.push(new Enemy(this.game,undefined,this.x,this.y,health,speed,damage,this.path))
 		}
 		this.cooldown = this.interval
 	}

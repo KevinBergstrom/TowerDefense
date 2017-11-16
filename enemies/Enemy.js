@@ -56,13 +56,24 @@ class Enemy{
 		}
 	}
 
+	damageTo(){
+		return this.damage
+	}
+
 	bounty(){
-		return 0//how much an enemy gives when killed
+		return 1//how much an enemy gives when killed
+	}
+
+	removeThis(array){
+		this.phaserRef.kill()
+		array.splice((array.indexOf(this)),1)
 	}
 
 	update(){
 		//TODO
-		this.move()
+		if(this.health>0){
+			this.move()
+		}
 	}
 
 }
