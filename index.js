@@ -43,11 +43,11 @@ function preload() {
   slickUI.load('assets/ui/kenney-theme/kenney.json') // Use the path to your kenney.json. This is the file that defines your theme.
 
   // Load images into cache
-  game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile226.png')
-  game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile204.png')
+  game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile249.png')
+  game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile250.png')
   game.load.image('background', 'assets/images/background.png')
-  game.load.image('enemySpawn', 'assets/images/tiles/towerDefense_tile270.png')
-  game.load.image('base', 'assets/images/tiles/towerDefense_tile181.png')
+  game.load.image('enemySpawn', 'assets/images/newSpawner.png')
+  game.load.image('base', 'assets/images/newBase.png')
   game.load.image('enemy', 'assets/images/tiles/towerDefense_tile247.png')
   game.load.image('rock', 'assets/images/tiles/towerDefense_tile136.png')
   game.load.image('grass', 'assets/images/tiles/towerDefense_tile130.png')
@@ -106,6 +106,24 @@ function create() {
   //wave = 20
   //startNextWave()
 
+
+/*
+   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE)
+   pauseKey.onDown.add(toggleMenu, this)
+
+   function toggleMenu(){
+      if (!game.paused) {        
+        game.paused = true;
+        pauseMessage = game.add.text(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 'Paused: Press escape to resume', { font: '30px Arial', fill: '#fff' });
+        //pauseMessage.anchor.setTo(0.5, 0.5);
+      } 
+      else {
+        pauseMessage.destroy()
+        game.paused = false
+      }
+
+    }
+*/
 }
 
 function generateTerrain(){//should probably be in grid
