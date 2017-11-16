@@ -16,6 +16,7 @@ const game = new Phaser.Game(
 let spriteSheet
 const playerTowers = []
 const enemies = [] //should we put these in the grid class? is this the controller class?
+const projectiles = []
 
 let waveButton
 let healthText
@@ -51,6 +52,7 @@ function preload() {
   game.load.image('rock', 'assets/images/tiles/towerDefense_tile136.png')
   game.load.image('grass', 'assets/images/tiles/towerDefense_tile130.png')
   game.load.image('smallRock', 'assets/images/tiles/towerDefense_tile137.png')
+  game.load.image('missile', 'assets/images/tiles/towerDefense_tile251.png')
 }
 
 function create() {
@@ -205,9 +207,13 @@ function update() {
     grid.update(enemies)
     isWaveComplete()
     playerTowers.forEach(tower => {
-      tower.update(game, enemies)
+      tower.update(game, enemies,projectiles)
     })
   }
+
+  projectiles.forEach(proj => {
+      proj.update(enemies,projectiles)
+  })
 
   updateTextItems()
   // enemies.forEach(enemy => {
