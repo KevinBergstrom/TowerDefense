@@ -17,7 +17,7 @@ class Grid {
       if(enemyArray[i].destReached==true){
         //TODO damage the base
         //health-= enemyArray[i].damage
-        addHealth(enemyArray[i].damage)
+        takeDamage(enemyArray[i].damage)
         enemyArray[i].removeThis(enemyArray)
         i--
         enemies--

@@ -198,13 +198,6 @@ function updateTextItems(){
   enemiesText.value = "Enemies: " + enemies.length
 }
 
-function setMoney(value){
-  money = money + value
-}
-
-function setHealth(value){
-  health = health - value
-}
 
 function checkIfLost(){
   if(health<=0){
@@ -219,7 +212,7 @@ function update() {
       dropTowerUpdate()
     }
   } else {
-    grid.update(enemies,setMoney,setHealth)
+    grid.update(enemies,changeMoney,takeDamage)
     isWaveComplete()
     playerTowers.forEach(tower => {
       tower.update(game, enemies,projectiles)
@@ -279,7 +272,7 @@ function dropTowerUpdate() {
 }
 
 function enterDropTowerState(towerType) {
-  if(waveStarted == false){
+  if(waveStarted == false && moneyCheck(100)){
     exitDropTowerState()
     // Let the game know the player is in the process of placing a tower
     dropTowerState = true
@@ -302,6 +295,7 @@ function exitDropTowerState() {
 }
 
 function dropNewTower(towerType, gridPoint) {
+  changeMoney(-100)
   //add cost here player.money -= tower.cost
   const x = gridPoint.getX()
   const y = gridPoint.getY()
@@ -390,4 +384,20 @@ function addTowerBuyOption(panel, towerName, price) {
   towerButton.events.onInputUp.add(() => enterDropTowerState(towerName))
   towerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, towerName)))
   towerPurchaseOptions.push(towerButton)
+}
+
+// These belong in the Player class, will move them there during refactor
+
+function changeMoney(amount){
+  money += amount
+}
+
+function moneyCheck(price){
+  if (money >= price) {return true}
+  else {return false}
+}
+
+function takeDamage(amount){
+  health -= amount
+  if(health < 0){health = 0}
 }
