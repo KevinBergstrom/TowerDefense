@@ -47,6 +47,7 @@ function preload() {
   // Load images into cache
   game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile249.png')
   game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile250.png')
+  game.load.image('upgradedTower', 'assets/images/tiles/towerDefense_tile291.png')
   game.load.image('background', 'assets/images/background.png')
   game.load.image('enemySpawn', 'assets/images/newSpawner.png')
   game.load.image('base', 'assets/images/newBase.png')

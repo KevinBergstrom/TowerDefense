@@ -8,7 +8,7 @@ class Tower {
     phaserRef.inputEnabled = true
     phaserRef.events.onInputDown.add(this.infoPopup, this)
 
-    this.interval = 60
+    this.interval = 160
     this.cooldown = 0
 
     //what about cost?
@@ -83,11 +83,27 @@ class Tower {
     const popup = new SlickUI.Element.Panel(this.phaserRef.x, this.phaserRef.y - 116, 150, 100)
     this.popup = popup
     slickUI.add(popup)
+
     const cancelBtn = new SlickUI.Element.Button(77, 60, 64, 32)
     popup.add(cancelBtn)
     cancelBtn.add(new SlickUI.Element.Text(0, 0, "Close"))
     cancelBtn.events.onInputUp.add(this.clearPopup, this)
+
+    const upgradeBtn = new SlickUI.Element.Button(0, 0, 100, 32)
+    popup.add(upgradeBtn)
+    upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade!"))
+    upgradeBtn.events.onInputUp.add(this.upgrade, this)
   }
+
+  upgrade () {
+    
+    if(this.interval > 40 && moneyCheck(40)){
+    	this.interval -= 60
+    	changeMoney(-40)
+    }
+    this.clearPopup()
+  }
+
   clearPopup () {
     this.popup.destroy()
     this.popup = null
