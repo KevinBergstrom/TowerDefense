@@ -23,12 +23,14 @@ let healthText
 let moneyText
 let levelText
 let enemiesText
+let pauseMessage
 
 let id = 0
 let mouseWasDown = false
 let panel     // Player UI panel
 let grid      // Map grid
 let background
+let gameOver = false
 let dropTowerState = false  // Determines if player is in the process of dropping a new tower
 let hoveringTower           // Temporary tower attached to cursor while purchasing new tower
 let towerPurchaseOptions = [] // Tower purchase buttons on player panel
@@ -72,6 +74,7 @@ function create() {
   const wavePanel = new SlickUI.Element.Panel(statsPanelWidth + towerPanel._width, 0, wavePanelWidth, 150) 
 
   panel = new SlickUI.Element.Panel(panelX, panelY, game.width, 150)
+
   slickUI.add(panel)
   panel.add(statsPanel)
   panel.add(towerPanel)
@@ -92,9 +95,8 @@ function create() {
   waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
   waveButton.events.onInputUp.add(startNextWave);
 
-
-  addTowerBuyOption(towerPanel, 'defaultTower')
-  addTowerBuyOption(towerPanel, 'missileTower')
+  addTowerBuyOption(towerPanel, 'defaultTower',100)
+  addTowerBuyOption(towerPanel, 'missileTower',100)
 
   // Instantiate grid
   grid = new Grid(game, Grid.createGrid(GRID_SIZE, panel))
@@ -106,12 +108,34 @@ function create() {
   //wave = 20
   //startNextWave()
 
+//kevin's try at it
+//I essentially have a pauseMessage that is invisible unless you pause
+  pauseMessage = new SlickUI.Element.Text(CANVAS_WIDTH/2, (CANVAS_HEIGHT-150)/2, "Paused: Press escape to resume")
+  slickUI.add(pauseMessage)
+  pauseMessage.visible = false
+  pauseMessage.x = (CANVAS_WIDTH/2)-(pauseMessage.text.width/2)
 
-/*
-   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE)
+   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
    pauseKey.onDown.add(toggleMenu, this)
 
    function toggleMenu(){
+      if (!game.paused) {        
+        game.paused = true;
+        pauseMessage.visible = true
+      } 
+      else {
+        game.paused = false
+        pauseMessage.visible = false
+      }
+
+    }
+
+/*
+
+  pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE)
+   pauseKey.onDown.add(toggleMenu, this)
+
+    function toggleMenu(){
       if (!game.paused) {        
         game.paused = true;
         pauseMessage = game.add.text(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 'Paused: Press escape to resume', { font: '30px Arial', fill: '#fff' });
@@ -122,8 +146,8 @@ function create() {
         game.paused = false
       }
 
-    }
-*/
+    }*/
+
 }
 
 function generateTerrain(){//should probably be in grid
@@ -221,38 +245,48 @@ function checkIfLost(){
   if(health<=0){
     //YOU LOSE
     //NOT BIG SUPRISE
+    //TODO probably change this
+    gameOver = true
+    pauseMessage.visible = false
+  let panel = new SlickUI.Element.Panel(0, 0, game.width, game.height)
+  let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+wave)
+
+  slickUI.add(panel)
+  slickUI.add(loseMessage)
   }
 }
 
 function update() {
-  if (!waveStarted) {
-    if (dropTowerState) {
-      dropTowerUpdate()
+  if(!game.paused && !gameOver){
+    if (!waveStarted) {
+      if (dropTowerState) {
+        dropTowerUpdate()
+      }
+    } else {
+      grid.update(enemies,changeMoney,takeDamage)
+      isWaveComplete()
+      playerTowers.forEach(tower => {
+        tower.update(game, enemies,projectiles)
+      })
     }
-  } else {
-    grid.update(enemies,changeMoney,takeDamage)
-    isWaveComplete()
-    playerTowers.forEach(tower => {
-      tower.update(game, enemies,projectiles)
+
+    projectiles.forEach(proj => {
+        proj.update(enemies,projectiles)
+
     })
+
+    //game.physics.arcade.overlap(projectiles,enemies,enemySpriteCollide, null, this);
+
+    updateTextItems()
+    // enemies.forEach(enemy => {
+    //   enemy.update(game)
+    // })
+
+    // Update mouse state
+    mouseWasDown = game.input.activePointer.isDown
+
+    checkIfLost()
   }
-
-  projectiles.forEach(proj => {
-      proj.update(enemies,projectiles)
-
-  })
-
-  //game.physics.arcade.overlap(projectiles,enemies,enemySpriteCollide, null, this);
-
-  updateTextItems()
-  // enemies.forEach(enemy => {
-  //   enemy.update(game)
-  // })
-
-  // Update mouse state
-  mouseWasDown = game.input.activePointer.isDown
-
-  checkIfLost()
 }
 
 // Function ran during dropTowerState
@@ -275,7 +309,6 @@ function dropTowerUpdate() {
       closestPoint.set('tempOccupant')
       newPath = grid.findShortestPath(grid.enemySpawns.x,grid.enemySpawns.y,grid.playerBases.x,grid.playerBases.y)
       if(newPath !== null){
-        //take your money here?
         dropNewTower(hoveringTower.key, closestPoint)
         grid.setPath(newPath)
       }else{
@@ -397,7 +430,12 @@ function addTowerBuyOption(panel, towerName, price) {
       PURCHASE_BUTTON_SIZE,
       PURCHASE_BUTTON_SIZE)
 
+  const towerPrice = new SlickUI.Element.Text(
+    (towerPurchaseOptions.length * PURCHASE_BUTTON_SIZE) + 4, 
+      4, price)
+
   panel.add(towerButton)
+  panel.add(towerPrice)
 
   towerButton.events.onInputUp.add(() => enterDropTowerState(towerName))
   towerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, towerName)))

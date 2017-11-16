@@ -54,7 +54,7 @@ class Tower {
   shootAt(enemy,projectiles){
     let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
     let vector = {x: (enemy.x-this.pos.x)/dist, y: (enemy.y-this.pos.y)/dist}
-    let damage = 150
+    let damage = 100
     let speed = 10
     let proj = new Projectile(this.game,this.addProjectileSprite(this.pos.x,this.pos.y),this.pos.x,this.pos.y,vector,speed,damage)
     proj.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180

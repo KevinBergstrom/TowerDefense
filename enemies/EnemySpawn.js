@@ -21,9 +21,9 @@ class EnemySpawn{
 		}
 
 		for(var i = 0; i< waveNumber;i++){
-			let speed = 1
+			let speed = 1 + 0.01*waveNumber
 			let damage = waveNumber
-			let health = 50 + waveNumber*waveNumber
+			let health = 100 + waveNumber*waveNumber
 			this.spawnQueue.push(new Enemy(this.game,undefined,this.x,this.y,health,speed,damage,this.path))
 		}
 		this.cooldown = this.interval
