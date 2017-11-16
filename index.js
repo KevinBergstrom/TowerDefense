@@ -17,6 +17,12 @@ let spriteSheet
 const playerTowers = []
 const enemies = [] //should we put these in the grid class? is this the controller class?
 
+let waveButton
+let healthText
+let moneyText
+let levelText
+let enemiesText
+
 let id = 0
 let mouseWasDown = false
 let panel     // Player UI panel
@@ -69,12 +75,17 @@ function create() {
   panel.add(towerPanel)
   panel.add(wavePanel)
 
-  statsPanel.add(new SlickUI.Element.Text(4, 0, "Health: "))
-  statsPanel.add(new SlickUI.Element.Text(4, 32, "Money: "))
+  healthText = new SlickUI.Element.Text(4, 0, "Health: " + health)
+  moneyText = new SlickUI.Element.Text(4, 32, "Money: " + money)
+  levelText = new SlickUI.Element.Text(4, 0, "Wave: " + wave)
+  enemiesText = new SlickUI.Element.Text(4, 32, "Enemies: " + enemies.length)
 
-  wavePanel.add(new SlickUI.Element.Text(4, 0, "Level: "))
-  wavePanel.add(new SlickUI.Element.Text(4, 32, "Enemies: "))
-  const waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
+  statsPanel.add(healthText)
+  statsPanel.add(moneyText)
+  wavePanel.add(levelText)
+  wavePanel.add(enemiesText)
+
+  waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
   wavePanel.add(waveButton)
   waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
   waveButton.events.onInputUp.add(startNextWave);
@@ -150,6 +161,7 @@ function generateTerrain(){//should probably be in grid
 
 function startNextWave(){
   if(waveStarted == false){
+    waveButton.visible = false
     exitDropTowerState()
     wave = wave + 1
     preWaveSetup()
@@ -160,6 +172,7 @@ function startNextWave(){
 function endWave(){
   if(waveStarted == true){
    //TODO award money for finishing wave maybe?
+  waveButton.visible = true
    waveStarted = false
  }
 }
@@ -176,6 +189,13 @@ function preWaveSetup(){
   grid.enemySpawns.populateSpawnQueue(wave)
 }
 
+function updateTextItems(){
+  healthText.value = "Health: " + health
+  moneyText.value = "Money: " + money
+  levelText.value = "Wave: " + wave
+  enemiesText.value = "Enemies: " + enemies.length
+}
+
 function update() {
   if (!waveStarted) {
     if (dropTowerState) {
@@ -188,6 +208,8 @@ function update() {
       tower.update(game, enemies)
     })
   }
+
+  updateTextItems()
   // enemies.forEach(enemy => {
   //   enemy.update(game)
   // })

@@ -39,7 +39,7 @@ class Tower {
   // Pass in game and rotate tower towards enemy
   aimAt (game, enemy) {
     if (enemy) {
-      this.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + 90
+      this.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180
     }
   }
   infoPopup () {
