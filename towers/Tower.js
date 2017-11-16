@@ -8,7 +8,7 @@ class Tower {
     phaserRef.inputEnabled = true
     phaserRef.events.onInputDown.add(this.infoPopup, this)
 
-    this.interval = 160
+    this.interval = 80
     this.cooldown = 0
 
     //what about cost?
@@ -19,12 +19,12 @@ class Tower {
     let currentTarget = this.target(this.getInRange(enemies))
     this.aimAt(game, currentTarget)
 
-    if(this.cooldown<=0){
-      if(currentTarget!==undefined){
+    if(this.cooldown <= 0){
+      if (currentTarget) {
         this.cooldown = this.interval
         this.shootAt(currentTarget,projectiles)
       }
-    }else{
+    } else {
       this.cooldown--
     }
 
@@ -55,7 +55,7 @@ class Tower {
     let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
     let vector = {x: (enemy.x-this.pos.x)/dist, y: (enemy.y-this.pos.y)/dist}
     let damage = 100
-    let speed = 10
+    let speed = 20
     let proj = new Projectile(this.game,this.addProjectileSprite(this.pos.x,this.pos.y),this.pos.x,this.pos.y,vector,speed,damage)
     proj.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180
     projectiles.push(proj)
