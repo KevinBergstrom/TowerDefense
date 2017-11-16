@@ -432,8 +432,8 @@ function addTowerBuyOption(panel, towerName, price) {
       PURCHASE_BUTTON_SIZE)
 
   const towerPrice = new SlickUI.Element.Text(
-    (towerPurchaseOptions.length * PURCHASE_BUTTON_SIZE) + 4, 
-      4, price)
+    (towerPurchaseOptions.length * PURCHASE_BUTTON_SIZE) + 10, 
+      6, price)
 
   panel.add(towerButton)
   panel.add(towerPrice)

@@ -77,6 +77,9 @@ class Tower {
   }
 
   infoPopup () {
+    if (this.popup) {
+      return
+    }
     const popup = new SlickUI.Element.Panel(this.phaserRef.x, this.phaserRef.y - 116, 150, 100)
     this.popup = popup
     slickUI.add(popup)
@@ -86,9 +89,9 @@ class Tower {
     cancelBtn.add(new SlickUI.Element.Text(0, 0, "Close"))
     cancelBtn.events.onInputUp.add(this.clearPopup, this)
 
-    const upgradeBtn = new SlickUI.Element.Button(0, 0, 100, 32)
+    const upgradeBtn = new SlickUI.Element.Button(0, 0, 150, 32)
     popup.add(upgradeBtn)
-    upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade!"))
+    upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade: 40"))
     upgradeBtn.events.onInputUp.add(this.upgrade, this)
   }
 
