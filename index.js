@@ -12,11 +12,12 @@ const game = new Phaser.Game(
   'TowerDefense',
   { preload, create, update }
 )
+
+const factory = new Factory()
  
+let model
+
 let spriteSheet
-const playerTowers = []
-const enemies = [] //should we put these in the grid class? is this the controller class?
-const projectiles = []
 
 let waveButton
 let healthText
@@ -28,34 +29,20 @@ let pauseMessage
 let id = 0
 let mouseWasDown = false
 let panel     // Player UI panel
-let grid      // Map grid
 let background
-let gameOver = false
 let dropTowerState = false  // Determines if player is in the process of dropping a new tower
 let hoveringTower           // Temporary tower attached to cursor while purchasing new tower
 let towerPurchaseOptions = [] // Tower purchase buttons on player panel
-let waveStarted = false //TODO integrate this
-let money = 1000
-let health = 100
-let wave = 0
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
   slickUI = game.plugins.add(Phaser.Plugin.SlickUI)
   slickUI.load('assets/ui/kenney-theme/kenney.json') // Use the path to your kenney.json. This is the file that defines your theme.
 
-  // Load images into cache
-  game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile249.png')
-  game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile250.png')
-  game.load.image('upgradedTower', 'assets/images/tiles/towerDefense_tile291.png')
-  game.load.image('background', 'assets/images/background.png')
-  game.load.image('enemySpawn', 'assets/images/newSpawner.png')
-  game.load.image('base', 'assets/images/newBase.png')
-  game.load.image('enemy', 'assets/images/tiles/towerDefense_tile247.png')
-  game.load.image('rock', 'assets/images/tiles/towerDefense_tile136.png')
-  game.load.image('grass', 'assets/images/tiles/towerDefense_tile130.png')
-  game.load.image('smallRock', 'assets/images/tiles/towerDefense_tile137.png')
-  game.load.image('missile', 'assets/images/tiles/towerDefense_tile251.png')
+  //image loading moved to factory. Thanks and have a nice day
+
+  factory.initialize()
+
 }
 
 function create() {
@@ -81,10 +68,10 @@ function create() {
   panel.add(towerPanel)
   panel.add(wavePanel)
 
-  healthText = new SlickUI.Element.Text(4, 0, "Health: " + health)
-  moneyText = new SlickUI.Element.Text(4, 32, "Money: " + money)
-  levelText = new SlickUI.Element.Text(4, 0, "Wave: " + wave)
-  enemiesText = new SlickUI.Element.Text(4, 32, "Enemies: " + enemies.length)
+  healthText = new SlickUI.Element.Text(4, 0, "Health: ")
+  moneyText = new SlickUI.Element.Text(4, 32, "Money: ")
+  levelText = new SlickUI.Element.Text(4, 0, "Wave: ")
+  enemiesText = new SlickUI.Element.Text(4, 32, "Enemies: ")
 
   statsPanel.add(healthText)
   statsPanel.add(moneyText)
@@ -99,11 +86,10 @@ function create() {
   addTowerBuyOption(towerPanel, 'defaultTower',100)
   addTowerBuyOption(towerPanel, 'missileTower',100)
 
-  // Instantiate grid
-  grid = new Grid(game, Grid.createGrid(GRID_SIZE, panel))
-  generateTerrain()
-  dropNewBase('base', grid.getPoint(15,8))
-  dropNewSpawn('enemySpawn', grid.getPoint(0,8))
+  model = factory.createModel(GRID_SIZE,panel)
+  model.generateTerrain()
+  model.dropNewBase('base', model.grid.getPoint(15,8))
+  model.dropNewSpawn('enemySpawn', model.grid.getPoint(0,8))
 
   //TEST
   //wave = 20
@@ -151,137 +137,20 @@ function create() {
 
 }
 
-function generateTerrain(){//should probably be in grid
-
-  dropNewWall('smallRock', grid.getPoint(1,2))
-  dropNewWall('smallRock', grid.getPoint(4,6))
-  dropNewWall('smallRock', grid.getPoint(2,11))
-  dropNewWall('smallRock', grid.getPoint(0,13))
-  dropNewWall('smallRock', grid.getPoint(3,4))
-  dropNewWall('smallRock', grid.getPoint(2,8))
-
-  dropNewWall('grass', grid.getPoint(9,5))
-  dropNewWall('grass', grid.getPoint(9,9))
-  dropNewWall('grass', grid.getPoint(10,5))
-  dropNewWall('grass', grid.getPoint(10,9))
-  dropNewWall('grass', grid.getPoint(8,6))
-  dropNewWall('grass', grid.getPoint(8,7))
-  dropNewWall('grass', grid.getPoint(8,8))
-  dropNewWall('grass', grid.getPoint(11,6))
-  dropNewWall('grass', grid.getPoint(11,7))
-  dropNewWall('grass', grid.getPoint(11,8))
-
-  dropNewWall('rock', grid.getPoint(4,0))
-  dropNewWall('rock', grid.getPoint(5,0))
-  dropNewWall('rock', grid.getPoint(6,0))
-  dropNewWall('rock', grid.getPoint(7,0))
-  dropNewWall('rock', grid.getPoint(8,0))
-  dropNewWall('rock', grid.getPoint(9,0))
-  dropNewWall('rock', grid.getPoint(5,1))
-  dropNewWall('rock', grid.getPoint(6,1))
-  dropNewWall('rock', grid.getPoint(7,1))
-  dropNewWall('rock', grid.getPoint(8,1))
-  dropNewWall('rock', grid.getPoint(6,2))
-  dropNewWall('rock', grid.getPoint(7,2))
-  dropNewWall('rock', grid.getPoint(6,3))
-
-  dropNewWall('rock', grid.getPoint(4,15))
-  dropNewWall('rock', grid.getPoint(5,15))
-  dropNewWall('rock', grid.getPoint(6,15))
-  dropNewWall('rock', grid.getPoint(7,15))
-  dropNewWall('rock', grid.getPoint(8,15))
-  dropNewWall('rock', grid.getPoint(9,15))
-  dropNewWall('rock', grid.getPoint(4,14))
-  dropNewWall('rock', grid.getPoint(5,14))
-  dropNewWall('rock', grid.getPoint(6,14))
-  dropNewWall('rock', grid.getPoint(7,14))
-  dropNewWall('rock', grid.getPoint(8,14))
-  dropNewWall('rock', grid.getPoint(5,13))
-  dropNewWall('rock', grid.getPoint(6,13))
-  dropNewWall('rock', grid.getPoint(7,13))
-  dropNewWall('rock', grid.getPoint(6,12))
-  dropNewWall('rock', grid.getPoint(7,12))
-  dropNewWall('rock', grid.getPoint(6,11))
-}
-
-function startNextWave(){
-  if(waveStarted == false){
-    waveButton.visible = false
-    exitDropTowerState()
-    wave = wave + 1
-    preWaveSetup()
-    waveStarted = true
-  }
-}
-
-function endWave(){
-  if(waveStarted == true){
-   //TODO award money for finishing wave maybe?
-  waveButton.visible = true
-   waveStarted = false
- }
-}
-
-function isWaveComplete(){
-    if(enemies.length==0 && grid.enemySpawns.finished()==true){
-      endWave()
-    }
-}
-
-function preWaveSetup(){
-  let newPath = grid.findShortestPath(grid.enemySpawns.x,grid.enemySpawns.y,grid.playerBases.x,grid.playerBases.y)
-  grid.enemySpawns.setPath(newPath)
-  grid.enemySpawns.populateSpawnQueue(wave)
-}
-
-function updateTextItems(){
-  healthText.value = "Health: " + health
-  moneyText.value = "Money: " + money
-  levelText.value = "Wave: " + wave
-  enemiesText.value = "Enemies: " + enemies.length
-}
-
-
-function checkIfLost(){
-  if(health<=0){
-    //YOU LOSE
-    //NOT BIG SUPRISE
-    //TODO probably change this
-    gameOver = true
-    pauseMessage.visible = false
-  let panel = new SlickUI.Element.Panel(0, 0, game.width, game.height)
-  let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+wave)
-
-  slickUI.add(panel)
-  slickUI.add(loseMessage)
-  }
-}
-
 function update() {
-  if(!game.paused && !gameOver){
-    if (!waveStarted) {
+  if(!game.paused && !model.gameOver){
+
+    model.update()
+
+    if (!model.waveStarted) {
       if (dropTowerState) {
         dropTowerUpdate()
       }
     } else {
-      grid.update(enemies,changeMoney,takeDamage)
       isWaveComplete()
-      playerTowers.forEach(tower => {
-        tower.update(game, enemies,projectiles)
-      })
     }
 
-    projectiles.forEach(proj => {
-        proj.update(enemies,projectiles)
-
-    })
-
-    //game.physics.arcade.overlap(projectiles,enemies,enemySpriteCollide, null, this);
-
     updateTextItems()
-    // enemies.forEach(enemy => {
-    //   enemy.update(game)
-    // })
 
     // Update mouse state
     mouseWasDown = game.input.activePointer.isDown
@@ -290,6 +159,51 @@ function update() {
   }
 }
 
+function updateTextItems(){
+  healthText.value = "Health: " + model.getHealth()
+  moneyText.value = "Money: " + model.getMoney()
+  levelText.value = "Wave: " + model.wave
+  enemiesText.value = "Enemies: " + model.getEnemies().length
+}
+
+function startNextWave(){
+  if(model.waveStarted == false){
+    waveButton.visible = false
+    exitDropTowerState()
+    model.startWave()
+  }
+}
+
+function endThisWave(){
+  if(model.waveStarted == true){
+    model.endWave()
+    waveButton.visible = true
+  }
+}
+
+function isWaveComplete(){
+    if(model.getEnemies().length==0 && model.spawnQueueEmpty()){
+      endThisWave()
+    }
+}
+
+function checkIfLost(){
+  if(model.getHealth()<=0){
+    //YOU LOSE
+    //NOT BIG SUPRISE
+    //TODO probably change this
+    gameOver = true
+    pauseMessage.visible = false
+  let panel = new SlickUI.Element.Panel(0, 0, game.width, game.height)
+  let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
+
+  slickUI.add(panel)
+  slickUI.add(loseMessage)
+  }
+}
+
+
+
 // Function ran during dropTowerState
 function dropTowerUpdate() {
   // Get mouse x and y values
@@ -297,7 +211,7 @@ function dropTowerUpdate() {
   const mouseY = game.input.mousePointer.y
 
   // Find closest grid point
-  const closestPoint = grid.getClosestPoint(mouseX, mouseY)
+  const closestPoint = model.grid.getClosestPoint(mouseX, mouseY)
 
   // Snap hovering tower sprite to mouse position
   hoveringTower.x = closestPoint.getX()
@@ -308,10 +222,10 @@ function dropTowerUpdate() {
     if(!closestPoint.isOccupied()){
 
       closestPoint.set('tempOccupant')
-      newPath = grid.findShortestPath(grid.enemySpawns.x,grid.enemySpawns.y,grid.playerBases.x,grid.playerBases.y)
+      newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)
       if(newPath !== null){
-        dropNewTower(hoveringTower.key, closestPoint)
-        grid.setPath(newPath)
+        model.dropNewTower(hoveringTower.key, closestPoint)
+        model.grid.setPath(newPath)
       }else{
         closestPoint.set(undefined)
         exitDropTowerState()
@@ -324,7 +238,7 @@ function dropTowerUpdate() {
 }
 
 function enterDropTowerState(towerType) {
-  if (!waveStarted && moneyCheck(100)) {
+  if (!model.waveStarted && model.moneyCheck(100)) {
     exitDropTowerState()
     // Let the game know the player is in the process of placing a tower
     dropTowerState = true
@@ -346,77 +260,6 @@ function exitDropTowerState() {
   hoveringTower = null
 }
 
-function dropNewTower(towerType, gridPoint) {
-  changeMoney(-100)
-  //add cost here player.money -= tower.cost
-  const x = gridPoint.getX()
-  const y = gridPoint.getY()
-  // Add a new tower sprite to the game
-  const towerSprite = game.add.sprite(x, y, towerType)
-  // Offset the sprite to center it
-  towerSprite.pivot.x = 64
-  towerSprite.pivot.y = 64
-  // Scale the sprite to proper size
-  towerSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  // Create new tower
-  const tower = new Tower(game, towerSprite, { x, y })  
-  // Add to player's towers
-  // Occupy gridPoint
-  playerTowers.push(tower)
-  gridPoint.set(tower)
-  exitDropTowerState()
-}
-
-function dropNewBase(baseType, gridPoint) {
-  const x = gridPoint.getX()
-  const y = gridPoint.getY()
-  // Add a new base sprite to the game
-  const baseSprite = game.add.sprite(x, y, baseType)
-  // Offset the sprite to center it
-  baseSprite.pivot.x = 64
-  baseSprite.pivot.y = 64
-  // Scale the sprite to proper size
-  baseSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  // Create new base
-  const base = new Base(game, baseSprite , x, y )  
-  // Occupy gridPoint
-  grid.addBase(base)
-  gridPoint.set(base)
-}
-
-function dropNewSpawn(spawnType, gridPoint) {
-  const interval = 60//one enemy a second
-  const x = gridPoint.getX()
-  const y = gridPoint.getY()
-  // Add a new spawn sprite to the game
-  const spawnSprite = game.add.sprite(x, y, spawnType)
-  // Offset the sprite to center it
-  spawnSprite.pivot.x = 64
-  spawnSprite.pivot.y = 64
-  // Scale the sprite to proper size
-  spawnSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  // Create new spawn
-  const spawn = new EnemySpawn(game, spawnSprite , x, y, interval )  
-  // Occupy gridPoint
-  grid.addSpawn(spawn)
-  gridPoint.set(spawn)
-}
-
-function dropNewWall(wallType, gridPoint) {
-  const x = gridPoint.getX()
-  const y = gridPoint.getY()
-  // Add a new wall sprite to the game
-  const wallSprite = game.add.sprite(x, y, wallType)
-  // Offset the sprite to center it
-  wallSprite.pivot.x = 64
-  wallSprite.pivot.y = 64
-  // Scale the sprite to proper size
-  wallSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-  // Create new spawn
-  const wall = new Wall(game, wallSprite , x, y)  
-  // Occupy gridPoint
-  gridPoint.set(wall)
-}
 
 // Check if mouse is above player panel
 function isAbovePanel() {
@@ -441,19 +284,4 @@ function addTowerBuyOption(panel, towerName, price) {
   towerButton.events.onInputUp.add(() => enterDropTowerState(towerName))
   towerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, towerName)))
   towerPurchaseOptions.push(towerButton)
-}
-
-// These belong in the Player class, will move them there during refactor
-
-function changeMoney(amount) {
-  money += amount
-}
-
-function moneyCheck(price) {
-  return money >= price
-}
-
-function takeDamage(amount) {
-  health -= amount
-  if(health < 0){health = 0}
 }

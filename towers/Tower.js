@@ -1,9 +1,8 @@
 class Tower {
-  constructor (game, phaserRef, pos, range) {
-    this.game = game
+  constructor (phaserRef, pos, range) {
     this.phaserRef = phaserRef
     this.pos = pos
-    this.range = range ? range : 150 // give range value, default to 150 if not given
+    this.range = range ? range : 150 // give range value, default to 150 if not given AKA constructor overloading...just like JAVA!
     this.popup = null
     phaserRef.inputEnabled = true
     phaserRef.events.onInputDown.add(this.infoPopup, this)
@@ -14,9 +13,9 @@ class Tower {
     //what about cost?
   }
   // Tower per frame logic
-  update (game, enemies, projectiles) {
+  update (enemies, projectiles, model) {
     let currentTarget = this.target(this.getInRange(enemies))
-    this.aimAt(game, currentTarget)
+    this.aimAt(currentTarget)
 
     if(this.cooldown <= 0){
       if (currentTarget) {
@@ -51,32 +50,23 @@ class Tower {
   shootAt(enemy,projectiles){
     let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
     let vector = {x: (enemy.x-this.pos.x)/dist, y: (enemy.y-this.pos.y)/dist}
-    let damage = 100
+    let damage = 100 //change to Number.POSITIVE_INFINITY for UNLIMITED POWER!
     let speed = 20
-    let proj = new Projectile(this.game,this.addProjectileSprite(this.pos.x,this.pos.y),this.pos.x,this.pos.y,vector,speed,damage)
+
+    let proj = factory.createProjectile('missile',this.pos.x,this.pos.y,vector,speed,damage)
+
     proj.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180
     projectiles.push(proj)
   }
 
   // Pass in game and rotate tower towards enemy
-  aimAt (game, enemy) {
+  aimAt (enemy) {
     if (enemy) {
       this.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180
     }
   }
 
-  addProjectileSprite(x,y){
-    // Add a new proj sprite to the game
-    const projSprite = this.game.add.sprite(x, y, 'missile')
-    // Offset the sprite to center it
-    projSprite.pivot.x = 64
-    projSprite.pivot.y = 64
-    // Scale the sprite to proper size
-    projSprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-    return projSprite
-  }
-
-  infoPopup () {
+  infoPopup () {//TODO
     if (this.popup) {
       return
     }
@@ -96,9 +86,9 @@ class Tower {
   }
 
   upgrade () {
-    if (this.interval > 40 && moneyCheck(40)) {
+    if (this.interval > 40 && model.moneyCheck(40)) {
     	this.interval /= 2
-    	changeMoney(-40)
+    	model.changeMoney(-40)
     }
     this.clearPopup()
   }

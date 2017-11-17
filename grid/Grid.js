@@ -2,14 +2,13 @@
 // Grid to be used for dijkstras algorithm and board state
 class Grid {
   // Initialize class with passed in grid
-  constructor (game, grid) {
-    this.game = game
+  constructor (grid) {
     this.grid = grid
     const enemySpawns = undefined //one spawn for beta maybe an array later
     const playerBases = undefined //one base for beta maybe an array later
   }
 
-  update (enemyArray, addMoney, addHealth) {
+  update (enemyArray, model) {//maybe change it to just model as a constructor
     this.enemySpawns.update(enemyArray)
     var enemies = enemyArray.length
     for(var i = 0;i < enemies; i++){
@@ -17,14 +16,14 @@ class Grid {
       if (enemyArray[i].destReached) {
         //TODO damage the base
         //health-= enemyArray[i].damage
-        takeDamage(enemyArray[i].damage)
+        model.takeDamage(enemyArray[i].damage)
         enemyArray[i].removeThis(enemyArray)
         i--
         enemies--
       } else if (enemyArray[i].health <= 0) {
         //TODO award money from enemy death
         //money += enemyArray[i].bounty()
-        addMoney(enemyArray[i].bounty())
+        model.changeMoney(enemyArray[i].bounty())
         enemyArray[i].removeThis(enemyArray)
         i--
         enemies--

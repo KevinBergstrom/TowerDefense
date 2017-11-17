@@ -1,7 +1,6 @@
 class EnemySpawn{
 
-	constructor (game, phaserRef, x, y, interval) {
-		this.game = game
+	constructor (phaserRef, x, y, interval) {
 		this.phaserRef = phaserRef
 		this.x = x
 		this.y = y
@@ -21,30 +20,23 @@ class EnemySpawn{
 		}
 
 		for(var i = 0; i < waveNumber; i++){
+			//change this. I dare you to
 			let speed = 1 + 0.01*waveNumber
 			let damage = waveNumber
 			let health = 100 + waveNumber*waveNumber
-			this.spawnQueue.push(new Enemy(this.game, null, this.x, this.y, health, speed, damage, this.path))
+
+			let newEnemy = factory.createEnemy('enemy',this.x, this.y, health, speed, damage, this.path,false)
+
+			this.spawnQueue.push(newEnemy)
 		}
 		this.cooldown = this.interval
-	}
-
-	addEnemySprite (x,y) {
-	  // Add a new spawn sprite to the game
-	  const enemySprite = this.game.add.sprite(x, y, 'enemy')
-	  // Offset the sprite to center it
-	  enemySprite.pivot.x = 64
-	  enemySprite.pivot.y = 64
-	  // Scale the sprite to proper size
-	  enemySprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-	  return enemySprite
 	}
 
 	spawnEnemy (enemyArray) {
 		//TODO
 		let newEnemy = this.spawnQueue.shift()
 		newEnemy.path = this.path
-		newEnemy.phaserRef = this.addEnemySprite(this.x, this.y)
+		newEnemy.phaserRef.visible = true
 		enemyArray.push(newEnemy)
 	}
 

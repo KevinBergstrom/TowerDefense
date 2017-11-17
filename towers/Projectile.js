@@ -1,8 +1,7 @@
 class Projectile{
 
-	constructor (game, phaserRef, x, y, vector, speed, damage) {
+	constructor (phaserRef, x, y, vector, speed, damage) {
 
-		this.game = game
 		this.phaserRef = phaserRef
 		this.x = x
 		this.y = y
@@ -56,7 +55,7 @@ class Projectile{
 	        this.hit(currentTarget[0],projectiles)
 		  }
 
-		if(this.x < 0 || this.x > 800 || 
+		if(this.x < 0 ||this.x > 800 || 
 		   this.y < 0 ||this.y > 650 - 140 - 16){
 			this.removeThis(projectiles)
 		}

@@ -1,7 +1,6 @@
 class Enemy{
 
-	constructor(game, phaserRef, x, y, health, speed, damage, path) {
-		this.game = game
+	constructor(phaserRef, x, y, health, speed, damage, path) {
 		this.phaserRef = phaserRef//sprite
 		this.x = x
 		this.y = y
