@@ -55,4 +55,8 @@ class EnemySpawn{
 		}
 	}
 
+	clearPopup(){
+		//maybe in the future
+	}
+
 }

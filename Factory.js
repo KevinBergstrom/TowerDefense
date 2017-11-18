@@ -21,9 +21,10 @@ class Factory{
 
 	}
 
-	createModel(gridSize,playerUI){
-		let grid = new Grid(Grid.createGrid(gridSize, playerUI))
-		return new Model(grid)
+	loadLevel1(playerUI,backgroundPanel){
+		//creates the model for the level
+		return Level.level1(playerUI,backgroundPanel)
+
 	}
 
 	createProjectile(image,x,y,vector,speed,damage){

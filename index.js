@@ -49,7 +49,7 @@ function create() {
   // Start phaser arcade physics engine
   game.physics.startSystem(Phaser.Physics.ARCADE)
 
-  // Add background to canvas
+  // Add background to canvas //create it with level1 class?
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
 
   const panelX = 0
@@ -83,13 +83,11 @@ function create() {
   waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
   waveButton.events.onInputUp.add(startNextWave);
 
+  //update these when tower upgrades is implemented
   addTowerBuyOption(towerPanel, 'defaultTower',100)
   addTowerBuyOption(towerPanel, 'missileTower',100)
 
-  model = factory.createModel(GRID_SIZE,panel)
-  model.generateTerrain()
-  model.dropNewBase('base', model.grid.getPoint(15,8))
-  model.dropNewSpawn('enemySpawn', model.grid.getPoint(0,8))
+  model = factory.loadLevel1(panel,background)
 
   //TEST
   //wave = 20
@@ -138,25 +136,36 @@ function create() {
 }
 
 function update() {
-  if(!game.paused && !model.gameOver){
+  if(model!=null){
+    if(!game.paused && !model.gameOver){
 
-    model.update()
+      model.update()
 
-    if (!model.waveStarted) {
-      if (dropTowerState) {
-        dropTowerUpdate()
+      if (!model.waveStarted) {
+        if (dropTowerState) {
+          dropTowerUpdate()
+        }
+      } else {
+        isWaveComplete()
       }
-    } else {
-      isWaveComplete()
+
+      updateTextItems()
+
+      // Update mouse state
+      mouseWasDown = game.input.activePointer.isDown
+
+      checkIfLost()
     }
-
-    updateTextItems()
-
-    // Update mouse state
-    mouseWasDown = game.input.activePointer.isDown
-
-    checkIfLost()
   }
+}
+
+function clearOldModel(){
+  if(model != null){
+    model.killAllSprites()
+  }
+  exitDropTowerState()
+  game.paused = false
+  pauseMessage.visible = false
 }
 
 function updateTextItems(){

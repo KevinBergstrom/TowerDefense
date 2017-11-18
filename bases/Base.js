@@ -6,4 +6,8 @@ class Base{
 		this.y = y
 	}
 
+	clearPopup(){
+		//maybe in the future
+	}
+
 }

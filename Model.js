@@ -31,60 +31,18 @@ update() {
   })
 }
 
+killAllSprites(){
+	//TODO kills all sprites EVERYWHERE in this model
+  this.grid.killAllSprites()
 
-generateTerrain(){//should probably be in grid?
+  for(var i = 0;i<enemies.length;i++){
+    enemies[i].phaserRef.kill()
+  }
 
-  let grid = this.grid
+  for(var j = 0;j<projectiles.length;j++){
+    projectiles[j].phaserRef.kill()
+  }
 
-  this.dropNewWall('smallRock', grid.getPoint(1,2))
-  this.dropNewWall('smallRock', grid.getPoint(4,6))
-  this.dropNewWall('smallRock', grid.getPoint(2,11))
-  this.dropNewWall('smallRock', grid.getPoint(0,13))
-  this.dropNewWall('smallRock', grid.getPoint(3,4))
-  this.dropNewWall('smallRock', grid.getPoint(2,8))
-
-  this.dropNewWall('grass', grid.getPoint(9,5))
-  this.dropNewWall('grass', grid.getPoint(9,9))
-  this.dropNewWall('grass', grid.getPoint(10,5))
-  this.dropNewWall('grass', grid.getPoint(10,9))
-  this.dropNewWall('grass', grid.getPoint(8,6))
-  this.dropNewWall('grass', grid.getPoint(8,7))
-  this.dropNewWall('grass', grid.getPoint(8,8))
-  this.dropNewWall('grass', grid.getPoint(11,6))
-  this.dropNewWall('grass', grid.getPoint(11,7))
-  this.dropNewWall('grass', grid.getPoint(11,8))
-
-  this.dropNewWall('rock', grid.getPoint(4,0))
-  this.dropNewWall('rock', grid.getPoint(5,0))
-  this.dropNewWall('rock', grid.getPoint(6,0))
-  this.dropNewWall('rock', grid.getPoint(7,0))
-  this.dropNewWall('rock', grid.getPoint(8,0))
-  this.dropNewWall('rock', grid.getPoint(9,0))
-  this.dropNewWall('rock', grid.getPoint(5,1))
-  this.dropNewWall('rock', grid.getPoint(6,1))
-  this.dropNewWall('rock', grid.getPoint(7,1))
-  this.dropNewWall('rock', grid.getPoint(8,1))
-  this.dropNewWall('rock', grid.getPoint(6,2))
-  this.dropNewWall('rock', grid.getPoint(7,2))
-  this.dropNewWall('rock', grid.getPoint(6,3))
-
-  this.dropNewWall('rock', grid.getPoint(4,15))
-  this.dropNewWall('rock', grid.getPoint(5,15))
-  this.dropNewWall('rock', grid.getPoint(6,15))
-  this.dropNewWall('rock', grid.getPoint(7,15))
-  this.dropNewWall('rock', grid.getPoint(8,15))
-  this.dropNewWall('rock', grid.getPoint(9,15))
-  this.dropNewWall('rock', grid.getPoint(4,14))
-  this.dropNewWall('rock', grid.getPoint(5,14))
-  this.dropNewWall('rock', grid.getPoint(6,14))
-  this.dropNewWall('rock', grid.getPoint(7,14))
-  this.dropNewWall('rock', grid.getPoint(8,14))
-  this.dropNewWall('rock', grid.getPoint(5,13))
-  this.dropNewWall('rock', grid.getPoint(6,13))
-  this.dropNewWall('rock', grid.getPoint(7,13))
-  this.dropNewWall('rock', grid.getPoint(6,12))
-  this.dropNewWall('rock', grid.getPoint(7,12))
-  this.dropNewWall('rock', grid.getPoint(6,11))
 }
 
 startWave(){
