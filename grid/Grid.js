@@ -4,27 +4,27 @@ class Grid {
   // Initialize class with passed in grid
   constructor (grid) {
     this.grid = grid
-    const enemySpawns = undefined //one spawn for beta maybe an array later
-    const playerBases = undefined //one base for beta maybe an array later
+    const enemySpawns = null //one spawn for beta maybe an array later
+    const playerBases = null //one base for beta maybe an array later
   }
 
   update (enemyArray, model) {//maybe change it to just model as a constructor
     this.enemySpawns.update(enemyArray)
     var enemies = enemyArray.length
     for(var i = 0;i < enemies; i++){
-      enemyArray[i].update()
+      enemyArray[i].update(this)
       if (enemyArray[i].destReached) {
         //TODO damage the base
         //health-= enemyArray[i].damage
         model.takeDamage(enemyArray[i].damage)
-        enemyArray[i].removeThis(enemyArray)
+        enemyArray[i].removeThis(enemyArray,this)
         i--
         enemies--
       } else if (enemyArray[i].health <= 0) {
         //TODO award money from enemy death
         //money += enemyArray[i].bounty()
         model.changeMoney(enemyArray[i].bounty())
-        enemyArray[i].removeThis(enemyArray)
+        enemyArray[i].removeThis(enemyArray,this)
         i--
         enemies--
       }
@@ -144,7 +144,7 @@ class Grid {
     return startNode
   }
 
-
+/*
   // Find closest grid point to cursor and return it
   getClosestPoint (mouseX, mouseY) {
     let minDist
@@ -166,6 +166,36 @@ class Grid {
 
     return closestPoint
   }
+  */
+
+  getClosestPoint (x, y) {
+    let minDist
+    let closestPoint
+
+    let gridX = Math.floor((x/CANVAS_WIDTH)*GRID_SIZE)
+    let gridY = Math.floor((y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+
+    if(gridX<GRID_SIZE&&gridY<GRID_SIZE){
+    return this.getPoint(gridX,gridY)
+    }else{
+      return this.getPoint(gridX,GRID_SIZE-1)
+    }
+  }
+
+updateHasPaths(newPath){
+  for(var x = 0;x<this.grid.length;x++){
+    for(var y = 0;y<this.grid.length;y++){
+      this.getPoint(x,y).hasPath = false
+    }
+  }
+  //make into an array in the future
+  for(var i = 0;i<newPath.length;i++){
+    let gridX = Math.floor((newPath[i].x/CANVAS_WIDTH)*GRID_SIZE)
+    let gridY = Math.floor((newPath[i].y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+    this.getPoint(gridX,gridY).hasPath = true
+  }
+
+}
 
   // Returns the object at the point or returns null
   getPoint (x, y) {

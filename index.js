@@ -228,7 +228,7 @@ function dropTowerUpdate() {
 
   // If the player clicks a valid point, then drop the tower
   if (game.input.activePointer.isDown && !mouseWasDown && isAbovePanel()) {
-    if(!closestPoint.isOccupied()){
+    if(!closestPoint.isOccupied()&&closestPoint.enemies.length==0){
 
       closestPoint.set('tempOccupant')
       newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)

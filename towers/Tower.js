@@ -2,13 +2,23 @@ class Tower {
   constructor (phaserRef, pos, range) {
     this.phaserRef = phaserRef
     this.pos = pos
-    this.range = range ? range : 150 // give range value, default to 150 if not given AKA constructor overloading...just like JAVA!
+    this.range = range ? range : 150 // give range value, default to 64 if not given AKA constructor overloading...just like JAVA!
+
+    if(this.range<56){
+      this.range = 56
+    }
+
     this.popup = null
     phaserRef.inputEnabled = true
     phaserRef.events.onInputDown.add(this.infoPopup, this)
 
     this.interval = 80
     this.cooldown = 0
+
+    this.gridX = Math.floor((pos.x/CANVAS_WIDTH)*GRID_SIZE)
+    this.gridY = Math.floor((pos.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+
+    this.spotsInRange = []
 
     //what about cost?
   }
@@ -27,17 +37,115 @@ class Tower {
     }
   }
 
+  generateInRange(grid){
+
+    this.spotsInRange = []
+
+    let gridRange = Math.floor((this.range+GRID_SIZE)/GRID_SIZE/2)
+
+    let minX = this.gridX-gridRange+1
+    let maxX = this.gridX+gridRange-1
+    let minY = this.gridY-gridRange
+    let maxY = this.gridY+gridRange
+
+    if(minX<0){
+      minX = 0
+    }
+    if(maxX>GRID_SIZE-1){
+      maxX = GRID_SIZE-1
+    }
+    if(minY<0){
+      minY = 0
+    }
+    if(maxY>GRID_SIZE-1){
+      maxY = GRID_SIZE-1
+    }
+
+    for(var x = minX;x<=maxX;x++){
+      for(var y = minY;y<=maxY;y++){
+
+        let gridPoint = grid.getPoint(x,y)
+        let dist = Phaser.Math.distance(gridPoint.x, gridPoint.y, this.pos.x, this.pos.y)
+        //let a = factory.createEnemy('base', gridPoint.x, gridPoint.y, 1, 1, 1, null, true)
+        if(gridPoint.getOccupant()==null&&dist <= this.range+5&&gridPoint.hasPath==true){
+          this.spotsInRange.push(gridPoint)
+          //console.log(dist)
+          //let b = factory.createEnemy('enemy', gridPoint.x, gridPoint.y, 1, 1, 1, null, true)
+
+        }
+
+      }
+    }
+
+  }
+
   getInRange (enemies) {
+   /* const inRange = []
+
+    for(var i = 0;i<this.spotsInRange.length;i++){
+      this.spotsInRange[i].enemies.forEach(enemy => {
+        let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
+        if ( dist <= this.range) {
+          inRange.push(enemy)
+        }
+      })
+    }
+
+    return inRange*/
+    return this.getInRangeLast(enemies)
+  }
+
+  getInRangeClosest(enemies){
     const inRange = []
 
-    enemies.forEach(enemy => {
-      if (Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y) <= this.range) {
-        inRange.push(enemy)
-      }
-    })
+    let smallDist = this.range
+    for(var i = 0;i<this.spotsInRange.length;i++){
+      this.spotsInRange[i].enemies.forEach(enemy => {
+        let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
+        if ( dist <= smallDist) {
+          inRange.unshift(enemy)
+          smallDist = dist
+        }
+      })
+    }
 
     return inRange
   }
+
+  getInRangeFirst(enemies){
+    const inRange = []
+
+    let mark = Number.POSITIVE_INFINITY
+    for(var i = 0;i<this.spotsInRange.length;i++){
+      this.spotsInRange[i].enemies.forEach(enemy => {
+        let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
+        if ( dist <= this.range && enemy.landmark<mark) {
+          inRange.unshift(enemy)
+          mark = enemy.landmark
+        }
+      })
+    }
+
+    return inRange
+  }
+
+  getInRangeLast(enemies){
+    const inRange = []
+
+    let mark = -1
+    for(var i = 0;i<this.spotsInRange.length;i++){
+      this.spotsInRange[i].enemies.forEach(enemy => {
+        let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
+        if ( dist <= this.range && enemy.landmark>mark) {
+          inRange.unshift(enemy)
+          mark = enemy.landmark
+        }
+      })
+    }
+
+    return inRange
+  }
+
   // Implement targeting algorithm here to select target within
   // tower attack radius
   target (enemies) {

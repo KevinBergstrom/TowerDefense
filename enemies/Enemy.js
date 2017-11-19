@@ -10,13 +10,15 @@ class Enemy{
 		this.path = path
 		this.landmark = 0//last place in the path the enemy has been
 		this.destReached = false
+		this.gridX = Math.floor((x/CANVAS_WIDTH)*GRID_SIZE)
+		this.gridY = Math.floor((y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
 	}
 
 	changePath (newPath) {
 		this.path = newPath
 	}
 
-	move () {
+	move (grid) {
 
 		if (this.landmark == this.path.length-1) {
 			this.destReached = true
@@ -52,6 +54,21 @@ class Enemy{
 			}
 		this.phaserRef.x = this.x
 		this.phaserRef.y = this.y
+
+		let oldGridX = this.gridX
+		let oldGridY = this.gridY
+
+		let newGridX = Math.floor((this.x/CANVAS_WIDTH)*GRID_SIZE)
+		let newGridY = Math.floor((this.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+
+		if(oldGridX!=newGridX || oldGridY!=newGridY){
+			grid.getPoint(oldGridX,oldGridY).enemies.splice(grid.getPoint(oldGridX,oldGridY).enemies.indexOf(this), 1)
+			grid.getPoint(newGridX,newGridY).enemies.push(this)
+
+			this.gridX = newGridX
+			this.gridY = newGridY
+		}
+
 		}
 	}
 
@@ -63,15 +80,16 @@ class Enemy{
 		return 1//how much an enemy gives when killed
 	}
 
-	removeThis (array) {
+	removeThis (array,grid) {
 		this.phaserRef.kill()
+		grid.getPoint(this.gridX,this.gridY).enemies.splice(grid.getPoint(this.gridX,this.gridY).enemies.indexOf(this), 1)
 		array.splice((array.indexOf(this)),1)
 	}
 
-	update () {
+	update (grid) {
 		//TODO
 		if (this.health > 0) {
-			this.move()
+			this.move(grid)
 		}
 	}
 

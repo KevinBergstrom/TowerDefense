@@ -29,7 +29,7 @@ class Projectile{
 		}
 	}
 
-	collisions (enemies,projectiles) {
+	collisions (enemies,projectiles) {//TODO make this use gridPosition.enemeis[]
 	    const inRange = []
 
 	    enemies.forEach(enemy => {

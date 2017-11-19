@@ -13,7 +13,7 @@ class Model{
 		this.wave = 0
 
 		//going to be put into the player class
-		this.money = 1000
+		this.money = 1000000
 		this.health = 100
 
 	}
@@ -59,21 +59,32 @@ endWave(){
 
 preWaveSetup(){
   let newPath = this.grid.findShortestPath(this.getEnemySpawns().x,this.getEnemySpawns().y,this.getPlayerBases().x,this.getPlayerBases().y)
+  this.grid.updateHasPaths(newPath)
   this.getEnemySpawns().setPath(newPath)
   this.getEnemySpawns().populateSpawnQueue(this.wave)
-}
 
+  this.playerTowers.forEach(tower => {
+    tower.generateInRange(this.grid)
+  })
+
+}
 
 dropNewTower(towerType, gridPoint) {
   this.changeMoney(-100)
   const x = gridPoint.getX()
   const y = gridPoint.getY()
-  const tower = factory.createTower(towerType, x, y) 
+  const tower = factory.createTower(towerType, x, y)
+  tower.generateInRange(this.grid)
+  //TODO do this for each tower?
   // Add to player's towers
   // Occupy gridPoint
   this.playerTowers.push(tower)
   gridPoint.set(tower)
   exitDropTowerState()
+}
+
+dropNewTowerUnPaused(towerType,gridPoint){
+  //TODO
 }
 
 dropNewBase(baseType, gridPoint) {
