@@ -13,7 +13,7 @@ class Model{
 		this.wave = 0
 
 		//going to be put into the player class
-		this.money = 1000000
+		this.money = 20000
 		this.health = 100
 
 	}
@@ -59,6 +59,7 @@ endWave(){
 
 preWaveSetup(){
   let newPath = this.grid.findShortestPath(this.getEnemySpawns().x,this.getEnemySpawns().y,this.getPlayerBases().x,this.getPlayerBases().y)
+  this.grid.clearHasPaths()
   this.grid.updateHasPaths(newPath)
   this.getEnemySpawns().setPath(newPath)
   this.getEnemySpawns().populateSpawnQueue(this.wave)
@@ -67,6 +68,47 @@ preWaveSetup(){
     tower.generateInRange(this.grid)
   })
 
+}
+
+findDivergentPaths(newPath){
+  let allPaths = []
+  //go to each gridPoint with enemies
+  for(var x = 0;x<GRID_SIZE;x++){
+    allPaths.push([])
+    for(var y = 0;y<GRID_SIZE;y++){
+      let gridPoint = this.grid.getPoint(x,y)
+      if(gridPoint.enemies.length>0){
+        //generate a new A* path for all in that grid
+        let newerPath = this.grid.findShortestPath(gridPoint.getX(),gridPoint.getY(),this.getPlayerBases().x,this.getPlayerBases().y)
+        allPaths[x][y]=newerPath
+
+        if(newerPath==null){
+          return false
+        }
+      }
+    }
+  }
+  
+  this.grid.setPath(newPath)
+  this.grid.clearHasPaths()
+  this.grid.updateHasPaths(newPath)
+
+for(var x = 0;x<this.grid.grid.length;x++){
+    allPaths.push([])
+    for(var y = 0;y<this.grid.grid.length;y++){
+      let gridPoint = this.grid.getPoint(x,y)
+      let newerPath = allPaths[x][y]
+      if(newerPath!=null){
+         this.grid.updateDivergentHasPaths(newerPath)
+          gridPoint.enemies.forEach(enemy => {
+            enemy.changePath(newerPath)
+            enemy.landmark = 0
+          })
+      }
+    }
+  }
+
+return true
 }
 
 dropNewTower(towerType, gridPoint) {
@@ -83,10 +125,6 @@ dropNewTower(towerType, gridPoint) {
   exitDropTowerState()
 }
 
-dropNewTowerUnPaused(towerType,gridPoint){
-  //TODO
-}
-
 dropNewBase(baseType, gridPoint) {
   const x = gridPoint.getX()
   const y = gridPoint.getY()
@@ -100,7 +138,8 @@ dropNewSpawn(spawnType, gridPoint) {
   const interval = 60//one enemy a second
   const x = gridPoint.getX()
   const y = gridPoint.getY()
-  const spawn = factory.createEnemySpawn(spawnType,x,y,interval) 
+  const spawn = factory.createEnemySpawn(spawnType,x,y,interval)
+  gridPoint.openPassage()
   // Occupy gridPoint
   this.grid.addSpawn(spawn)
   gridPoint.set(spawn)

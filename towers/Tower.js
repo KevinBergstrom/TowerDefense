@@ -66,10 +66,10 @@ class Tower {
 
         let gridPoint = grid.getPoint(x,y)
         let dist = Phaser.Math.distance(gridPoint.x, gridPoint.y, this.pos.x, this.pos.y)
-        //let a = factory.createEnemy('base', gridPoint.x, gridPoint.y, 1, 1, 1, null, true)
-        if(gridPoint.getOccupant()==null&&dist <= this.range+5&&gridPoint.hasPath==true){
+        
+        if((!gridPoint.isOccupied()||gridPoint.allowsPassage())&&dist <= this.range+5&&gridPoint.hasPath==true){
           this.spotsInRange.push(gridPoint)
-          //console.log(dist)
+          //for debugging
           //let b = factory.createEnemy('enemy', gridPoint.x, gridPoint.y, 1, 1, 1, null, true)
 
         }
@@ -112,16 +112,16 @@ class Tower {
     return inRange
   }
 
-  getInRangeFirst(enemies){
+  getInRangeLast(enemies){
     const inRange = []
 
     let mark = Number.POSITIVE_INFINITY
     for(var i = 0;i<this.spotsInRange.length;i++){
       this.spotsInRange[i].enemies.forEach(enemy => {
         let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
-        if ( dist <= this.range && enemy.landmark<mark) {
+        if ( dist <= this.range && (enemy.path.length-enemy.landmark)<mark) {
           inRange.unshift(enemy)
-          mark = enemy.landmark
+          mark = (enemy.path.length-enemy.landmark)
         }
       })
     }
@@ -129,16 +129,16 @@ class Tower {
     return inRange
   }
 
-  getInRangeLast(enemies){
+  getInRangeFirst(enemies){
     const inRange = []
 
     let mark = -1
     for(var i = 0;i<this.spotsInRange.length;i++){
       this.spotsInRange[i].enemies.forEach(enemy => {
         let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
-        if ( dist <= this.range && enemy.landmark>mark) {
+        if ( dist <= this.range && (enemy.path.length-enemy.landmark)>mark) {
           inRange.unshift(enemy)
-          mark = enemy.landmark
+          mark = (enemy.path.length-enemy.landmark)
         }
       })
     }

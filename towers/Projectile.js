@@ -29,7 +29,8 @@ class Projectile{
 		}
 	}
 
-	collisions (enemies,projectiles) {//TODO make this use gridPosition.enemeis[]
+	collisions (enemies,projectiles) {
+	//TODO make this use gridPosition.enemeis[] for collision detection
 	    const inRange = []
 
 	    enemies.forEach(enemy => {
@@ -49,7 +50,8 @@ class Projectile{
 	update (enemies,projectiles) {
 		this.move()
 
-    let currentTarget = this.collisions(enemies, projectiles)
+			//TODO update this to make it more efficient
+    	  let currentTarget = this.collisions(enemies, projectiles)
 
 	      if(currentTarget.length > 0){
 	        this.hit(currentTarget[0],projectiles)

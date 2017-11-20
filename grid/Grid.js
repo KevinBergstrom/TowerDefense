@@ -9,7 +9,7 @@ class Grid {
   }
 
   update (enemyArray, model) {//maybe change it to just model as a constructor
-    this.enemySpawns.update(enemyArray)
+    this.enemySpawns.update(enemyArray,this)
     var enemies = enemyArray.length
     for(var i = 0;i < enemies; i++){
       enemyArray[i].update(this)
@@ -88,37 +88,41 @@ class Grid {
 
   //A* graph generator
   generateNodeGraph (startX, startY, endX, endY) {
+    //TODO make this way more efficient
+    //make a static node network instead of making a new graph every time
     let startNode = null
     let graphMold = []
     //create all nodes
+
     for(var i = 0; i < this.grid.length; i++){
       graphMold.push([])
       for(var j = 0; j < this.grid[i].length; j++){
         let currentPoint = this.getPoint(i, j)
-
           if (currentPoint.x == startX && currentPoint.y == startY) {
+            //add the start node
             let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
             graphMold[i][j] = newNode
             startNode = graphMold[i][j]
           } else if (currentPoint.x == endX && currentPoint.y == endY) {
+            //add the end node
             let newNode = new aStarNode(this.getPoint(i, j).x, this.getPoint(i, j).y)
             graphMold[i][j] = newNode
             graphMold[i][j].setEnd()
-          }
-
-        if (!currentPoint.isOccupied()) {
+          }else if (!currentPoint.isOccupied()||currentPoint.allowsPassage()) {
           let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
           graphMold[i][j] = newNode
         }
       }
     }
-
     //attach all nodes
     for(var i = 0; i < this.grid.length; i++){
-      for(var j = 0; j < this.grid[i].length; j++){
+      for(var j = 0; j < this.grid.length; j++){
         let currentNode = graphMold[i][j]
+
         if (currentNode) {
+
           if (i > 0) {
+        
             if (graphMold[i-1][j]) {
               currentNode.addPath(new aStarPath(graphMold[i-1][j], 1))
             }
@@ -133,7 +137,7 @@ class Grid {
               currentNode.addPath(new aStarPath(graphMold[i][j-1], 1))
             }
           }
-          if (j < this.grid[i].length - 1) {
+          if (j < this.grid.length - 1) {
             if (graphMold[i][j+1]) {
               currentNode.addPath(new aStarPath(graphMold[i][j+1], 1))
             }
@@ -144,31 +148,7 @@ class Grid {
     return startNode
   }
 
-/*
-  // Find closest grid point to cursor and return it
-  getClosestPoint (mouseX, mouseY) {
-    let minDist
-    let closestPoint
-
-    for (var x = 0; x < this.grid.length; x++) {
-      for (var y = 0; y < this.grid.length; y++) {
-        const gridPoint = this.grid[x][y]
-        const xDiff = mouseX - gridPoint.getX()
-        const yDiff = mouseY - gridPoint.getY()
-        const distance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2))
-        
-        if (!minDist || distance < minDist) {
-          minDist = distance
-          closestPoint = gridPoint
-        }
-      }
-    }
-
-    return closestPoint
-  }
-  */
-
-  getClosestPoint (x, y) {
+getClosestPoint (x, y) {
     let minDist
     let closestPoint
 
@@ -182,19 +162,34 @@ class Grid {
     }
   }
 
-updateHasPaths(newPath){
+clearHasPaths(){
   for(var x = 0;x<this.grid.length;x++){
     for(var y = 0;y<this.grid.length;y++){
       this.getPoint(x,y).hasPath = false
     }
   }
-  //make into an array in the future
+}
+
+updateHasPaths(newPath){
   for(var i = 0;i<newPath.length;i++){
     let gridX = Math.floor((newPath[i].x/CANVAS_WIDTH)*GRID_SIZE)
     let gridY = Math.floor((newPath[i].y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
     this.getPoint(gridX,gridY).hasPath = true
   }
 
+}
+
+updateDivergentHasPaths(newerPath){
+  for(var i = 0;i<newerPath.length;i++){
+    let gridX = Math.floor((newerPath[i].x/CANVAS_WIDTH)*GRID_SIZE)
+    let gridY = Math.floor((newerPath[i].y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+    let currentPoint = this.getPoint(gridX,gridY)
+    if(currentPoint.hasPath==true){
+      i=newerPath.length
+    }else{
+      currentPoint.hasPath=true
+    }
+  }
 }
 
   // Returns the object at the point or returns null

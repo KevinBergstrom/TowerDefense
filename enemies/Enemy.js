@@ -62,11 +62,13 @@ class Enemy{
 		let newGridY = Math.floor((this.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
 
 		if(oldGridX!=newGridX || oldGridY!=newGridY){
+
 			grid.getPoint(oldGridX,oldGridY).enemies.splice(grid.getPoint(oldGridX,oldGridY).enemies.indexOf(this), 1)
 			grid.getPoint(newGridX,newGridY).enemies.push(this)
 
 			this.gridX = newGridX
 			this.gridY = newGridY
+			
 		}
 
 		}

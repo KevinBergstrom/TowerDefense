@@ -15,14 +15,10 @@ class EnemySpawn{
 
 	populateSpawnQueue (waveNumber) {
 
-		if(this.interval > 10){
-			this.interval--
-		}
-
 		for(var i = 0; i < waveNumber; i++){
 			//change this. I dare you to
-			let speed = 1 + 0.01*waveNumber
-			let damage = waveNumber
+			let speed = 1 //+ 0.01*waveNumber
+			let damage = 1//waveNumber
 			let health = 100 + waveNumber*waveNumber
 
 			let newEnemy = factory.createEnemy('enemy',this.x, this.y, health, speed, damage, this.path,false)
@@ -32,11 +28,17 @@ class EnemySpawn{
 		this.cooldown = this.interval
 	}
 
-	spawnEnemy (enemyArray) {
+	spawnEnemy (enemyArray,grid){
 		//TODO
 		let newEnemy = this.spawnQueue.shift()
 		newEnemy.path = this.path
 		newEnemy.phaserRef.visible = true
+
+		let gridX = Math.floor((newEnemy.x/CANVAS_WIDTH)*GRID_SIZE)
+        let gridY = Math.floor((newEnemy.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+
+        grid.getPoint(gridX,gridY).enemies.push(newEnemy)
+
 		enemyArray.push(newEnemy)
 	}
 
@@ -44,10 +46,10 @@ class EnemySpawn{
 		return this.spawnQueue.length == 0
 	}
 
-	update (enemyArray) {
+	update (enemyArray,grid) {
 		if (!this.finished()) {
 			if (this.cooldown <= 0) {
-				this.spawnEnemy(enemyArray)
+				this.spawnEnemy(enemyArray,grid)
 				this.cooldown = this.interval
 			} else {
 				this.cooldown = this.cooldown - 1

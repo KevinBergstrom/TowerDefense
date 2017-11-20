@@ -13,6 +13,16 @@ class GridPoint {
   getOccupant () {
     return this.occupant
   }
+  allowsPassage(){
+    if(this.passage){
+      return true
+    }else{
+      return false
+    }
+  }
+  openPassage(){
+    this.passage = true
+  }
   getX () {
     return this.x
   }

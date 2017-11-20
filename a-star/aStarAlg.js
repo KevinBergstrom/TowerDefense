@@ -14,7 +14,6 @@ class aStarAlg {
     let currentNode
     
     while(endNode===undefined && PQueue.size!==0){
-      
       currentNode = PQueue.poll()
       let nextPath
 

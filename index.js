@@ -43,6 +43,8 @@ function preload() {
 
   factory.initialize()
 
+  game.time.advancedTiming = true
+
 }
 
 function create() {
@@ -141,11 +143,10 @@ function update() {
 
       model.update()
 
-      if (!model.waveStarted) {
-        if (dropTowerState) {
-          dropTowerUpdate()
-        }
-      } else {
+      if (dropTowerState) {
+        dropTowerUpdate()
+      }
+      if (model.waveStarted) {
         isWaveComplete()
       }
 
@@ -157,6 +158,9 @@ function update() {
       checkIfLost()
     }
   }
+  //TESTING
+  game.debug.text('fps:' + game.time.fps,50,600,0)
+
 }
 
 function clearOldModel(){
@@ -178,7 +182,7 @@ function updateTextItems(){
 function startNextWave(){
   if(model.waveStarted == false){
     waveButton.visible = false
-    exitDropTowerState()
+    //exitDropTowerState()
     model.startWave()
   }
 }
@@ -188,6 +192,7 @@ function endThisWave(){
     model.endWave()
     waveButton.visible = true
   }
+
 }
 
 function isWaveComplete(){
@@ -233,10 +238,25 @@ function dropTowerUpdate() {
       closestPoint.set('tempOccupant')
       newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)
       if(newPath !== null){
-        model.dropNewTower(hoveringTower.key, closestPoint)
-        model.grid.setPath(newPath)
+        if(model.waveStarted){
+
+          if(model.findDivergentPaths(newPath)==true){
+            model.dropNewTower(hoveringTower.key, closestPoint)
+            model.playerTowers.forEach(tower => {
+              tower.generateInRange(model.grid)
+            })
+          }else{
+            closestPoint.set(null)
+            exitDropTowerState()
+          }
+
+        }else{
+          model.dropNewTower(hoveringTower.key, closestPoint)
+          model.grid.setPath(newPath)
+        }
+
       }else{
-        closestPoint.set(undefined)
+        closestPoint.set(null)
         exitDropTowerState()
       }
 
@@ -246,8 +266,20 @@ function dropTowerUpdate() {
   }
 }
 
+function removeTower(gridPoint){
+  gridPoint.setOccupant(null)
+
+  newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)
+  model.findDivergentPaths(newPath)
+
+  model.playerTowers.forEach(tower => {
+    tower.generateInRange(model.grid)
+  })
+
+}
+
 function enterDropTowerState(towerType) {
-  if (!model.waveStarted && model.moneyCheck(100)) {
+  if (model.moneyCheck(100)) {
     exitDropTowerState()
     // Let the game know the player is in the process of placing a tower
     dropTowerState = true
