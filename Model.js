@@ -27,7 +27,7 @@ update() {
   })
 
   this.projectiles.forEach(proj => {
-    proj.update(this.enemies,this.projectiles)
+    proj.update(this.grid,this.projectiles)
   })
 }
 
