@@ -29,6 +29,7 @@ class Level{
 		backgroundPanel.loadTexture(backgroundImage,0)
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
+		grid.generateNodeGraph()
 		//TODO player class goes here
 		let model = new Model(grid)//,player)
 

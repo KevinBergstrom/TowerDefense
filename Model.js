@@ -122,6 +122,7 @@ dropNewTower(towerType, gridPoint) {
   // Occupy gridPoint
   this.playerTowers.push(tower)
   gridPoint.set(tower)
+  gridPoint.node.setObstruction()
   exitDropTowerState()
 }
 
@@ -151,6 +152,7 @@ dropNewWall(wallType, gridPoint) {
   const wall = factory.createWall(wallType , x, y)  
   // Occupy gridPoint
   gridPoint.set(wall)
+  gridPoint.node.setObstruction()
 }
 
 spawnQueueEmpty(){

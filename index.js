@@ -236,7 +236,10 @@ function dropTowerUpdate() {
     if(!closestPoint.isOccupied()&&closestPoint.enemies.length==0){
 
       closestPoint.set('tempOccupant')
+      closestPoint.node.setObstruction()
+
       newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)
+
       if(newPath !== null){
         if(model.waveStarted){
 
@@ -247,6 +250,7 @@ function dropTowerUpdate() {
             })
           }else{
             closestPoint.set(null)
+            closestPoint.node.rescindObstruction()
             exitDropTowerState()
 
           }
@@ -258,6 +262,7 @@ function dropTowerUpdate() {
 
       }else{
         closestPoint.set(null)
+        closestPoint.node.rescindObstruction()
         exitDropTowerState()
       }
 
@@ -269,6 +274,7 @@ function dropTowerUpdate() {
 
 function removeTower(gridPoint){
   gridPoint.setOccupant(null)
+  gridPoint.node.rescindObstruction()
 
   newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)
   model.findDivergentPaths(newPath)
