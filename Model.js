@@ -77,9 +77,9 @@ findDivergentPaths(newPath){
     allPaths.push([])
     for(var y = 0;y<GRID_SIZE;y++){
       let gridPoint = this.grid.getPoint(x,y)
-      if(gridPoint.enemies.length>0){
+      if(gridPoint.enemies.length>0&&!(gridPoint.x==this.getPlayerBases().x&&gridPoint.y==this.getPlayerBases().y)){
         //generate a new A* path for all in that grid
-        let newerPath = this.grid.findShortestPath(gridPoint.getX(),gridPoint.getY(),this.getPlayerBases().x,this.getPlayerBases().y)
+        let newerPath = this.grid.findShortestPath(gridPoint.x,gridPoint.y,this.getPlayerBases().x,this.getPlayerBases().y)
         allPaths[x][y]=newerPath
 
         if(newerPath==null){

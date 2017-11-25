@@ -17,6 +17,8 @@ class aStarAlg {
       currentNode = PQueue.poll()
       let nextPath
 
+      //let b = factory.createEnemy('enemy', currentNode.x, currentNode.y, 1, 1, 1, null, true)
+
       while(currentNode.paths.length!==0){
         
         nextPath = currentNode.paths.pop()

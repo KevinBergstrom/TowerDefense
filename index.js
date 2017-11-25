@@ -248,6 +248,7 @@ function dropTowerUpdate() {
           }else{
             closestPoint.set(null)
             exitDropTowerState()
+
           }
 
         }else{

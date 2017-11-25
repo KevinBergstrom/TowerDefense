@@ -101,6 +101,7 @@ class Grid {
           if (currentPoint.x == startX && currentPoint.y == startY) {
             //add the start node
             let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
+            newNode.setHeuristic(endX,endY)
             graphMold[i][j] = newNode
             startNode = graphMold[i][j]
           } else if (currentPoint.x == endX && currentPoint.y == endY) {
@@ -110,6 +111,7 @@ class Grid {
             graphMold[i][j].setEnd()
           }else if (!currentPoint.isOccupied()||currentPoint.allowsPassage()) {
           let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
+          newNode.setHeuristic(endX,endY)
           graphMold[i][j] = newNode
         }
       }
