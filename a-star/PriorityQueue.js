@@ -10,7 +10,7 @@ class PriorityQueue{
       
       let currentObject = this.Queue[i]
       if(object.compareTo(currentObject)<0){
-        this.Queue.splice(i,object)
+        this.Queue.splice(i,0,object)
         this.size++
         return
       }

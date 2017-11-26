@@ -5,6 +5,8 @@ class aStarNode {
     this.y = y
     this.paths = []
     this.setDistanceToNode(Number.POSITIVE_INFINITY)
+    this.obstruction = false
+    this.visited = false
   }
   
   addPath(path){
@@ -13,6 +15,21 @@ class aStarNode {
   
   setEnd(){
     this.end = true
+  }
+
+  setObstruction(){
+    this.obstruction = true
+  }
+
+  rescindObstruction(){
+    this.obstruction = false
+  }
+
+  reset(){
+    this.setDistanceToNode(Number.POSITIVE_INFINITY)
+    this.setPreviousNode(null)
+    this.distanceToFinal = null
+    this.visited = false
   }
   
   setDistanceToNode(dist){
@@ -45,7 +62,7 @@ class aStarNode {
     return {x: this.x, y: this.y}
   }
   
-  compareTo(node){
+    compareTo(node){
     if( (this.getDistanceToNode() + this.getHeuristic()) < (node.getDistanceToNode() + node.getHeuristic()) ){
       return -1 //less than node
     }else if( (this.getDistanceToNode() + this.getHeuristic()) > (node.getDistanceToNode() + node.getHeuristic()) ){

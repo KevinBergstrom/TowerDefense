@@ -6,6 +6,7 @@ class GridPoint {
     //collision detection optimizing variables
     this.enemies = []
     this.hasPath = false
+    this.node = null
   }
   set (occupant) {
     this.occupant = occupant

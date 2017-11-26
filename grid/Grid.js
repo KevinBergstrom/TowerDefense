@@ -82,70 +82,63 @@ class Grid {
 
   findShortestPath (startX, startY, endX, endY) {
     //give it a start and an end point and it will return null or an array of tuples{x,y}
-    let startNode = this.generateNodeGraph(startX, startY, endX, endY)
-    return aStarAlg.shortestPath(startNode)
+
+    let startGridX = Math.floor((startX/CANVAS_WIDTH)*GRID_SIZE)
+    let startGridY = Math.floor((startY/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+
+    let endGridX = Math.floor((endX/CANVAS_WIDTH)*GRID_SIZE)
+    let endGridY = Math.floor((endY/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
+
+    let startNode = this.getPoint(startGridX,startGridY).node
+    let endNode = this.getPoint(endGridX,endGridY).node
+
+    endNode.setEnd()
+    let path = aStarAlg.shortestPath(startNode,endNode)
+    endNode.end = null
+
+    return path
   }
 
   //A* graph generator
-  generateNodeGraph (startX, startY, endX, endY) {
-    //TODO make this way more efficient
-    //make a static node network instead of making a new graph every time
-    let startNode = null
-    let graphMold = []
+  generateNodeGraph () {
+    //make a static node network
     //create all nodes
 
-    for(var i = 0; i < this.grid.length; i++){
-      graphMold.push([])
-      for(var j = 0; j < this.grid[i].length; j++){
-        let currentPoint = this.getPoint(i, j)
-          if (currentPoint.x == startX && currentPoint.y == startY) {
-            //add the start node
-            let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
-            graphMold[i][j] = newNode
-            startNode = graphMold[i][j]
-          } else if (currentPoint.x == endX && currentPoint.y == endY) {
-            //add the end node
-            let newNode = new aStarNode(this.getPoint(i, j).x, this.getPoint(i, j).y)
-            graphMold[i][j] = newNode
-            graphMold[i][j].setEnd()
-          }else if (!currentPoint.isOccupied()||currentPoint.allowsPassage()) {
-          let newNode = new aStarNode(this.getPoint(i, j).x,this.getPoint(i, j).y)
-          graphMold[i][j] = newNode
-        }
+    for(var x = 0;x<GRID_SIZE;x++){
+      for(var y = 0;y<GRID_SIZE;y++){
+        let currentPoint = this.getPoint(x, y)
+        let newNode = new aStarNode(currentPoint.x,currentPoint.y)
+        currentPoint.node = newNode
       }
     }
-    //attach all nodes
-    for(var i = 0; i < this.grid.length; i++){
-      for(var j = 0; j < this.grid.length; j++){
-        let currentNode = graphMold[i][j]
 
-        if (currentNode) {
-
+    for(var i = 0;i<GRID_SIZE;i++){
+      for(var j = 0;j<GRID_SIZE;j++){
+        let currentNode = this.getPoint(i, j).node
           if (i > 0) {
         
-            if (graphMold[i-1][j]) {
-              currentNode.addPath(new aStarPath(graphMold[i-1][j], 1))
+            if (this.getPoint(i-1, j).node) {
+              currentNode.addPath(new aStarPath(this.getPoint(i-1, j).node, CANVAS_WIDTH/GRID_SIZE))
             }
           }
-          if (i < this.grid.length - 1) {
-            if (graphMold[i+1][j]) {
-              currentNode.addPath(new aStarPath(graphMold[i+1][j], 1))
+          if (i < GRID_SIZE - 1) {
+            if (this.getPoint(i+1, j).node) {
+              currentNode.addPath(new aStarPath(this.getPoint(i+1, j).node, CANVAS_WIDTH/GRID_SIZE))
             }
           }
           if (j > 0) {
-            if (graphMold[i][j-1]) {
-              currentNode.addPath(new aStarPath(graphMold[i][j-1], 1))
+            if (this.getPoint(i, j-1).node) {
+              currentNode.addPath(new aStarPath(this.getPoint(i, j-1).node, (CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10)/GRID_SIZE))
             }
           }
-          if (j < this.grid.length - 1) {
-            if (graphMold[i][j+1]) {
-              currentNode.addPath(new aStarPath(graphMold[i][j+1], 1))
+          if (j < GRID_SIZE - 1) {
+            if (this.getPoint(i, j+1).node) {
+              currentNode.addPath(new aStarPath(this.getPoint(i, j+1).node, (CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10)/GRID_SIZE))
             }
           }
-        }
       }
     }
-    return startNode
+
   }
 
 getClosestPoint (x, y) {
