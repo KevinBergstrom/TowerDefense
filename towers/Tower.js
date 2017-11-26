@@ -1,8 +1,19 @@
 class Tower {
-  constructor (phaserRef, pos, range) {
+  constructor (phaserRef, type, pos, range) {
     this.phaserRef = phaserRef
+    this.type = type
     this.pos = pos
     this.range = range ? range : 150 // give range value, default to 64 if not given AKA constructor overloading...just like JAVA!
+    this.damage = 100 //change to Number.POSITIVE_INFINITY for UNLIMITED POWER!
+    this.speed = 20
+    this.level = 0
+
+    if(this.type == 'missileTower'){
+      this.projectil = 'missile'
+    }
+    else{
+      this.projectil = 'lazer'
+    }
 
     if(this.range<56){
       this.range = 56
@@ -10,7 +21,7 @@ class Tower {
 
     this.popup = null
     phaserRef.inputEnabled = true
-    phaserRef.events.onInputDown.add(this.infoPopup, this)
+    phaserRef.events.onInputDown.add(this.upgrade, this)
 
     this.interval = 80
     this.cooldown = 0
@@ -158,10 +169,8 @@ class Tower {
   shootAt(enemy,projectiles){
     let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
     let vector = {x: (enemy.x-this.pos.x)/dist, y: (enemy.y-this.pos.y)/dist}
-    let damage = 100 //change to Number.POSITIVE_INFINITY for UNLIMITED POWER!
-    let speed = 20
 
-    let proj = factory.createProjectile('missile',this.pos.x,this.pos.y,vector,speed,damage)
+    let proj = factory.createProjectile(this.projectil,this.pos.x,this.pos.y,vector,this.speed,this.damage)
 
     proj.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180
     projectiles.push(proj)
@@ -174,35 +183,36 @@ class Tower {
     }
   }
 
-  infoPopup () {//TODO
-    if (this.popup) {
-      return
-    }
-    const popup = new SlickUI.Element.Panel(this.phaserRef.x, this.phaserRef.y - 116, 150, 100)
-    this.popup = popup
-    slickUI.add(popup)
+  // infoPopup () {//TODO
+  //   if (this.popup) {
+  //     return
+  //   }
+  //   const popup = new SlickUI.Element.Panel(this.phaserRef.x, this.phaserRef.y - 116, 150, 100)
+  //   this.popup = popup
+  //   slickUI.add(popup)
 
-    const cancelBtn = new SlickUI.Element.Button(77, 60, 64, 32)
-    popup.add(cancelBtn)
-    cancelBtn.add(new SlickUI.Element.Text(0, 0, "Close"))
-    cancelBtn.events.onInputUp.add(this.clearPopup, this)
+  //   const cancelBtn = new SlickUI.Element.Button(77, 60, 64, 32)
+  //   popup.add(cancelBtn)
+  //   cancelBtn.add(new SlickUI.Element.Text(0, 0, "Close"))
+  //   cancelBtn.events.onInputUp.add(this.clearPopup, this)
 
-    const upgradeBtn = new SlickUI.Element.Button(0, 0, 150, 32)
-    popup.add(upgradeBtn)
-    upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade: 40"))
-    upgradeBtn.events.onInputUp.add(this.upgrade, this)
-  }
+  //   const upgradeBtn = new SlickUI.Element.Button(0, 0, 150, 32)
+  //   popup.add(upgradeBtn)
+  //   upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade: 40"))
+  //   upgradeBtn.events.onInputUp.add(this.upgrade, this)
+  // }
 
   upgrade () {
-    if (this.interval > 40 && model.moneyCheck(40)) {
-    	this.interval /= 2
-    	model.changeMoney(-40)
-    }
-    this.clearPopup()
+    // if (this.interval > 40 && model.moneyCheck(price)) {
+    // 	this.interval = setTo
+    // 	model.changeMoney(-price)
+    // }
+    // this.clearPopup()
+    towerUpgrader.upgradeTower(this)
   }
 
-  clearPopup () {
-    this.popup.destroy()
-    this.popup = null
-  }
+  // clearPopup () {
+  //   this.popup.destroy()
+  //   this.popup = null
+  // }
  }

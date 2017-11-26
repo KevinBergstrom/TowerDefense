@@ -14,6 +14,8 @@ const game = new Phaser.Game(
 )
 
 const factory = new Factory()
+
+const towerUpgrader = new TowerUpgrader()
  
 let model
 
@@ -86,8 +88,8 @@ function create() {
   waveButton.events.onInputUp.add(startNextWave);
 
   //update these when tower upgrades is implemented
-  addTowerBuyOption(towerPanel, 'defaultTower',100)
-  addTowerBuyOption(towerPanel, 'missileTower',100)
+  addTowerBuyOption(towerPanel, 'defaultTower', 100)
+  addTowerBuyOption(towerPanel, 'missileTower', 100)
 
   model = factory.loadLevel1(panel,background)
 

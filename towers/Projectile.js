@@ -6,7 +6,7 @@ class Projectile{
 		this.x = x
 		this.y = y
 		this.vector = vector // movement vector = {x: xmove, y: ymove}
-		this.speed = speed// should be very small (pixels per frame)
+		this.speed = speed   // should be very small (pixels per frame)
 		this.damage = damage
 		this.range = speed
 	}

@@ -2,7 +2,7 @@ class GridPoint {
   constructor (x, y) {
     this.x = x
     this.y = y
-
+    
     //collision detection optimizing variables
     this.enemies = []
     this.hasPath = false

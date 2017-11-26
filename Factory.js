@@ -8,8 +8,11 @@ class Factory{
 		// Load images into cachegame.load.image('missile', 'assets/images/tiles/towerDefense_tile251.png')
 
 	game.load.image('defaultTower', 'assets/images/tiles/towerDefense_tile249.png')
+	game.load.image('defaultTowerLvl2', 'assets/images/tiles/towerDefense_tile249.png') // change path
+	game.load.image('defaultTowerLvl3', 'assets/images/tiles/towerDefense_tile249.png') // change path
     game.load.image('missileTower', 'assets/images/tiles/towerDefense_tile250.png')
-    game.load.image('upgradedTower', 'assets/images/tiles/towerDefense_tile291.png')
+    game.load.image('missileTowerLvl2', 'assets/images/tiles/towerDefense_tile250.png') // change path
+    game.load.image('missileTowerLvl3', 'assets/images/tiles/towerDefense_tile250.png') // change path
     game.load.image('background', 'assets/images/background.png')
     game.load.image('enemySpawn', 'assets/images/newSpawner.png')
     game.load.image('base', 'assets/images/newBase.png')
@@ -18,6 +21,7 @@ class Factory{
     game.load.image('grass', 'assets/images/tiles/towerDefense_tile130.png')
     game.load.image('smallRock', 'assets/images/tiles/towerDefense_tile137.png')
     game.load.image('missile', 'assets/images/tiles/towerDefense_tile251.png')
+    game.load.image('lazer', 'assets/images/tiles/towerDefense_tile297.png')
 
 	}
 
@@ -53,15 +57,27 @@ class Factory{
 	    return new Enemy(sprite, x, y, health, speed, damage, path)
 	}
 
-	createTower(image,x,y){
+	createTower(image, x, y){
 		// Add a new sprite to the game
-	    const sprite = game.add.sprite(x, y, image)
+	    // const sprite = game.add.sprite(x, y, image)
+	    // // Offset the sprite to center it
+	    // sprite.pivot.x = 64
+	    // sprite.pivot.y = 64
+	    const sprite = this.createTowerSprite(image,x,y)
+	    
+	    return new Tower(sprite, image, {x,y})
+	}
+
+	createTowerSprite(image,x,y){
+		// Add a new sprite to the game
+		const sprite = game.add.sprite(x, y, image)
 	    // Offset the sprite to center it
 	    sprite.pivot.x = 64
 	    sprite.pivot.y = 64
 	    // Scale the sprite to proper size
 	    sprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-	    return new Tower(sprite,{x,y})
+	    
+	    return sprite
 	}
 
 	createWall(image,x,y){

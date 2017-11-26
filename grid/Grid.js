@@ -59,8 +59,8 @@ class Grid {
     enemySpawns.phaserRef.kill()
     playerBases.phaserRef.kill()
 
-    for(var x = 0;x<this.grid.length;x++){
-      for(var y = 0;y<this.grid.length;y++){
+    for(var x = 0; x < this.grid.length; x++){
+      for(var y = 0; y < this.grid.length; y++){
         if(this.gridPoint(x,y)!=null){
           this.gridPoint(x,y).phaserRef.kill()
           this.gridPoint(x,y).clearPopup()
