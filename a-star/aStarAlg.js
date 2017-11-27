@@ -87,6 +87,7 @@ class aStarAlg {
       changedNodes.forEach(node => {
         node.reset()
       })
+      endNode.reset()
 
       return Path
     }
