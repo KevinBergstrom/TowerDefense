@@ -212,7 +212,7 @@ function updateTextItems(){
   healthText.value = "Health: " + model.getHealth()
   moneyText.value = "Money: " + model.getMoney()
   levelText.value = "Wave: " + model.wave
-  enemiesText.value = "Enemies: " + model.getEnemies().length
+  enemiesText.value = "Enemies: " + (model.getEnemies().length + model.grid.enemySpawns.spawnQueue.length)
 }
 
 function startNextWave(){
