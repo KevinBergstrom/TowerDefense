@@ -67,6 +67,10 @@ function preload() {
       {
         name: 'win',
         link: 'assets/sounds/win.mp3'
+      },
+      {
+        name: 'background',
+        link: 'assets/sounds/background.mp3'
       }
     ])
   game.time.advancedTiming = true
@@ -78,6 +82,7 @@ function create() {
   // Add background to canvas //create it with level1 class?
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
   soundPlayer.cache()
+  soundPlayer.background.loopFull(0.3)
 
   const panelX = 0
   const panelY = game.height - 150
