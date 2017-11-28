@@ -27,17 +27,21 @@ let healthText
 let moneyText
 let levelText
 let enemiesText
-let pauseMessage
+//let pauseMessage
 
 let id = 0
 let mouseWasDown = false
-let panel     // Player UI panel
 let background
 let dropTowerState = false  // Determines if player is in the process of dropping a new tower
 let hoveringTower           // Temporary tower attached to cursor while purchasing new tower
 let towerPurchaseOptions = [] // Tower purchase buttons on player panel
 
+let panel     // Player UI panel
 let levelSelectUI
+let menuUI
+let pauseMenu
+let gameOverMenu // TODO
+
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -86,90 +90,11 @@ function create() {
   soundPlayer.cache()
   soundPlayer.background.loopFull(0.3)
 
-  const panelX = 0
-  const panelY = game.height - 150
-  const wavePanelWidth = 150
-  const statsPanelWidth = 150
+  openPanel()
+  closePanel()
 
-  const statsPanel = new SlickUI.Element.Panel(0, 0, statsPanelWidth, 150)
-  const towerPanel = new SlickUI.Element.Panel(statsPanel._width, 0, game.width - statsPanelWidth - wavePanelWidth, 150)
-  const wavePanel = new SlickUI.Element.Panel(statsPanelWidth + towerPanel._width, 0, wavePanelWidth, 150) 
-
-  panel = new SlickUI.Element.Panel(panelX, panelY, game.width, 150)
-
-  slickUI.add(panel)
-  panel.add(statsPanel)
-  panel.add(towerPanel)
-  panel.add(wavePanel)
-
-  healthText = new SlickUI.Element.Text(4, 0, "Health: ")
-  moneyText = new SlickUI.Element.Text(4, 32, "Money: ")
-  levelText = new SlickUI.Element.Text(4, 0, "Wave: ")
-  enemiesText = new SlickUI.Element.Text(4, 32, "Enemies: ")
-
-  statsPanel.add(healthText)
-  statsPanel.add(moneyText)
-  wavePanel.add(levelText)
-  wavePanel.add(enemiesText)
-
-  waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
-  wavePanel.add(waveButton)
-  waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
-  waveButton.events.onInputUp.add(startNextWave);
-
-  //update these when tower upgrades is implemented
-  addTowerBuyOption(towerPanel, 'defaultTower', 100)
-  addTowerBuyOption(towerPanel, 'missileTower', 100)
-
-
-changeLevel('level1')
-//model = factory.loadLevel('level1',panel,background)
-
-//openLevelSelect()
-
-  //TEST
-  //wave = 20
-  //startNextWave()
-
-//kevin's try at it
-//I essentially have a pauseMessage that is invisible unless you pause
-  pauseMessage = new SlickUI.Element.Text(CANVAS_WIDTH/2, (CANVAS_HEIGHT-150)/2, "Paused: Press escape to resume")
-  slickUI.add(pauseMessage)
-  pauseMessage.visible = false
-  pauseMessage.x = (CANVAS_WIDTH/2)-(pauseMessage.text.width/2)
-
-   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
-   pauseKey.onDown.add(toggleMenu, this)
-
-   function toggleMenu(){
-      if (!game.paused) {        
-        game.paused = true;
-        pauseMessage.visible = true
-      } 
-      else {
-        game.paused = false
-        pauseMessage.visible = false
-      }
-
-    }
-
-/*
-
-  pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE)
-   pauseKey.onDown.add(toggleMenu, this)
-
-    function toggleMenu(){
-      if (!game.paused) {        
-        game.paused = true;
-        pauseMessage = game.add.text(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 'Paused: Press escape to resume', { font: '30px Arial', fill: '#fff' });
-        //pauseMessage.anchor.setTo(0.5, 0.5);
-      } 
-      else {
-        pauseMessage.destroy()
-        game.paused = false
-      }
-
-    }*/
+  //openMenu()//TODO Brian uncomment this and remove openLevelSelect() when you've made the menu
+  openLevelSelect()
 
 }
 
@@ -252,7 +177,149 @@ function checkIfLost(){
   }
 }
 
+function openPanel(){
+  closeMenu()
+  closelevelSelect()
+  closePauseMenu()
+  if(panel==null){
+  const panelX = 0
+  const panelY = game.height - 150
+  const wavePanelWidth = 150
+  const statsPanelWidth = 150
+
+  const statsPanel = new SlickUI.Element.Panel(0, 0, statsPanelWidth, 150)
+  const towerPanel = new SlickUI.Element.Panel(statsPanel._width, 0, game.width - statsPanelWidth - wavePanelWidth, 150)
+  const wavePanel = new SlickUI.Element.Panel(statsPanelWidth + towerPanel._width, 0, wavePanelWidth, 150) 
+
+  panel = new SlickUI.Element.Panel(panelX, panelY, game.width, 150)
+
+  slickUI.add(panel)
+  panel.add(statsPanel)
+  panel.add(towerPanel)
+  panel.add(wavePanel)
+
+  healthText = new SlickUI.Element.Text(4, 0, "Health: ")
+  moneyText = new SlickUI.Element.Text(4, 32, "Money: ")
+  levelText = new SlickUI.Element.Text(4, 0, "Wave: ")
+  enemiesText = new SlickUI.Element.Text(4, 32, "Enemies: ")
+
+  statsPanel.add(healthText)
+  statsPanel.add(moneyText)
+  wavePanel.add(levelText)
+  wavePanel.add(enemiesText)
+
+  waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
+  wavePanel.add(waveButton)
+  waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
+  waveButton.events.onInputUp.add(startNextWave);
+
+  //update these when tower upgrades is implemented
+  addTowerBuyOption(towerPanel, 'defaultTower', 100)
+  addTowerBuyOption(towerPanel, 'missileTower', 100)
+  }else{
+    panel.visible = true
+  }
+}
+
+function closePanel(){
+  if(panel){
+    panel.visible = false
+  }
+}
+
+function openMenu(){
+  closelevelSelect()
+  closePanel()
+  closePauseMenu()
+  if(menuUI==null){
+    //TODO make the menu
+    //start game
+    //difficulty stuff
+
+    //to advance to levelSelect just call openLevelSelect()
+    //ex: Button.events.onInputUp.add(() => openLevelSelect())
+
+    //use factory.createButton() or factory.createText()
+    //I dont have a create images in factory yet, feel free to add to the factory
+
+  }else{
+    menuUI.visible = true
+  }
+}
+
+function closeMenu(){
+  if(menuUI){
+    menu.visible = false
+  }
+}
+
+function openPauseMenu(){
+  if(pauseMenu==null){
+    //TODO make a pause menu
+
+    //pause message
+    //return to menu button
+    //resume button?
+
+    //to go back to main menu just call openMenu()
+
+    //here are the old ways its been done
+    /*
+//kevin's try at it
+//I essentially have a pauseMessage that is invisible unless you pause
+  pauseMessage = new SlickUI.Element.Text(CANVAS_WIDTH/2, (CANVAS_HEIGHT-150)/2, "Paused: Press escape to resume")
+  slickUI.add(pauseMessage)
+  pauseMessage.visible = false
+  pauseMessage.x = (CANVAS_WIDTH/2)-(pauseMessage.text.width/2)
+
+   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
+   pauseKey.onDown.add(toggleMenu, this)
+
+   function toggleMenu(){
+      if (!game.paused) {        
+        game.paused = true;
+        pauseMessage.visible = true
+      } 
+      else {
+        game.paused = false
+        pauseMessage.visible = false
+      }
+
+    }
+*/
+/*
+
+  pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE)
+   pauseKey.onDown.add(toggleMenu, this)
+
+    function toggleMenu(){
+      if (!game.paused) {        
+        game.paused = true;
+        pauseMessage = game.add.text(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 'Paused: Press escape to resume', { font: '30px Arial', fill: '#fff' });
+        //pauseMessage.anchor.setTo(0.5, 0.5);
+      } 
+      else {
+        pauseMessage.destroy()
+        game.paused = false
+      }
+
+    }*/
+
+  }else{
+    pauseMenu.visible = true
+  }
+}
+
+function closePauseMenu(){
+  if(pauseMenu){
+    pauseMenu.visible = false
+  }
+}
+
 function openLevelSelect(){
+  closeMenu()
+  closePanel()
+  closePauseMenu()
   if(levelSelectUI==null){
     levelSelectUI = new SlickUI.Element.Panel(0, 0, game.width, game.height)
     //let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
@@ -277,6 +344,11 @@ function openLevelSelect(){
       lvlbutton.events.onInputUp.add(() => changeLevel(levelName))
     }
 
+    let backButton = factory.createButton(CANVAS_WIDTH-100,CANVAS_HEIGHT-50,100,50,'Back',levelSelectUI)
+    backButton.events.onInputUp.add(() => openMenu())
+
+    let levelSelectText = factory.createText((CANVAS_WIDTH/2)-75,10,'Level Select',levelSelectUI)
+
   }else{
     levelSelectUI.visible = true
   }
@@ -290,10 +362,10 @@ function closelevelSelect(){
 
 function changeLevel(levelName){
   if(model!=null){
-    model.killAllSprites()
+    model.killAllSprites()//maybe overkill?
     model = null
   }
-  closelevelSelect()
+  openPanel()
   model = factory.loadLevel(levelName,panel,background)
 }
 
@@ -351,6 +423,7 @@ function dropTowerUpdate() {
   }
 }
 
+//TODO move to model
 function removeTower(gridPoint){
   gridPoint.setOccupant(null)
   gridPoint.node.rescindObstruction()

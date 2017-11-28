@@ -38,6 +38,12 @@ class Factory{
 		return button
 	}
 
+	createText(x,y,text,playerUI){
+		let label = new SlickUI.Element.Text(x, y, text)
+		playerUI.add(label)
+		return label
+	}
+
 	createProjectile(image,x,y,vector,speed,damage){
 
 		// Add a new sprite to the game
