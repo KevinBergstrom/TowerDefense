@@ -35,11 +35,11 @@ class Projectile{
 		let gridX = Math.floor((this.x/CANVAS_WIDTH)*GRID_SIZE)
 		let gridY = Math.floor((this.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
 		
-		if(gridX>0 && gridY>0 && gridX<GRID_SIZE && gridY<GRID_SIZE){
+		if(gridX>=0 && gridY>=0 && gridX<GRID_SIZE && gridY<GRID_SIZE){
 			let gridPoint = grid.getPoint(gridX,gridY)
 
 
-			if(gridPoint.hasPath){
+			//if(gridPoint.hasPath){
 			    gridPoint.enemies.forEach(enemy => {
 			      let dist = Phaser.Math.distance(enemy.x, enemy.y, this.x, this.y)
 			      if (dist <= this.range) {
@@ -47,7 +47,7 @@ class Projectile{
 			      }
 			    })
 			    return inRange 
-			}
+			//}
 		}
 
 		return []

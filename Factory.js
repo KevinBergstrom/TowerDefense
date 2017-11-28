@@ -25,10 +25,17 @@ class Factory{
 
 	}
 
-	loadLevel1(playerUI,backgroundPanel){
+	loadLevel(levelName,playerUI,backgroundPanel){
 		//creates the model for the level
-		return Level.level1(playerUI,backgroundPanel)
+		//uses the class names of the levels from the model
+		return Level[levelName](playerUI,backgroundPanel)
+	}
 
+	createButton(x,y,width,height,text,playerUI){
+		let button = new SlickUI.Element.Button(x, y, width, height)
+		playerUI.add(button)
+		button.add(new SlickUI.Element.Text(0, 0, text))
+		return button
 	}
 
 	createProjectile(image,x,y,vector,speed,damage){
