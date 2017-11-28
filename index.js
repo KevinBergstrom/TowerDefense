@@ -18,6 +18,7 @@ const factory = new Factory()
 const towerUpgrader = new TowerUpgrader()
  
 let model
+let soundPlayer
 
 let spriteSheet
 
@@ -45,16 +46,38 @@ function preload() {
 
   factory.initialize()
 
+  soundPlayer = new SoundPlayer()
+  soundPlayer.load([
+      {
+        name: 'shoot',
+        link: 'assets/sounds/shoot.mp3'
+      },
+      {
+        name: 'explosion',
+        link: 'assets/sounds/explosion.mp3'
+      },
+      {
+        name: 'laser',
+        link: 'assets/sounds/laser.mp3'
+      },
+      {
+        name: 'upgrade',
+        link: 'assets/sounds/upgrade.mp3'
+      },
+      {
+        name: 'win',
+        link: 'assets/sounds/win.mp3'
+      }
+    ])
   game.time.advancedTiming = true
-
 }
 
 function create() {
   // Start phaser arcade physics engine
   game.physics.startSystem(Phaser.Physics.ARCADE)
-
   // Add background to canvas //create it with level1 class?
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
+  soundPlayer.cache()
 
   const panelX = 0
   const panelY = game.height - 150

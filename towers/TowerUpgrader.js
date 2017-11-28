@@ -24,7 +24,6 @@ class TowerUpgrader {
 	upgradeTower (tower) {
 		//
 		this.tower = tower
-		console.log(tower.phaserRef)
 		// this.getGridPoint()
 
 		this.infoPopup()
@@ -39,8 +38,6 @@ class TowerUpgrader {
 		var x = this.tower.pos.x
 		var y = this.tower.pos.y
 
-		console.log(x)
-		console.log(y)
 
 		this.gridPoint = model.grid.getPoint(x,y)
 	}
@@ -97,8 +94,6 @@ class TowerUpgrader {
 
 	upgrade () {
 		
-		console.log(this.tower.type)
-		console.log(this.tower.level)
 		var price = this.getPrice()
 
 		if (this.tower.type == 'missileTower'){
@@ -129,6 +124,7 @@ class TowerUpgrader {
 			console.log('ERROR: unexpected tower type')
 			return
 		}
+		soundPlayer.upgrade.play()
 		model.changeMoney(-price)
 		this.clearPopup()
 	}

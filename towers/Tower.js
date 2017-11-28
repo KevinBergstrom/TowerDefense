@@ -171,7 +171,7 @@ class Tower {
     let vector = {x: (enemy.x-this.pos.x)/dist, y: (enemy.y-this.pos.y)/dist}
 
     let proj = factory.createProjectile(this.projectil,this.pos.x,this.pos.y,vector,this.speed,this.damage)
-
+    soundPlayer.laser.play()
     proj.phaserRef.rotation = game.physics.arcade.angleBetween(this.phaserRef, enemy) + (90*Math.PI)/180
     projectiles.push(proj)
   }
