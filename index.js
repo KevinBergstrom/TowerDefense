@@ -37,6 +37,8 @@ let dropTowerState = false  // Determines if player is in the process of droppin
 let hoveringTower           // Temporary tower attached to cursor while purchasing new tower
 let towerPurchaseOptions = [] // Tower purchase buttons on player panel
 
+let levelSelectUI
+
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
   slickUI = game.plugins.add(Phaser.Plugin.SlickUI)
@@ -119,7 +121,11 @@ function create() {
   addTowerBuyOption(towerPanel, 'defaultTower', 100)
   addTowerBuyOption(towerPanel, 'missileTower', 100)
 
-  model = factory.loadLevel1(panel,background)
+
+changeLevel('level1')
+//model = factory.loadLevel('level1',panel,background)
+
+//openLevelSelect()
 
   //TEST
   //wave = 20
@@ -246,7 +252,50 @@ function checkIfLost(){
   }
 }
 
+function openLevelSelect(){
+  if(levelSelectUI==null){
+    levelSelectUI = new SlickUI.Element.Panel(0, 0, game.width, game.height)
+    //let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
+    slickUI.add(levelSelectUI)
 
+    let levels = Object.getOwnPropertyNames(Level)
+
+    let numOfLevels = levels.length
+
+    for(var i = 0; i <numOfLevels;i++){
+      if(levels[i].search('level')==-1){
+        levels.splice(i,1)
+        i--
+        numOfLevels--
+      }
+    }
+
+    for(var j = 0; j <levels.length;j++){
+
+      let lvlbutton = factory.createButton(50,j*50+50,200,50,levels[j],levelSelectUI)
+      let levelName = levels[j].toString()
+      lvlbutton.events.onInputUp.add(() => changeLevel(levelName))
+    }
+
+  }else{
+    levelSelectUI.visible = true
+  }
+}
+
+function closelevelSelect(){
+  if(levelSelectUI){
+    levelSelectUI.visible = false
+  }
+}
+
+function changeLevel(levelName){
+  if(model!=null){
+    model.killAllSprites()
+    model = null
+  }
+  closelevelSelect()
+  model = factory.loadLevel(levelName,panel,background)
+}
 
 // Function ran during dropTowerState
 function dropTowerUpdate() {
