@@ -1,0 +1,22 @@
+{
+  "name": "squaddefense",
+  "version": "1.0.0",
+  "description": "Setup - Install npm, then ```npm install bower``` - Install bower components using ```bower install```   - If you don't have bower installed, then install it first",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.encs.vancouver.wsu.edu:eiffeldud/squaddefense.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
