@@ -491,3 +491,12 @@ function addTowerBuyOption(panel, towerName, price) {
   towerButton.add(new SlickUI.Element.DisplayObject(4, 4, game.make.sprite(0, 0, towerName)))
   towerPurchaseOptions.push(towerButton)
 }
+
+document.addEventListener('keyup', evt => {
+  evt.preventDefault()
+  if (evt.keyCode === 84) {
+    document.getElementById('TowerDefense').style = "display: none;"
+    document.getElementById('mocha').style = "display: inline;"
+    mocha.run()
+  }
+})

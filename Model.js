@@ -19,7 +19,6 @@ class Model{
 	}
 
 update() {
-
   this.grid.update(this.enemies,this)
 
   this.playerTowers.forEach(tower => {

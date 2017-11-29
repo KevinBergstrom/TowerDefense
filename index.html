@@ -26,6 +26,19 @@
   <body>
     <div id="TowerDefense">
     </div>
+    <!-- hotkey to make testing div visible -->
+    <!-- testing div, run mocha unit tests inside live game -->
+    <div id="mocha" style="display: none;"></div>
+
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+        mocha.ui('bdd');
+        mocha.reporter('html');
+        expect = chai.expect;
+        assert = chai.assert;
+    </script>
+    <script src="test/test.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
