@@ -54,7 +54,7 @@ class Projectile{
 	}
 
 	removeThis (array) {
-		this.phaserRef.kill()
+		this.phaserRef.destroy()
 		array.splice(array.indexOf(this), 1)
 		delete this
 	}
