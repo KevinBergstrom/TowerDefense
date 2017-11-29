@@ -63,4 +63,3 @@ class EnemySpawn{
 
 }
 
-module.exports = EnemySpawn

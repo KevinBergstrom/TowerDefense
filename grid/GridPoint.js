@@ -36,4 +36,3 @@ class GridPoint {
   }
 }
 
-module.exports = GridPoint

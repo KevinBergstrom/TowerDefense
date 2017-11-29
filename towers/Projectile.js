@@ -77,4 +77,3 @@ class Projectile{
 
 }
 
-module.exports = Projectile

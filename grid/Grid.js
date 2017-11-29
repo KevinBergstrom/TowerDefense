@@ -199,4 +199,3 @@ updateDivergentHasPaths(newerPath){
   }
 }
 
-module.exports = Grid

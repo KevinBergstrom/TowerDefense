@@ -168,4 +168,3 @@ class TowerUpgrader {
 	}
 }
 
-module.exports = TowerUpgrader

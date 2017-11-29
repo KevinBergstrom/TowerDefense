@@ -72,4 +72,3 @@ class aStarNode {
   }
 }
 
-module.exports = aStarNode

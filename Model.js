@@ -225,4 +225,3 @@ getProjectiles(){
 
 }
 
-module.exports = Model
