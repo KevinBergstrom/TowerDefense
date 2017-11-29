@@ -21,4 +21,3 @@ class SoundPlayer {
   }
 }
 
-module.exports = SoundPlayer
