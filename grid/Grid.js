@@ -198,3 +198,4 @@ updateDivergentHasPaths(newerPath){
     this.grid[x][y] = null
   }
 }
+

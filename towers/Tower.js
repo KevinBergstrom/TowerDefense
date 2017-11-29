@@ -190,3 +190,4 @@ class Tower {
     this.investment += price
   }
  }
+

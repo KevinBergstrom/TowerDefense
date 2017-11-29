@@ -71,3 +71,4 @@ class aStarNode {
     return 0 //equal to node
   }
 }
+
