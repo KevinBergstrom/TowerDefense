@@ -189,3 +189,5 @@ class Tower {
     this.investment += price
   }
  }
+
+ module.exports = Tower

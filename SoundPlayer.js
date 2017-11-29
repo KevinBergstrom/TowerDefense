@@ -20,3 +20,5 @@ class SoundPlayer {
     this[sound].loopFull(volume ? volume : 0.3)
   }
 }
+
+module.exports = SoundPlayer

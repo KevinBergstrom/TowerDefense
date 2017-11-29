@@ -167,3 +167,5 @@ class TowerUpgrader {
 		this.popup = null
 	}
 }
+
+module.exports = TowerUpgrader

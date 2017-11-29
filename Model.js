@@ -153,7 +153,7 @@ dropNewBase(baseType, gridPoint) {
 }
 
 dropNewSpawn(spawnType, gridPoint) {
-  const interval = 60//one enemy a second
+  const interval = 30 //two enemies a second
   const x = gridPoint.getX()
   const y = gridPoint.getY()
   const spawn = factory.createEnemySpawn(spawnType,x,y,interval)
@@ -224,3 +224,5 @@ getProjectiles(){
 }
 
 }
+
+module.exports = Model

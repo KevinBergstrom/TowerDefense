@@ -95,3 +95,5 @@ class aStarAlg {
   }
   
 }
+
+module.exports = aStarAlg

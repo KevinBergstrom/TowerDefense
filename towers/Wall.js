@@ -8,3 +8,5 @@ class Wall{
 	//pretty much a tower that does nothing
 
 }
+
+module.exports = Wall

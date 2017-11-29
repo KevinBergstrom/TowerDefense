@@ -198,3 +198,5 @@ updateDivergentHasPaths(newerPath){
     this.grid[x][y] = null
   }
 }
+
+module.exports = Grid

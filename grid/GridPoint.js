@@ -35,3 +35,5 @@ class GridPoint {
     return this.occupant ? true : false
   }
 }
+
+module.exports = GridPoint

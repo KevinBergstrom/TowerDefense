@@ -14,3 +14,5 @@ class aStarPath {
   }
   
 }
+
+module.exports = aStarPath
