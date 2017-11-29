@@ -154,9 +154,11 @@ class TowerUpgrader {
 		tower.level = 2
 	}
 
-	removeTower (tower) {
+	removeTower () {
 		model.changeMoney(this.tower.investment / 2)
-		// Remove tower from grid and reset astaralg
+		model.removeTower(this.tower.gridPoint,model.playerTowers)
+		this.clearPopup()
+		// Remove tower from grid and rerun A*
 		// destroy phaser reference
 	}
 

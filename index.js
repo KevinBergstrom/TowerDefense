@@ -443,20 +443,6 @@ function dropTowerUpdate() {
   }
 }
 
-//TODO move to model
-function removeTower(gridPoint){
-  gridPoint.setOccupant(null)
-  gridPoint.node.rescindObstruction()
-
-  newPath = model.grid.findShortestPath(model.getEnemySpawns().x,model.getEnemySpawns().y,model.getPlayerBases().x,model.getPlayerBases().y)
-  model.findDivergentPaths(newPath)
-
-  model.playerTowers.forEach(tower => {
-    tower.generateInRange(model.grid)
-  })
-
-}
-
 function enterDropTowerState(towerType) {
   if (model.moneyCheck(100)) {
     exitDropTowerState()

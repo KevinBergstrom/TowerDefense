@@ -112,6 +112,20 @@ for(var x = 0;x<this.grid.grid.length;x++){
 return true
 }
 
+removeTower(gridPoint,towers){
+  gridPoint.occupant.removeThis(gridPoint,towers)
+  gridPoint.node.rescindObstruction()
+
+  newPath = this.grid.findShortestPath(this.getEnemySpawns().x,this.getEnemySpawns().y,this.getPlayerBases().x,this.getPlayerBases().y)
+  this.grid.setPath(newPath)
+  this.findDivergentPaths(newPath)
+
+  this.playerTowers.forEach(tower => {
+    tower.generateInRange(this.grid)
+  })
+
+}
+
 dropNewTower(towerType, gridPoint) {
   const initialCost = 100
   this.changeMoney(-initialCost)
@@ -119,6 +133,7 @@ dropNewTower(towerType, gridPoint) {
   const y = gridPoint.getY()
   const tower = factory.createTower(towerType, x, y)
   tower.generateInRange(this.grid)
+  tower.gridPoint = gridPoint
   //TODO do this for each tower?
   // Add to player's towers
   // Occupy gridPoint
