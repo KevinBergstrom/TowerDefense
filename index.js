@@ -41,7 +41,7 @@ let levelSelectUI
 let menuUI
 let pauseMenu
 let gameOverMenu // TODO
-
+let autoplay
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -95,7 +95,6 @@ function create() {
 
   //openMenu()//TODO Brian uncomment this and remove openLevelSelect() when you've made the menu
   openLevelSelect()
-
 }
 
 function update() {
@@ -154,6 +153,9 @@ function endThisWave(){
     waveButton.visible = true
   }
 
+  if (autoplay.checked) {
+    startNextWave()
+  }
 }
 
 function isWaveComplete(){
@@ -208,9 +210,18 @@ function openPanel(){
   wavePanel.add(levelText)
   wavePanel.add(enemiesText)
 
-  waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth, 32)
+  const autoplayText = new SlickUI.Element.Text(4, 32, "continuous")
+  autoplay = new SlickUI.Element.Checkbox(85, wavePanel._height - 65, SlickUI.Element.Checkbox)
+  wavePanel.add(autoplay)
+  autoplay.events.onInputDown.add(() => {
+      if (autoplay.checked && !model.waveStarted) {
+        startNextWave()
+      }
+  }, this);
+
+  waveButton = new SlickUI.Element.Button(0, wavePanel._height - 60, wavePanelWidth - 75, 32)
   wavePanel.add(waveButton)
-  waveButton.add(new SlickUI.Element.Text(8, 0, "Next wave"));
+  waveButton.add(new SlickUI.Element.Text(8, 0, "Next"));
   waveButton.events.onInputUp.add(startNextWave);
 
   //update these when tower upgrades is implemented
