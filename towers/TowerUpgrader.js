@@ -50,7 +50,21 @@ class TowerUpgrader {
 		if (this.popup) {
 			return
 		}
-		const popup = new SlickUI.Element.Panel(this.tower.phaserRef.x, this.tower.phaserRef.y - 116, 150, 100)
+
+		let xPos = this.tower.phaserRef.x
+		let yPos = this.tower.phaserRef.y - 116
+
+		if(xPos<0){
+			xPos = 0
+		}
+		if(yPos<0){
+			yPos = 0
+		}
+		if(xPos>CANVAS_WIDTH-150){
+			xPos = CANVAS_WIDTH-150
+		}
+
+		const popup = new SlickUI.Element.Panel(xPos, yPos, 150, 100)
 		this.popup = popup
 		slickUI.add(popup)
 

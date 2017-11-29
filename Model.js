@@ -35,11 +35,11 @@ killAllSprites(){
   this.grid.killAllSprites()
 
   for(var i = 0;i<enemies.length;i++){
-    enemies[i].phaserRef.kill()
+    enemies[i].phaserRef.destroy()
   }
 
   for(var j = 0;j<projectiles.length;j++){
-    projectiles[j].phaserRef.kill()
+    projectiles[j].phaserRef.destroy()
   }
 
 }

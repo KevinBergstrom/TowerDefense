@@ -56,13 +56,13 @@ class Grid {
   }
 
   killAllSprites(){
-    enemySpawns.phaserRef.kill()
-    playerBases.phaserRef.kill()
+    enemySpawns.phaserRef.destroy()
+    playerBases.phaserRef.destroy()
 
     for(var x = 0; x < this.grid.length; x++){
       for(var y = 0; y < this.grid.length; y++){
         if(this.gridPoint(x,y)!=null){
-          this.gridPoint(x,y).phaserRef.kill()
+          this.gridPoint(x,y).phaserRef.destroy()
           this.gridPoint(x,y).clearPopup()
         }
       }
