@@ -54,8 +54,9 @@ class Projectile{
 	}
 
 	removeThis (array) {
-		this.phaserRef.kill()
+		this.phaserRef.destroy()
 		array.splice(array.indexOf(this), 1)
+		delete this
 	}
 
 	update (grid,projectiles) {
@@ -68,11 +69,10 @@ class Projectile{
 	        this.hit(currentTarget[0],projectiles)
 		  }
 
-		if(this.x < 0 ||this.x > 800 || 
-		   this.y < 0 ||this.y > 650 - 140 - 16){
+		if(this.x < 0 ||this.x > CANVAS_WIDTH || 
+		   this.y < 0 ||this.y > CANVAS_HEIGHT - PURCHASE_BUTTON_SIZE - 16){
 			this.removeThis(projectiles)
 		}
-		//TODO
 	}
 
 }
