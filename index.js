@@ -337,9 +337,18 @@ function openLevelSelect(){
       }
     }
 
+    let xPos = 50
+    let yPos = 0
     for(var j = 0; j <levels.length;j++){
 
-      let lvlbutton = factory.createButton(50,j*50+50,200,50,levels[j],levelSelectUI)
+      yPos += 50
+
+      if(yPos > CANVAS_HEIGHT-100){
+        yPos = 50
+        xPos += (CANVAS_WIDTH-100)/4
+      }
+
+      let lvlbutton = factory.createButton(xPos,yPos,(CANVAS_WIDTH-100)/4,50,levels[j],levelSelectUI)
       let levelName = levels[j].toString()
       lvlbutton.events.onInputUp.add(() => changeLevel(levelName))
     }

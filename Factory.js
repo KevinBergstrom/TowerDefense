@@ -22,6 +22,14 @@ class Factory{
     game.load.image('smallRock', 'assets/images/tiles/towerDefense_tile137.png')
     game.load.image('missile', 'assets/images/tiles/towerDefense_tile251.png')
     game.load.image('lazer', 'assets/images/tiles/towerDefense_tile297.png')
+    game.load.image('dirtBackground', 'assets/images/dirtBackground.png')
+    game.load.image('stoneBackground', 'assets/images/stoneBackground.png')
+    game.load.image('sandBackground', 'assets/images/sandBackground.png')
+    game.load.image('dirtWall', 'assets/images/dirtWallTile.png')
+    game.load.image('stoneWall', 'assets/images/stoneWallTile.png')
+    game.load.image('sandWall', 'assets/images/sandWallTile.png')
+    game.load.image('water', 'assets/images/waterTile.png')
+    game.load.image('smallGrass', 'assets/images/tiles/towerDefense_tile131.png')
 
 	}
 
