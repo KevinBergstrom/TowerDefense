@@ -32,9 +32,17 @@ class Tower {
     this.gridY = Math.floor((pos.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
 
     this.spotsInRange = []
+    this.gridPoint
 
     //what about cost?
   }
+
+  removeThis (gridPoint,array) {
+    this.phaserRef.kill()
+    array.splice((array.indexOf(this)),1)
+    gridPoint.set(null)
+  }
+
   // Tower per frame logic
   update (enemies, projectiles, model) {
     let currentTarget = this.target(this.getInRange(enemies))
