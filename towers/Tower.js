@@ -41,6 +41,7 @@ class Tower {
     this.phaserRef.kill()
     array.splice((array.indexOf(this)),1)
     gridPoint.set(null)
+    delete this
   }
 
   // Tower per frame logic

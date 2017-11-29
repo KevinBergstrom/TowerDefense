@@ -86,6 +86,7 @@ class Enemy{
 		this.phaserRef.kill()
 		grid.getPoint(this.gridX,this.gridY).enemies.splice(grid.getPoint(this.gridX,this.gridY).enemies.indexOf(this), 1)
 		array.splice((array.indexOf(this)),1)
+		delete this
 	}
 
 	update (grid) {
