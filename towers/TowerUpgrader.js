@@ -180,7 +180,6 @@ class TowerUpgrader {
 	}
 
 	clearPopup () {
-
 		this.popup.destroy()
 		this.popup = null
 	}

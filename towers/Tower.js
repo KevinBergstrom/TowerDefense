@@ -93,18 +93,6 @@ class Tower {
   }
 
   getInRange (enemies) {
-   /* const inRange = []
-
-    for(var i = 0;i<this.spotsInRange.length;i++){
-      this.spotsInRange[i].enemies.forEach(enemy => {
-        let dist = Phaser.Math.distance(enemy.x, enemy.y, this.pos.x, this.pos.y)
-        if ( dist <= this.range) {
-          inRange.push(enemy)
-        }
-      })
-    }
-
-    return inRange*/
     return this.getInRangeLast(enemies)
   }
 
@@ -185,38 +173,10 @@ class Tower {
     }
   }
 
-  // infoPopup () {//TODO
-  //   if (this.popup) {
-  //     return
-  //   }
-  //   const popup = new SlickUI.Element.Panel(this.phaserRef.x, this.phaserRef.y - 116, 150, 100)
-  //   this.popup = popup
-  //   slickUI.add(popup)
-
-  //   const cancelBtn = new SlickUI.Element.Button(77, 60, 64, 32)
-  //   popup.add(cancelBtn)
-  //   cancelBtn.add(new SlickUI.Element.Text(0, 0, "Close"))
-  //   cancelBtn.events.onInputUp.add(this.clearPopup, this)
-
-  //   const upgradeBtn = new SlickUI.Element.Button(0, 0, 150, 32)
-  //   popup.add(upgradeBtn)
-  //   upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade: 40"))
-  //   upgradeBtn.events.onInputUp.add(this.upgrade, this)
-  // }
-
   upgrade () {
-    // if (this.interval > 40 && model.moneyCheck(price)) {
-    // 	this.interval = setTo
-    // 	model.changeMoney(-price)
-    // }
-    // this.clearPopup()
     towerUpgrader.upgradeTower(this)
   }
 
-  // clearPopup () {
-  //   this.popup.destroy()
-  //   this.popup = null
-  // }
   invest (price) {
     this.investment += price
   }
