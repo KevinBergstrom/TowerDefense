@@ -13,5 +13,10 @@ class SoundPlayer {
       this[sound.name] = game.add.audio(sound.name)
     })
   }
-
+  play (sound) {
+    this[sound].play()
+  }
+  loop (sound, volume) {
+    this[sound].loopFull(volume ? volume : 0.3)
+  }
 }

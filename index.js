@@ -88,7 +88,7 @@ function create() {
   // Add background to canvas //create it with level1 class?
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
   soundPlayer.cache()
-  soundPlayer.background.loopFull(0.3)
+  soundPlayer.loop('background', 0.3)
 
   openPanel()
   closePanel()
