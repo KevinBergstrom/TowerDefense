@@ -54,7 +54,7 @@ startWave(){
 endWave(){
  if(this.waveStarted == true){
    this.waveStarted = false
-   soundPlayer.win.play()
+   soundPlayer.play('win')
  }
 }
 

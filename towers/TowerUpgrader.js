@@ -74,25 +74,6 @@ class TowerUpgrader {
 		
 	}
 
-	// upgrade () {
-	// 	var x = this.tower.pos.x
-	// 	var y = this.tower.pos.y
-	// 	const sprite = this.tower.phaserRef
-	// 	// if (this.tower.interval > 40 && model.moneyCheck(40)) {
-	// 	// 	this.tower.interval = 1
-	// 	// 	model.changeMoney(-40)
-	// 	// }
-
-	// 	this.tower.range += 100
-
-	// 	// sprite.loadTexture('missileTower')
-	// 	sprite.loadTexture('missileTower')
-	// 	this.tower.projectil = 'smallRock'
-
-
-	// 	this.clearPopup()
-	// }
-
 	upgrade () {
 		
 		var price = this.getPrice()
@@ -125,7 +106,7 @@ class TowerUpgrader {
 			console.log('ERROR: unexpected tower type')
 			return
 		}
-		soundPlayer.upgrade.play()
+		soundPlayer.play('upgrade')
 		this.tower.invest(price)
 		model.changeMoney(-price)
 		this.clearPopup()
