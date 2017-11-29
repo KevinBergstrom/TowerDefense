@@ -1,5 +1,5 @@
 class Tower {
-  constructor (phaserRef, type, pos, range) {
+  constructor (phaserRef, type, pos, range, cost) {
     this.phaserRef = phaserRef
     this.type = type
     this.pos = pos
@@ -7,6 +7,8 @@ class Tower {
     this.damage = 100 //change to Number.POSITIVE_INFINITY for UNLIMITED POWER!
     this.speed = 20
     this.level = 0
+    this.cost = cost ? cost : 100
+    this.investment = cost ? cost : 100
 
     if(this.type == 'missileTower'){
       this.projectil = 'missile'
@@ -215,4 +217,7 @@ class Tower {
   //   this.popup.destroy()
   //   this.popup = null
   // }
+  invest (price) {
+    this.investment += price
+  }
  }

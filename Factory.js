@@ -78,7 +78,7 @@ class Factory{
 	    return new Enemy(sprite, x, y, health, speed, damage, path)
 	}
 
-	createTower(image, x, y){
+	createTower(image, x, y, range, cost){
 		// Add a new sprite to the game
 	    // const sprite = game.add.sprite(x, y, image)
 	    // // Offset the sprite to center it
@@ -86,7 +86,7 @@ class Factory{
 	    // sprite.pivot.y = 64
 	    const sprite = this.createTowerSprite(image,x,y)
 	    
-	    return new Tower(sprite, image, {x,y})
+	    return new Tower(sprite, image, {x,y}, range, cost)
 	}
 
 	createTowerSprite(image,x,y){

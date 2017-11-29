@@ -61,7 +61,8 @@ class TowerUpgrader {
 
 		const rmBtn = new SlickUI.Element.Button(0, 30, 150, 32)
 		popup.add(rmBtn)
-		rmBtn.add(new SlickUI.Element.Text(4, 0, "Remove"))
+		rmBtn.add(new SlickUI.Element.Text(4, 0, `Sell: ${this.tower.investment / 2}`))
+
 		rmBtn.events.onInputUp.add(this.removeTower, this)
 
 		if(this.tower.level < 2){
@@ -125,6 +126,7 @@ class TowerUpgrader {
 			return
 		}
 		soundPlayer.upgrade.play()
+		this.tower.invest(price)
 		model.changeMoney(-price)
 		this.clearPopup()
 	}
@@ -171,15 +173,10 @@ class TowerUpgrader {
 		tower.level = 2
 	}
 
-	removeTower () {
-
-		// DOTO: make this work
-
-		// var x = this.tower.pos.x
-		// var y = this.tower.pos.y
-
-		// gp = new GridPoint(x, y)
-		// grid.setPoint(pg, x, y)
+	removeTower (tower) {
+		model.changeMoney(this.tower.investment / 2)
+		// Remove tower from grid and reset astaralg
+		// destroy phaser reference
 	}
 
 	clearPopup () {

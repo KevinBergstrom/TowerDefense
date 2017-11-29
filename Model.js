@@ -113,7 +113,8 @@ return true
 }
 
 dropNewTower(towerType, gridPoint) {
-  this.changeMoney(-100)
+  const initialCost = 100
+  this.changeMoney(-initialCost)
   const x = gridPoint.getX()
   const y = gridPoint.getY()
   const tower = factory.createTower(towerType, x, y)
