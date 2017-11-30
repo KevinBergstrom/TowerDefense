@@ -40,13 +40,13 @@ let levelSelectUI
 let menuUI
 let pauseMenu
 let gameOverMenu // TODO
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
 let autoplay
-=======
+//=======
 
 let difficulty = 1  
 
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -98,10 +98,10 @@ function create() {
   openPanel()
   closePanel()
 
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
   //openMenu()//TODO Brian uncomment this and remove openLevelSelect() when you've made the menu
   openLevelSelect()
-=======
+//=======
   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
   pauseKey.onDown.add(function(){
     if(panel.visible){
@@ -113,7 +113,7 @@ function create() {
 
   openMenu()
   //openLevelSelect()
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 }
 
 function update() {

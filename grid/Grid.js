@@ -55,18 +55,6 @@ class Grid {
     return grid
   }
 
-<<<<<<< Updated upstream
-  killAllSprites(){
-    enemySpawns.phaserRef.destroy()
-    playerBases.phaserRef.destroy()
-
-    for(var x = 0; x < this.grid.length; x++){
-      for(var y = 0; y < this.grid.length; y++){
-        if(this.gridPoint(x,y)!=null){
-          this.gridPoint(x,y).phaserRef.destroy()
-          this.gridPoint(x,y).clearPopup()
-=======
-
 killAllSprites(){
     this.enemySpawns.phaserRef.destroy()
     this.playerBases.phaserRef.destroy()
@@ -74,8 +62,7 @@ killAllSprites(){
     for(var x = 0; x < this.grid.length; x++){
       for(var y = 0; y < this.grid.length; y++){
         if(this.getPoint(x,y).occupant!=null){
-          this.getPoint(x,y).occupant.phaserRef.destroy()
->>>>>>> Stashed changes
+this.getPoint(x,y).occupant.phaserRef.destroy()
         }
       }
     }

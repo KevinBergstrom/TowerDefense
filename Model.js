@@ -34,21 +34,13 @@ killAllSprites(){
 	//TODO kills all sprites EVERYWHERE in this model
   this.grid.killAllSprites()
 
-<<<<<<< Updated upstream
-  for(var i = 0;i<enemies.length;i++){
-    enemies[i].phaserRef.destroy()
-  }
-
-  for(var j = 0;j<projectiles.length;j++){
-    projectiles[j].phaserRef.destroy()
-=======
   for(var i = 0;i<this.enemies.length;i++){
-    this.enemies[i].phaserRef.kill()
+    this.enemies[i].phaserRef.destroy()
   }
 
   for(var j = 0;j<this.projectiles.length;j++){
-    this.projectiles[j].phaserRef.kill()
->>>>>>> Stashed changes
+    this.projectiles[j].phaserRef.destroy()
+
   }
 
 }
