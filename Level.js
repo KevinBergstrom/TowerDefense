@@ -235,6 +235,45 @@ class Level{
 
 	}
 
+	static level7(playerUI,backgroundPanel){
+
+		let s = 'spawn'
+		let b = 'base'
+
+		const backgroundImage = 'sandBackground'
+		const tiles = [null]
+		
+		const map = [
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,s,0,b,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ]
+
+		backgroundPanel.loadTexture(backgroundImage,0)
+
+		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
+		grid.generateNodeGraph()
+		//TODO player class goes here
+		let model = new Model(grid)//,player)
+
+		Level.generateTerrain(map,tiles,model,grid)
+
+		return model
+
+	}
+
 	static generateTerrain(map,tiles,model,grid){
 		for(var x = 0;x<GRID_SIZE;x++){
 			for(var y = 0;y<GRID_SIZE;y++){

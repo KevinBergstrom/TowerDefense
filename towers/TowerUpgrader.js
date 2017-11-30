@@ -40,6 +40,7 @@ class TowerUpgrader {
 
 
 		this.gridPoint = model.grid.getPoint(x,y)
+		//this is wrong btw
 	}
 
 	getPrice () {
@@ -92,38 +93,41 @@ class TowerUpgrader {
 		
 		var price = this.getPrice()
 
-		if (this.tower.type == 'missileTower'){
-			if (this.tower.level == 0){
-				this.makeMissleTowerLvl2(this.tower)
+		if(model.moneyCheck(price)){
+			if (this.tower.type == 'missileTower'){
+				if (this.tower.level == 0){
+					this.makeMissleTowerLvl2(this.tower)
+				}
+				else if (this.tower.level == 1){
+					this.makeMissleTowerLvl3(this.tower)
+				}
+				else {
+					console.log('ERROR: unexpected tower level')
+					return
+				}
 			}
-			else if (this.tower.level == 1){
-				this.makeMissleTowerLvl3(this.tower)
+			else if (this.tower.type == 'defaultTower'){
+				if (this.tower.level == 0){
+					this.makeDefaultTowerLvl2(this.tower)
+				}
+				else if (this.tower.level == 1){
+					this.makeDefaultTowerLvl3(this.tower)
+				}
+				else {
+					console.log('ERROR: unexpected tower level')
+					return
+				}
 			}
 			else {
-				console.log('ERROR: unexpected tower level')
+				console.log('ERROR: unexpected tower type')
 				return
 			}
+			this.tower.generateInRange(model.grid)
+			soundPlayer.play('upgrade')
+			this.tower.invest(price)
+			model.changeMoney(-price)
+			this.clearPopup()
 		}
-		else if (this.tower.type == 'defaultTower'){
-			if (this.tower.level == 0){
-				this.makeDefaultTowerLvl2(this.tower)
-			}
-			else if (this.tower.level == 1){
-				this.makeDefaultTowerLvl3(this.tower)
-			}
-			else {
-				console.log('ERROR: unexpected tower level')
-				return
-			}
-		}
-		else {
-			console.log('ERROR: unexpected tower type')
-			return
-		}
-		soundPlayer.play('upgrade')
-		this.tower.invest(price)
-		model.changeMoney(-price)
-		this.clearPopup()
 	}
 
 

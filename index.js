@@ -170,7 +170,7 @@ function checkIfLost(){
     //NOT BIG SUPRISE
     //TODO probably change this
     gameOver = true
-    closePausemMenu()
+    closePauseMenu()
   let panel = new SlickUI.Element.Panel(0, 0, game.width, game.height)
   let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
 
