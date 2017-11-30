@@ -46,6 +46,12 @@ class Factory{
 		return button
 	}
 
+	createRadioButton(x,y,UI){
+		let button = new SlickUI.Element.Checkbox(x,y, SlickUI.Element.Checkbox.TYPE_RADIO)
+		UI.add(button)
+		return button
+	}
+
 	createText(x,y,text,playerUI){
 		let label = new SlickUI.Element.Text(x, y, text)
 		playerUI.add(label)

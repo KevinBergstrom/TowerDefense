@@ -79,7 +79,7 @@ class Enemy{
 	}
 
 	bounty () {
-		return 1//how much an enemy gives when killed
+		return 5//how much an enemy gives when killed
 	}
 
 	removeThis (array,grid) {
