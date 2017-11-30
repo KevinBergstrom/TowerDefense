@@ -52,39 +52,7 @@ class Factory{
 		return label
 	}
 
-	createProjectile(image,x,y,vector,speed,damage){
-
-		// Add a new sprite to the game
-	    const sprite = game.add.sprite(x, y, image)
-	    // Offset the sprite to center it
-	    sprite.pivot.x = 64
-	    sprite.pivot.y = 64
-	    // Scale the sprite to proper size
-	    sprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-
-		return new Projectile(sprite,x,y,vector,speed,damage)
-	}
-
-	createEnemy(image, x, y, health, speed, damage, path, visible){
-		// Add a new sprite to the game
-	    const sprite = game.add.sprite(x, y, image)
-	    // Offset the sprite to center it
-	    sprite.pivot.x = 64
-	    sprite.pivot.y = 64
-	    // Scale the sprite to proper size
-	    sprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
-	    sprite.visible = visible
-
-	    return new Enemy(sprite, x, y, health, speed, damage, path)
-	}
-
-	createTower(image, x, y, range, cost){
-	    const sprite = this.createTowerSprite(image,x,y)
-	    
-	    return new Tower(sprite, image, {x,y}, range, cost)
-	}
-
-	createTowerSprite(image,x,y){
+	createSprite(image,x,y){
 		// Add a new sprite to the game
 		const sprite = game.add.sprite(x, y, image)
 	    // Offset the sprite to center it
@@ -96,36 +64,40 @@ class Factory{
 	    return sprite
 	}
 
+	createProjectile(image,x,y,vector,speed,damage){
+	    const sprite = this.createSprite(image,x,y)
+
+		return new Projectile(sprite,x,y,vector,speed,damage)
+	}
+
+	createEnemy(image, x, y, health, speed, damage, path, visible){
+	    const sprite = this.createSprite(image,x,y)
+	    sprite.visible = visible
+
+	    return new Enemy(sprite, x, y, health, speed, damage, path)
+	}
+
+	createTower(image, x, y, range, cost){
+	    const sprite = this.createSprite(image,x,y)
+	    
+	    return new Tower(sprite, image, {x,y}, range, cost)
+	}
+
 	createWall(image,x,y){
-		// Add a new sprite to the game
-	    const sprite = game.add.sprite(x, y, image)
-	    // Offset the sprite to center it
-	    sprite.pivot.x = 64
-	    sprite.pivot.y = 64
-	    // Scale the sprite to proper size
-	    sprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+	    const sprite = this.createSprite(image,x,y)
+
 		return new Wall(sprite, x, y)
 	}
 
 	createEnemySpawn(image,x,y,interval){
-		// Add a new sprite to the game
-	    const sprite = game.add.sprite(x, y, image)
-	    // Offset the sprite to center it
-	    sprite.pivot.x = 64
-	    sprite.pivot.y = 64
-	    // Scale the sprite to proper size
-	    sprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+	    const sprite = this.createSprite(image,x,y)
+
 		return new EnemySpawn(sprite , x, y, interval ) 
 	}
 
 	createBase(image,x,y){
-		// Add a new sprite to the game
-	    const sprite = game.add.sprite(x, y, image)
-	    // Offset the sprite to center it
-	    sprite.pivot.x = 64
-	    sprite.pivot.y = 64
-	    // Scale the sprite to proper size
-	    sprite.scale.setTo(TOWER_SCALE, TOWER_SCALE)
+	    const sprite = this.createSprite(image,x,y)
+	    
 		return new Base(sprite, x, y)
 	}
 
