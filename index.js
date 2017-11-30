@@ -27,7 +27,6 @@ let healthText
 let moneyText
 let levelText
 let enemiesText
-//let pauseMessage
 
 let id = 0
 let mouseWasDown = false
@@ -41,7 +40,13 @@ let levelSelectUI
 let menuUI
 let pauseMenu
 let gameOverMenu // TODO
+//<<<<<<< Updated upstream
 let autoplay
+//=======
+
+let difficulty = 1  
+
+//>>>>>>> Stashed changes
 
 function preload() {
   // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
@@ -93,8 +98,22 @@ function create() {
   openPanel()
   closePanel()
 
+//<<<<<<< Updated upstream
   //openMenu()//TODO Brian uncomment this and remove openLevelSelect() when you've made the menu
   openLevelSelect()
+//=======
+  pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
+  pauseKey.onDown.add(function(){
+    if(panel.visible){
+      if (!game.paused) {game.paused = true; openPauseMenu()} 
+      else {game.paused = false; closePauseMenu()}
+    }
+  } ,this)
+
+
+  openMenu()
+  //openLevelSelect()
+//>>>>>>> Stashed changes
 }
 
 function update() {
@@ -182,7 +201,7 @@ function checkIfLost(){
 function openPanel(){
   closeMenu()
   closelevelSelect()
-  closePauseMenu()
+ // closePauseMenu()
   if(panel==null){
   const panelX = 0
   const panelY = game.height - 150
@@ -229,6 +248,7 @@ function openPanel(){
   addTowerBuyOption(towerPanel, 'missileTower', 100)
   }else{
     panel.visible = true
+    waveButton.visible = true
   }
 }
 
@@ -241,96 +261,61 @@ function closePanel(){
 function openMenu(){
   closelevelSelect()
   closePanel()
-  closePauseMenu()
+ // closePauseMenu()
   if(menuUI==null){
+    menuUI = new SlickUI.Element.Panel(0, 0, game.width, game.height)
+    slickUI.add(menuUI)
     //TODO make the menu
     //start game
-    //difficulty stuff
+    let selectButton = factory.createButton((game.width/2)-70,440,140,40,'Level Select',menuUI)
+    let rb1 = factory.createRadioButton((CANVAS_WIDTH/2)-65, 270, menuUI)
+    let rb2 = factory.createRadioButton((CANVAS_WIDTH/2)-65, 320, menuUI)
+    let rb3 = factory.createRadioButton((CANVAS_WIDTH/2)-65, 370, menuUI)
+    let rb1text = factory.createText((CANVAS_WIDTH/2)-15, 274, 'Easy', menuUI)
+    let rb2text = factory.createText((CANVAS_WIDTH/2)-15, 324, 'Medium', menuUI)
+    let rb3text = factory.createText((CANVAS_WIDTH/2)-15, 374, 'Hard', menuUI)
+    let menuText  = factory.createText((CANVAS_WIDTH/2)-138,105,'T O W E R   D E F E N S E', menuUI)
+    let difficultyText = factory.createText((CANVAS_WIDTH/2)-46, 220, 'Difficulty', menuUI)
 
-    //to advance to levelSelect just call openLevelSelect()
-    //ex: Button.events.onInputUp.add(() => openLevelSelect())
+    rb1.checked = true
 
-    //use factory.createButton() or factory.createText()
-    //I dont have a create images in factory yet, feel free to add to the factory
+    rb1.events.onInputDown.add(function(){rb1.checked = true; rb2.checked = false; rb3.checked = false; this.difficulty = 100}, this)
+    rb2.events.onInputDown.add(function(){rb1.checked = false; rb2.checked = true; rb3.checked = false; this.difficulty = 50}, this)
+    rb3.events.onInputDown.add(function(){rb1.checked = false; rb2.checked = false; rb3.checked = true; this.difficulty = 1}, this)
+
+    selectButton.events.onInputUp.add(() => openLevelSelect())
 
   }else{
     menuUI.visible = true
   }
 }
 
+
 function closeMenu(){
   if(menuUI){
-    menu.visible = false
+    menuUI.visible = false
   }
 }
 
 function openPauseMenu(){
-  if(pauseMenu==null){
-    //TODO make a pause menu
+    pauseMenu = new SlickUI.Element.Panel((game.width/2)-150, (game.height/2)-100, 300, 150)
+    slickUI.add(pauseMenu)
 
-    //pause message
-    //return to menu button
-    //resume button?
-
-    //to go back to main menu just call openMenu()
-
-    //here are the old ways its been done
-    /*
-//kevin's try at it
-//I essentially have a pauseMessage that is invisible unless you pause
-  pauseMessage = new SlickUI.Element.Text(CANVAS_WIDTH/2, (CANVAS_HEIGHT-150)/2, "Paused: Press escape to resume")
-  slickUI.add(pauseMessage)
-  pauseMessage.visible = false
-  pauseMessage.x = (CANVAS_WIDTH/2)-(pauseMessage.text.width/2)
-
-   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
-   pauseKey.onDown.add(toggleMenu, this)
-
-   function toggleMenu(){
-      if (!game.paused) {        
-        game.paused = true;
-        pauseMessage.visible = true
-      } 
-      else {
-        game.paused = false
-        pauseMessage.visible = false
-      }
-
-    }
-*/
-/*
-
-  pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ONE)
-   pauseKey.onDown.add(toggleMenu, this)
-
-    function toggleMenu(){
-      if (!game.paused) {        
-        game.paused = true;
-        pauseMessage = game.add.text(CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 'Paused: Press escape to resume', { font: '30px Arial', fill: '#fff' });
-        //pauseMessage.anchor.setTo(0.5, 0.5);
-      } 
-      else {
-        pauseMessage.destroy()
-        game.paused = false
-      }
-
-    }*/
-
-  }else{
-    pauseMenu.visible = true
+    let pauseMessage = factory.createText(0,0, 'Game Paused, press ESC to resume', pauseMenu) 
+    let exitButton = factory.createButton(0,pauseMenu.height-55, 290, 50, 'Exit to main menu', pauseMenu)
+    exitButton.events.onInputDown.add(function(){ model.killAllSprites(); model = null; exitDropTowerState(); game.paused = false; closePauseMenu(); openMenu()}, this)
   }
-}
 
 function closePauseMenu(){
   if(pauseMenu){
-    pauseMenu.visible = false
+    pauseMenu.destroy()
   }
 }
 
 function openLevelSelect(){
   closeMenu()
   closePanel()
-  closePauseMenu()
+ // closePauseMenu()
   if(levelSelectUI==null){
     levelSelectUI = new SlickUI.Element.Panel(0, 0, game.width, game.height)
     //let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
@@ -386,7 +371,7 @@ function changeLevel(levelName){
     model = null
   }
   openPanel()
-  model = factory.loadLevel(levelName,panel,background)
+  model = factory.loadLevel(levelName,panel,background) 
 }
 
 // Function ran during dropTowerState

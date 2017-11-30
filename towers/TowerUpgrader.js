@@ -4,9 +4,9 @@ class TowerUpgrader {
 	constructor(){//slickUI){
 		//this.slickUI = slickUI
 		this.tower = null			// this.tower gets set when upgradeTower() is called
-		// this.gridPoint = null	// this is a bit of a scechy way of doing things,
-									// but it should be fine so long as we refrane from 
-									// calling these methodes from anywhere else 
+		// this.gridPoint = null	// this is a bit of a scetchy way of doing things,
+									// but it should be fine so long as we refrain from 
+									// calling these methods from anywhere else 
 		this.highRange = 600
 		this.mediumRange = 300
 		this.lowRange = 150
@@ -44,7 +44,7 @@ class TowerUpgrader {
 	}
 
 	getPrice () {
-		return (this.tower.level+1)*40
+		return (this.tower.level+1)*50
 	}
 
 	infoPopup () {//TODO

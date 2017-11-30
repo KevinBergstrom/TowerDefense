@@ -10,7 +10,7 @@ class Model{
 
 		this.gameOver = false
 		this.waveStarted = false //TODO integrate this
-		this.wave = 0
+		this.wave = 8
 
 		//going to be put into the player class
 		this.money = 20000
@@ -34,12 +34,13 @@ killAllSprites(){
 	//TODO kills all sprites EVERYWHERE in this model
   this.grid.killAllSprites()
 
-  for(var i = 0;i<enemies.length;i++){
-    enemies[i].phaserRef.destroy()
+  for(var i = 0;i<this.enemies.length;i++){
+    this.enemies[i].phaserRef.destroy()
   }
 
-  for(var j = 0;j<projectiles.length;j++){
-    projectiles[j].phaserRef.destroy()
+  for(var j = 0;j<this.projectiles.length;j++){
+    this.projectiles[j].phaserRef.destroy()
+
   }
 
 }
@@ -169,6 +170,10 @@ dropNewWall(wallType, gridPoint) {
   // Occupy gridPoint
   gridPoint.set(wall)
   gridPoint.node.setObstruction()
+}
+
+changeDifficulty(difficulty){
+  //TODO implement difficulties
 }
 
 spawnQueueEmpty(){
