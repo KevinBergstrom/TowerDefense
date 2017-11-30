@@ -7,18 +7,17 @@ class TowerUpgrader {
 		// this.gridPoint = null	// this is a bit of a scetchy way of doing things,
 									// but it should be fine so long as we refrain from 
 									// calling these methods from anywhere else 
-		this.highRange = 600
+		this.highRange = 450
 		this.mediumRange = 300
 		this.lowRange = 150
 
-		this.highDmg = 400
-		this.mediumDmg = 200
-		this.lowDmg = 100
+		this.highDmg = 105
+		this.mediumDmg = 70
+		this.lowDmg = 35
 
 		this.highFR = 100
 		this.mediumFR = 60
-		this.lowFR = 25
-		this.madFR = 1
+		this.lowFR = 20
 	}	
 
 	upgradeTower (tower) {
@@ -83,7 +82,7 @@ class TowerUpgrader {
 		if(this.tower.level < 2){
 			const upgradeBtn = new SlickUI.Element.Button(0, 0, 150, 32)
 			popup.add(upgradeBtn)
-			upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade: "+this.getPrice()))
+			upgradeBtn.add(new SlickUI.Element.Text(4, 0, "Upgrade:"+this.getPrice()))
 			upgradeBtn.events.onInputUp.add(this.upgrade, this)
 		}
 		
@@ -168,7 +167,7 @@ class TowerUpgrader {
 
 		tower.range = this.lowRange
 		tower.damage = this.lowDmg
-		tower.interval = this.madFR
+		tower.interval = this.lowFR
 		tower.level = 2
 	}
 

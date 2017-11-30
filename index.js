@@ -137,9 +137,6 @@ function update() {
       checkIfLost()
     }
   }
-  //TESTING
-  game.debug.text('fps:' + game.time.fps,50,600,0)
-
 }
 
 function clearOldModel(){

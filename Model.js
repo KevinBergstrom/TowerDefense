@@ -13,7 +13,7 @@ class Model{
 		this.wave = 8
 
 		//going to be put into the player class
-		this.money = 20000
+		this.money = 1000
 		this.health = 100
 
 	}
