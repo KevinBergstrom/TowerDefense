@@ -20,11 +20,11 @@ class Projectile{
 
 	hit (enemy,projectiles) {
 		//default hit function
-		if (enemy.health > 0) {
-			enemy.health -= this.damage
+		if (enemy.getHealth() > 0) {
+			enemy.takeDamage(this.damage)
 			this.removeThis(projectiles)
-			if (enemy.health < 0) {
-				enemy.health = 0
+			if (enemy.getHealth() < 0) {
+				enemy.getHealth() = 0
 			}
 		}
 	}

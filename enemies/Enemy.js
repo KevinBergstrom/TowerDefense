@@ -82,6 +82,14 @@ class Enemy{
 		return 5//how much an enemy gives when killed
 	}
 
+	takeDamage (damage) {
+		this.health -= damage
+	}
+
+	getHealth () {
+		return this.health
+	}
+
 	removeThis (array,grid) {
 		this.phaserRef.destroy()
 		grid.getPoint(this.gridX,this.gridY).enemies.splice(grid.getPoint(this.gridX,this.gridY).enemies.indexOf(this), 1)

@@ -24,3 +24,22 @@ describe('Model', () => {
     done()
   })
 })
+
+describe('Enemy', () => {
+  it('takes damage', done => {
+    const testEnemy = model.grid.enemySpawns.spawnQueue[0]
+    testEnemy.health = 100
+    testEnemy.takeDamage(50)
+    expect(testEnemy.getHealth()).to.equal(50)
+    done()
+  })
+})
+
+describe('Factory', () => {
+  it('drops base at specific location', done => {
+    const testBase = factory.createBase('base', 0, 0)
+    expect(testBase.x).to.equal(0)
+    expect(testBase.y).to.equal(0)
+    done()
+  })
+})
