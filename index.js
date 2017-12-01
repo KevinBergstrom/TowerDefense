@@ -1,8 +1,9 @@
 
-const CANVAS_WIDTH = 650
-const CANVAS_HEIGHT = 650
+
 const TOWER_SCALE = 0.3
 const PURCHASE_BUTTON_SIZE = 140
+const CANVAS_WIDTH = 650
+const CANVAS_HEIGHT = 650
 const GRID_SIZE = 16
 
 const game = new Phaser.Game(
@@ -39,7 +40,7 @@ let panel     // Player UI panel
 let levelSelectUI
 let menuUI
 let pauseMenu
-let gameOverMenu // TODO
+let gameOverMenu
 //<<<<<<< Updated upstream
 let autoplay
 //=======
@@ -85,6 +86,7 @@ function preload() {
       }
     ])
   game.time.advancedTiming = true
+
 }
 
 function create() {
@@ -100,11 +102,11 @@ function create() {
 
 //<<<<<<< Updated upstream
   //openMenu()//TODO Brian uncomment this and remove openLevelSelect() when you've made the menu
-  openLevelSelect()
+  //openLevelSelect()
 //=======
   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
   pauseKey.onDown.add(function(){
-    if(panel.visible){
+    if(panel.visible&&!model.gameOver){
       if (!game.paused) {game.paused = true; openPauseMenu()} 
       else {game.paused = false; closePauseMenu()}
     }
@@ -137,6 +139,8 @@ function update() {
       checkIfLost()
     }
   }
+  //TESTING
+  game.debug.text('fps:' + game.time.fps,50,600,0)
 }
 
 function clearOldModel(){
@@ -182,17 +186,28 @@ function isWaveComplete(){
 
 function checkIfLost(){
   if(model.getHealth()<=0){
-    //YOU LOSE
-    //NOT BIG SUPRISE
-    //TODO probably change this
-    gameOver = true
-    closePauseMenu()
-  let panel = new SlickUI.Element.Panel(0, 0, game.width, game.height)
-  let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
+      model.gameOver = true
+      closePanel()
+      //YOU LOSE
+      //NOT BIG SUPRISE
+      //TODO probably change this
+      gameOverMenu = new SlickUI.Element.Panel(0, 0, game.width, game.height)
+      slickUI.add(gameOverMenu)
 
-  slickUI.add(panel)
-  slickUI.add(loseMessage)
+      let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, (CANVAS_HEIGHT/2)+80, "GAME OVER\n SCORE "+model.wave)
+      gameOverMenu.add(loseMessage)
+
+      let restartButton = factory.createButton((CANVAS_HEIGHT-290)/2,(CANVAS_HEIGHT-50)/2, 290, 50, 'Exit to main menu', gameOverMenu)
+        restartButton.events.onInputDown.add(function(){ 
+          model.killAllSprites();
+          delete model; 
+          exitDropTowerState(); 
+          game.paused = false; 
+          gameOverMenu.destroy(); 
+          openMenu()
+        }, this)
   }
+
 }
 
 function openPanel(){
@@ -246,6 +261,7 @@ function openPanel(){
   }else{
     panel.visible = true
     waveButton.visible = true
+    autoplay.checked = false
   }
 }
 
@@ -304,7 +320,7 @@ function openPauseMenu(){
   }
 
 function closePauseMenu(){
-  if(pauseMenu){
+  if(pauseMenu!=null){
     pauseMenu.destroy()
   }
 }
