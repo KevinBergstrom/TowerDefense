@@ -32,16 +32,19 @@ update() {
 
 killAllSprites(){
 	//TODO kills all sprites EVERYWHERE in this model
+
   this.grid.killAllSprites()
 
-  for(var i = 0;i<this.enemies.length;i++){
-    this.enemies[i].phaserRef.destroy()
-  }
+    while(this.enemies.length>0){
+      this.enemies.pop().phaserRef.destroy()
+    }
 
   for(var j = 0;j<this.projectiles.length;j++){
     this.projectiles[j].phaserRef.destroy()
 
   }
+
+  towerUpgrader.clearPopup()
 
 }
 
