@@ -1,7 +1,6 @@
 class Factory{
 	
-	constructor(){//slickUI){
-		//this.slickUI = slickUI
+	constructor(){
 	}
 
 	initialize(){
@@ -106,10 +105,6 @@ class Factory{
 	    
 		return new Base(sprite, x, y)
 	}
-
-	/*createText(x,y,text){
-		return new SlickUI.Element.Text(x, y, text)
-	}*/
 
 }
 

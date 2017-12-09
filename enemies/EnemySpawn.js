@@ -16,9 +16,8 @@ class EnemySpawn{
 	populateSpawnQueue (waveNumber) {
 
 		for(var i = 0; i < waveNumber; i++){
-			//change this. I dare you to
-			let speed = 1 //+ 0.01*waveNumber
-			let damage = 1//waveNumber
+			let speed = 1
+			let damage = 1
 			let health = 100 + waveNumber*waveNumber
 
 			let newEnemy = factory.createEnemy('enemy',this.x, this.y, health, speed, damage, this.path,false)
@@ -29,7 +28,6 @@ class EnemySpawn{
 	}
 
 	spawnEnemy (enemyArray,grid){
-		//TODO
 		let newEnemy = this.spawnQueue.shift()
 		newEnemy.path = this.path
 		newEnemy.phaserRef.visible = true
@@ -58,7 +56,7 @@ class EnemySpawn{
 	}
 
 	clearPopup(){
-		//maybe in the future
+		
 	}
 
 }

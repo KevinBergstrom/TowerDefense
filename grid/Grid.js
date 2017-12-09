@@ -4,25 +4,21 @@ class Grid {
   // Initialize class with passed in grid
   constructor (grid) {
     this.grid = grid
-    const enemySpawns = null //one spawn for beta maybe an array later
-    const playerBases = null //one base for beta maybe an array later
+    const enemySpawns = null
+    const playerBases = null
   }
 
-  update (enemyArray, model) {//maybe change it to just model as a constructor
+  update (enemyArray, model) {
     this.enemySpawns.update(enemyArray,this)
     var enemies = enemyArray.length
     for(var i = 0;i < enemies; i++){
       enemyArray[i].update(this)
       if (enemyArray[i].destReached) {
-        //TODO damage the base
-        //health-= enemyArray[i].damage
         model.takeDamage(enemyArray[i].damage)
         enemyArray[i].removeThis(enemyArray,this)
         i--
         enemies--
       } else if (enemyArray[i].health <= 0) {
-        //TODO award money from enemy death
-        //money += enemyArray[i].bounty()
         model.changeMoney(enemyArray[i].bounty())
         enemyArray[i].removeThis(enemyArray,this)
         i--
@@ -70,14 +66,12 @@ this.getPoint(x,y).occupant.phaserRef.destroy()
   }
 
 
-  addBase (base) {//,gridX,gridY){
+  addBase (base) {
     this.playerBases = base
-    //this.grid[gridX][gridY] = base
   }
 
-  addSpawn (spawn) {//,gridX,gridY){
+  addSpawn (spawn) {
     this.enemySpawns = spawn
-    //this.grid[gridX][gridY] = spawn
   }
 
   findShortestPath (startX, startY, endX, endY) {
@@ -101,8 +95,6 @@ this.getPoint(x,y).occupant.phaserRef.destroy()
 
   //A* graph generator
   generateNodeGraph () {
-    //make a static node network
-    //create all nodes
 
     for(var x = 0;x<GRID_SIZE;x++){
       for(var y = 0;y<GRID_SIZE;y++){

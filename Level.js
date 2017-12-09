@@ -1,5 +1,9 @@
 class Level{
 
+	//to add a level just copy one of the classes with level in its name
+	//edit the map array and change the name of the class
+	//make sure the class name still has 'level' in it
+
 	static level1(playerUI,backgroundPanel){
 
 		let s = 'spawn'
@@ -30,8 +34,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 
@@ -69,8 +72,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 
@@ -108,8 +110,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 
@@ -147,8 +148,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 
@@ -187,8 +187,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 
@@ -226,8 +225,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 
@@ -265,8 +263,7 @@ class Level{
 
 		let grid = new Grid(Grid.createGrid(GRID_SIZE, playerUI))
 		grid.generateNodeGraph()
-		//TODO player class goes here
-		let model = new Model(grid)//,player)
+		let model = new Model(grid)
 
 		Level.generateTerrain(map,tiles,model,grid)
 

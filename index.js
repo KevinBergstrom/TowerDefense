@@ -41,20 +41,13 @@ let levelSelectUI
 let menuUI
 let pauseMenu
 let gameOverMenu
-//<<<<<<< Updated upstream
 let autoplay
-//=======
 
 let difficulty = 1  
 
-//>>>>>>> Stashed changes
-
 function preload() {
-  // You can use your own methods of making the plugin publicly available. Setting it as a global variable is the easiest solution.
   slickUI = game.plugins.add(Phaser.Plugin.SlickUI)
-  slickUI.load('assets/ui/kenney-theme/kenney.json') // Use the path to your kenney.json. This is the file that defines your theme.
-
-  //image loading moved to factory. Thanks and have a nice day
+  slickUI.load('assets/ui/kenney-theme/kenney.json')
 
   factory.initialize()
 
@@ -92,7 +85,7 @@ function preload() {
 function create() {
   // Start phaser arcade physics engine
   game.physics.startSystem(Phaser.Physics.ARCADE)
-  // Add background to canvas //create it with level1 class?
+  // Add background to canvas
   background = game.add.tileSprite(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 'background')
   soundPlayer.cache()
   soundPlayer.loop('background', 0.3)
@@ -100,10 +93,6 @@ function create() {
   openPanel()
   closePanel()
 
-//<<<<<<< Updated upstream
-  //openMenu()//TODO Brian uncomment this and remove openLevelSelect() when you've made the menu
-  //openLevelSelect()
-//=======
   pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.ESC)
   pauseKey.onDown.add(function(){
     if(panel.visible&&!model.gameOver){
@@ -114,8 +103,7 @@ function create() {
 
 
   openMenu()
-  //openLevelSelect()
-//>>>>>>> Stashed changes
+
 }
 
 function update() {
@@ -162,7 +150,6 @@ function updateTextItems(){
 function startNextWave(){
   if(model.waveStarted == false){
     waveButton.visible = false
-    //exitDropTowerState()
     model.startWave()
   }
 }
@@ -188,9 +175,7 @@ function checkIfLost(){
   if(model.getHealth()<=0){
       model.gameOver = true
       closePanel()
-      //YOU LOSE
-      //NOT BIG SUPRISE
-      //TODO probably change this
+
       gameOverMenu = new SlickUI.Element.Panel(0, 0, game.width, game.height)
       slickUI.add(gameOverMenu)
 
@@ -213,7 +198,6 @@ function checkIfLost(){
 function openPanel(){
   closeMenu()
   closelevelSelect()
- // closePauseMenu()
   if(panel==null){
   const panelX = 0
   const panelY = game.height - 150
@@ -255,7 +239,6 @@ function openPanel(){
   waveButton.add(new SlickUI.Element.Text(8, 0, "Next"));
   waveButton.events.onInputUp.add(startNextWave);
 
-  //update these when tower upgrades is implemented
   addTowerBuyOption(towerPanel, 'defaultTower', 100)
   addTowerBuyOption(towerPanel, 'missileTower', 100)
   }else{
@@ -274,12 +257,10 @@ function closePanel(){
 function openMenu(){
   closelevelSelect()
   closePanel()
- // closePauseMenu()
   if(menuUI==null){
     menuUI = new SlickUI.Element.Panel(0, 0, game.width, game.height)
     slickUI.add(menuUI)
-    //TODO make the menu
-    //start game
+
     let selectButton = factory.createButton((game.width/2)-70,440,140,40,'Level Select',menuUI)
     let rb1 = factory.createRadioButton((CANVAS_WIDTH/2)-65, 270, menuUI)
     let rb2 = factory.createRadioButton((CANVAS_WIDTH/2)-65, 320, menuUI)
@@ -328,10 +309,9 @@ function closePauseMenu(){
 function openLevelSelect(){
   closeMenu()
   closePanel()
- // closePauseMenu()
+
   if(levelSelectUI==null){
     levelSelectUI = new SlickUI.Element.Panel(0, 0, game.width, game.height)
-    //let loseMessage = new SlickUI.Element.Text((CANVAS_WIDTH-100)/2, CANVAS_HEIGHT/2, "GAME OVER\n SCORE "+model.wave)
     slickUI.add(levelSelectUI)
 
     let levels = Object.getOwnPropertyNames(Level)
@@ -380,7 +360,7 @@ function closelevelSelect(){
 
 function changeLevel(levelName){
   if(model!=null){
-    model.killAllSprites()//maybe overkill?
+    model.killAllSprites()
     model = null
   }
   openPanel()

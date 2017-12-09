@@ -1,6 +1,6 @@
 class Model{
 	
-	constructor(grid){//,player){
+	constructor(grid){
 
 		this.grid = grid
 
@@ -9,10 +9,9 @@ class Model{
 		this.projectiles = []
 
 		this.gameOver = false
-		this.waveStarted = false //TODO integrate this
+		this.waveStarted = false
 		this.wave = 8
 
-		//going to be put into the player class
 		this.money = 1000
 		this.health = 100
 
@@ -31,8 +30,6 @@ update() {
 }
 
 killAllSprites(){
-	//TODO kills all sprites EVERYWHERE in this model
-
   this.grid.killAllSprites()
 
     while(this.enemies.length>0){
@@ -137,8 +134,6 @@ dropNewTower(towerType, gridPoint) {
   const tower = factory.createTower(towerType, x, y)
   tower.generateInRange(this.grid)
   tower.gridPoint = gridPoint
-  //TODO do this for each tower?
-  // Add to player's towers
   // Occupy gridPoint
   this.playerTowers.push(tower)
   gridPoint.set(tower)
@@ -191,30 +186,24 @@ getPlayerBases(){
 	return this.grid.playerBases
 }
 
-//maybe giveMoney would make more sense
 changeMoney(amount) {
   this.money += amount
 }
 
 moneyCheck(price) {
-	//TODO change with player class
   return this.getMoney() >= price
 }
 
 takeDamage(amount) {
-	//TODO change with player class
 this.health -= amount
   if(this.health < 0){this.health = 0}
 }
 
-//GETers
 getMoney(){
-	//TODO change with player class
 	return this.money
 }
 
 getHealth(){
-	//TODO change with player class
 	return this.health
 }
 

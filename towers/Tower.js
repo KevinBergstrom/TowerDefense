@@ -4,7 +4,7 @@ class Tower {
     this.type = type
     this.pos = pos
     this.range = range ? range : 150 // give range value, default to 64 if not given AKA constructor overloading...just like JAVA!
-    this.damage = 100 //change to Number.POSITIVE_INFINITY for UNLIMITED POWER!
+    this.damage = 100
     this.speed = 20
     this.level = 0
     this.cost = cost ? cost : 100
@@ -34,7 +34,6 @@ class Tower {
     this.spotsInRange = []
     this.gridPoint
 
-    //what about cost?
   }
 
   removeThis (gridPoint,array) {
@@ -91,8 +90,6 @@ class Tower {
         
         if((!gridPoint.isOccupied()||gridPoint.allowsPassage())&&dist <= this.range+5&&gridPoint.hasPath==true){
           this.spotsInRange.push(gridPoint)
-          //for debugging
-          //let b = factory.createEnemy('enemy', gridPoint.x, gridPoint.y, 1, 1, 1, null, true)
 
         }
 
@@ -156,8 +153,6 @@ class Tower {
     return inRange
   }
 
-  // Implement targeting algorithm here to select target within
-  // tower attack radius
   target (enemies) {
     // target logic
     if (enemies.length) {

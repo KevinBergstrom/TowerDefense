@@ -29,8 +29,6 @@ class aStarAlg {
         currentNode.visited = true
         let currentPaths = currentNode.paths.slice()
 
-        //let b = factory.createEnemy('enemy', currentNode.x, currentNode.y, 1, 1, 1, null, true)
-
         while(currentPaths.length>0){
           
           nextPath = currentPaths.pop()

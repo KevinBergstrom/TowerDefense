@@ -24,13 +24,12 @@ class Projectile{
 			enemy.takeDamage(this.damage)
 			this.removeThis(projectiles)
 			if (enemy.getHealth() < 0) {
-				enemy.getHealth() = 0
+				enemy.health = 0
 			}
 		}
 	}
 
 	collisions (grid,projectiles) {
-	//TODO make this use gridPosition.enemeis[] for collision detection
 		const inRange = []
 		let gridX = Math.floor((this.x/CANVAS_WIDTH)*GRID_SIZE)
 		let gridY = Math.floor((this.y/(CANVAS_HEIGHT-PURCHASE_BUTTON_SIZE-10))*GRID_SIZE)
@@ -38,8 +37,6 @@ class Projectile{
 		if(gridX>=0 && gridY>=0 && gridX<GRID_SIZE && gridY<GRID_SIZE){
 			let gridPoint = grid.getPoint(gridX,gridY)
 
-
-			//if(gridPoint.hasPath){
 			    gridPoint.enemies.forEach(enemy => {
 			      let dist = Phaser.Math.distance(enemy.x, enemy.y, this.x, this.y)
 			      if (dist <= this.range) {
@@ -47,7 +44,6 @@ class Projectile{
 			      }
 			    })
 			    return inRange 
-			//}
 		}
 
 		return []
@@ -62,7 +58,6 @@ class Projectile{
 	update (grid,projectiles) {
 		this.move()
 
-			//TODO update this to make it more efficient
     	  let currentTarget = this.collisions(grid, projectiles)
 
 	      if(currentTarget.length > 0){

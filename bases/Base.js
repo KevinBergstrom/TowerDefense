@@ -7,7 +7,7 @@ class Base{
 	}
 
 	clearPopup(){
-		//maybe in the future
+		
 	}
 
 }

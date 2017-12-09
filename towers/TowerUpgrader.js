@@ -1,12 +1,8 @@
 class TowerUpgrader {
 
 
-	constructor(){//slickUI){
-		//this.slickUI = slickUI
-		this.tower = null			// this.tower gets set when upgradeTower() is called
-		// this.gridPoint = null	// this is a bit of a scetchy way of doing things,
-									// but it should be fine so long as we refrain from 
-									// calling these methods from anywhere else 
+	constructor(){
+		this.tower = null// this.tower gets set when upgradeTower() is called
 		this.highRange = 450
 		this.mediumRange = 300
 		this.lowRange = 150
@@ -21,9 +17,7 @@ class TowerUpgrader {
 	}	
 
 	upgradeTower (tower) {
-		//
 		this.tower = tower
-		// this.getGridPoint()
 
 		this.infoPopup()
 	}
@@ -39,14 +33,13 @@ class TowerUpgrader {
 
 
 		this.gridPoint = model.grid.getPoint(x,y)
-		//this is wrong btw
 	}
 
 	getPrice () {
 		return (this.tower.level+1)*50
 	}
 
-	infoPopup () {//TODO
+	infoPopup () {
 		if (this.popup) {
 			return
 		}
@@ -130,7 +123,7 @@ class TowerUpgrader {
 	}
 
 
-	// dublecate code, phaser wouldn't let me use the below methods
+	// duplicate code, phaser wouldn't let me use the below methods
 	makeMissleTowerLvl2 (tower) {
 		tower.phaserRef.loadTexture('missileTowerLvl2')
 		tower.projectil = 'missile'

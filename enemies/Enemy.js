@@ -1,7 +1,7 @@
 class Enemy{
 
 	constructor(phaserRef, x, y, health, speed, damage, path) {
-		this.phaserRef = phaserRef//sprite
+		this.phaserRef = phaserRef
 		this.x = x
 		this.y = y
 		this.health = health
@@ -79,7 +79,7 @@ class Enemy{
 	}
 
 	bounty () {
-		return 5//how much an enemy gives when killed
+		return 5
 	}
 
 	takeDamage (damage) {
@@ -98,7 +98,6 @@ class Enemy{
 	}
 
 	update (grid) {
-		//TODO
 		if (this.health > 0) {
 			this.move(grid)
 		}
